@@ -27,7 +27,6 @@
 - [Using Components in your Application](#using-components-in-your-application)
 - [Event Binding with Jolt](#event-binding-with-jolt)
 - [State Management with Jolt](#state-management-with-jolt)
-- [SPA Routing with the Jolt Router](#spa-routing-with-the-jolt-router)
 - [Why use Jolt?](#why-use-jolt)
 - [Reporting Issues](#reporting-issues)
 
@@ -174,64 +173,6 @@ class MyComponent extends Component {
     }
 }
 ```
-
----
-
-## SPA Routing with the Jolt Router
-
-This feature requires the [@jolt/router](https://www.npmjs.com/package/@jolt/router) package.
-
-The Router class supports both Push State Routing and Hash Based Routing.
-When a route is requested it will render the function component that is tied to the route.
-
-```js
-import { html, render } from "jolt";
-import { Router } from "@jolt/router";
-
-function App() {
-    return html`
-        <h1>Hello World!</h1>
-    `;
-}
-
-const router = new Router({
-    "/" : App
-}, document.querySelector("#app"));
-
-router.listen();
-```
-
-The example above creates a Router and sets the default route to render the App component.
-Additonally you can create parameterized routes and use the parameter's values elsewhere in your code.
-All parameters in routes must start with a colon, that tells the router to accept any value there and save it as a parameter. Adding a question mark at the end of a parameter will mark it as optional.
-
-```js
-import { html, render } from "jolt";
-import { Router } from "@jolt/router";
-
-function Users() {
-    const { user } = Router.getParameters();
-
-    return html`
-        <h1>Hello ${user}!</h1>
-    `;
-}
-
-const router = new Router({
-    "/users/:user" : Users
-}, document.querySelector("#app"));
-
-router.listen();
-```
-
-This example creates a component that welcomes a user, it gets the users name by getting it from the routes parameters. If the url was `http://www.example.com/users/newuser` the view would render `Hello newuser!`.
-
-The Router uses Push State Routing by default which requires a few extra steps and requires configuring the server.
-If you are unable to configure the server or want a simpler approach, you can enable Hash Based Routing by passing `true` into the `router.listen` function.
-
-To setup up Push State Routing configure your server to respond to page requests with your index.html file.
-
-The easiest way to have a server that supports push state routing is to use [jolt-server](https://www.npmjs.com/package/jolt-server).
 
 ---
 
