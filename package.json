@@ -9,6 +9,7 @@
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint src",
+    "docs": "jsdoc -r src README.md -d docs",
     "prepublishOnly": "npm run lint && npm run build && npm run docs"
   },
   "keywords": [
@@ -41,6 +42,7 @@
   "homepage": "https://github.com/OutwalkStudios/jolt#readme",
   "devDependencies": {
     "eslint": "^7.2.0",
+    "jsdoc": "^3.6.4",
     "rollup": "^2.15.0",
     "rollup-plugin-terser": "^6.1.0"
   }
