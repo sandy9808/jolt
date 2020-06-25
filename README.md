@@ -59,6 +59,8 @@ Install using a [CDN](https://unpkg.com/jolt) and script tag:
 <script src="https://unpkg.com/jolt"></script>
 ```
 
+Documentation is availiable [here](https://outwalkstudios.github.io/jolt/).
+
 ---
 
 ## Getting Started
