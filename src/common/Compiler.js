@@ -51,6 +51,18 @@ export class Compiler {
                 events = events.concat(value.events);
                 return combined + string + value.template.innerHTML;
 
+                /* if the value is an array of templates parse them into the template */
+            } else if (Array.isArray(value) && value[0] && value[0].template) {
+
+                let html = "";
+
+                for(let fragment of value) {
+                    events = events.concat(fragment.events);
+                    html += fragment.template.innerHTML;
+                }
+
+                return combined + string + html;
+
                 /* else add the string with its value to the template. */
             } else {
                 return combined + string + value;
