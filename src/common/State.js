@@ -39,8 +39,42 @@ export class State {
                     return true;
                 }
 
+                /* if the state property does not exist and is an array, create it as a proxy */
+                if(Array.isArray(value)) {
+                    state[key] = State.createArrayProxy(value, callback);
+                    return true;
+                }
+
                 /* the state property does not exists, so it should be created */
                 state[key] = value;
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Creates a new array proxy, for calling the callback when an array is changed.
+     * @param {Array} array - The array to be wrapped in a proxy.
+     * @param {StateCallback} callback - The callback to run when a set event happens.
+     * @return {State}
+     */
+    static createArrayProxy(array, callback) {
+        return new Proxy(array, {
+            set: (state, key, value) => {
+                /* prevent redundant state updates */
+                if(key == "prototype" || state[key] == value) {
+                    return true;
+                }
+
+                /* if the state property does not exist and is an array, create it as a proxy */
+                if(Array.isArray(value)) {
+                    state[key] = State.createArrayProxy(value, callback);
+                    return true;
+                }
+
+                /* the state property does not exists, so it should be created */
+                state[key] = value;
+                callback(key, value);
                 return true;
             }
         });
