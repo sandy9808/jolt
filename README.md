@@ -157,25 +157,24 @@ You can set the initial state in the constructor or the didLoad method. When usi
 import { html, Component } from "jolt";
 
 class MyComponent extends Component {
+  constructor() {
+    super();
 
-    constructor() {
-        super();
+    this.state.set({
+      date: new Date(),
+    });
+  }
 
-        this.state.set({
-            date: new Date();
-        });
-    }
+  render() {
+    return html`
+      <span>The current date is ${this.state.date}</span>
+      <button onclick=${() => this.updateDate()}>Update Date</button>
+    `;
+  }
 
-    render() {
-        return html`
-            <span>The current date is ${this.state.date}</span>
-            <button onclick=${this.updateDate}>Update Date</button>
-        `;
-    }
-
-    updateDate() {
-        this.state.date = new Date();
-    }
+  updateDate() {
+    this.state.date = new Date();
+  };
 }
 ```
 
