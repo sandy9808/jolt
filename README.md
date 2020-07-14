@@ -40,7 +40,7 @@
 | Project | Description |
 |---------|-------------|
 | [jolt](https://www.npmjs.com/package/jolt)      | Core Framework |
-| [jolt-server](https://www.npmjs.com/package/jolt-server)        | Live Reloading Development Server |
+| [@jolt/server](https://www.npmjs.com/package/@jolt/server)        | Live Reloading Development Server |
 | [@jolt/router](https://www.npmjs.com/package/@jolt/router)      | Single Page Application Routing |
 | [@jolt/cli](https://www.npmjs.com/package/@jolt/cli)        | Project Scaffolding |
 
