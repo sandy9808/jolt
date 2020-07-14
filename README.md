@@ -168,11 +168,11 @@ class MyComponent extends Component {
   render() {
     return html`
       <span>The current date is ${this.state.date}</span>
-      <button onclick=${this.updateDate}>Update Date</button>
+      <button onclick=${() => this.updateDate()}>Update Date</button>
     `;
   }
 
-  updateDate = () => {
+  updateDate() {
     this.state.date = new Date();
   };
 }
