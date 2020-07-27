@@ -24,6 +24,7 @@ export class Component extends HTMLElement {
          */
         this.state = State.create(() => {
             Compiler.compile(this.render(), this.root);
+            this.didUpdate();
         });
     }
 
@@ -56,6 +57,11 @@ export class Component extends HTMLElement {
      * @abstract
      */
     didLoad() { }
+
+    /**
+     * Callback for when a Component's state is updated.
+     */
+    didUpdate() { }
 
     /**
      * Callback for when a Component is being removed from the DOM.

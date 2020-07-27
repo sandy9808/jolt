@@ -3,7 +3,7 @@ import { terser } from "rollup-plugin-terser";
 
 /* build config */
 export default {
-    input: "src/main.js",
+    input: "src/index.js",
     output: [
         {
             file: "dist/jolt.esm.js",
