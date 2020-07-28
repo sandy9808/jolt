@@ -112,7 +112,7 @@ render(App(), document.querySelector("#app"));
 
 --- 
 
-When you are building a component that needs state management or lifecycle methods, class components are the preferred option. A class component has a `state` property for updating the component state, as well as `didLoad()` and `willUnload()` methods that are called when the component is added or removed form the page. Class components are required to be registered with its own html tag such as `<hello-world></hello-world>`.
+When you are building a component that needs state management or lifecycle methods, class components are the preferred option. A class component has a `state` property for updating the component state, as well as `didLoad()`, `didUpdate`, and `willUnload()` methods that are called during certain times in the components lifecycle. Class components are required to be registered with its own html tag such as `<hello-world></hello-world>`.
 
 ```js
 import { html, Component } from "jolt";
@@ -175,6 +175,24 @@ class MyComponent extends Component {
   updateDate() {
     this.state.date = new Date();
   };
+}
+```
+
+You can also use state with [Function Components](#function-components) by using the `State.useState` hook.
+The second argument of the State.useState function is an optional callback for when you want to call a function when the state updates,
+such as rendering the component.
+
+```js
+function App() {
+
+    let state = State.useState({ count: 0 }, () =>  {
+        render(App(), document.querySelector("#app"));
+    });
+
+    return html`
+        <h1>Count: ${state.count}</h1>
+        <button onclick=${() => state.count++}>Click Me</button>
+    `;
 }
 ```
 
