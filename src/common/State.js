@@ -1,6 +1,7 @@
 /**
  * State Callback
  * @callback StateCallback
+ * @param {Object} state - The state object.
  * @param {string} key - The state property name.
  * @param {*} value - The state property value.
  */
@@ -20,6 +21,25 @@ export class State {
     }
 
     /**
+     * Gets the state of the component, used for function components
+     * @param {Object} state - The intial state.
+     * @param {function} [callback] - the callback to run when the state is updated.
+     * @return {Object}
+     */
+    static useState(state={}, callback) {
+        const index = State.currentHook;
+
+        State.hooks[State.currentHook] = State.hooks[State.currentHook] || (() => {
+            const newState = State.create(callback);
+            newState.set(state);
+            return newState;
+        })();
+
+        State.currentHook++;
+        return State.hooks[index];
+    }
+
+    /**
      * Creates a new state object and registers the handler for set events.
      * @param {StateCallback} callback - The callback to run when a set event happens.
      * @return {State}
@@ -35,7 +55,7 @@ export class State {
                 /* if the state property exists then it should be updated */
                 if(state[key] != undefined) {
                     state[key] = value;
-                    callback(key, value);
+                    if(callback) callback(state, key, value);
                     return true;
                 }
 
@@ -74,9 +94,12 @@ export class State {
 
                 /* the state property does not exists, so it should be created */
                 state[key] = value;
-                callback(key, value);
+                if(callback) callback(state, key, value);
                 return true;
             }
         });
     }
 }
+
+State.hooks = [];
+State.currentHook = 0;

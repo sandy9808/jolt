@@ -93,10 +93,8 @@ export class Compiler {
                     const attribute = currentNode.attributes[i];
 
                     if(attribute.value.match(/{{e}}/)) {
-                        console.log(`${attribute.localName} was bound to an event`);
                         currentNode.addEventListener(attribute.localName.slice(2), event);
                         currentNode.removeAttribute(attribute.localName);
-                        console.log(currentNode.attributes);
                         index++;
                         i--;
                     }

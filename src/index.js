@@ -1,5 +1,6 @@
 /* imports */
 import { Compiler } from "./common/Compiler";
+import { State } from "./common/State";
 
 /**
  * Creates a Template to be rendered.
@@ -18,6 +19,7 @@ export function html(strings, ...values) {
  */
 export function render(template, container) {
     Compiler.compile(template, container);
+    State.currentHook = 0;
 }
 
 export { State } from "./common/State";
