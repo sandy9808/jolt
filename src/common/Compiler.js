@@ -32,43 +32,45 @@ export class Compiler {
     static createTemplate(strings, values) {
         const template = document.createElement("template");
         let events = [];
-
+    
         /* piece together the strings with the values */
         template.innerHTML = strings.reduce((combined, string, i) => {
-            const value = values[i] || "";
-
+            let value = values[i];
+            if(value == undefined) value = "";
+    
             /* if the string is an event, add an event marker and add the event to the events array. */
-            if (string.match(/( on.*="?$)/) && typeof value == "function") {
+            if (string.match(/ on.*="?$/) && typeof value == "function") {
                 events.push(value);
                 return combined + string + "{{e}}";
-
-                /* if the string is an attribute assignment without quotes, add quotes to the assignment. */
-            } else if (string.match(/( .*=$)/)) {
+            }
+            /* if the string is an attribute assignment without quotes, add quotes to the assignment. */
+            else if (string.match(/ .*=$/)) {
                 return combined + string + `"${value}"`;
-
-                /* if the value is a Template, combine the template with this template. */
-            } else if (typeof value == "object" && value.template) {
+            }
+            /* if the value is a Template, combine the template with this template. */
+            else if (typeof value == "object" && value.template) {
                 events = events.concat(value.events);
                 return combined + string + value.template.innerHTML;
-
-                /* if the value is an array of templates parse them into the template */
-            } else if (Array.isArray(value) && value[0] && value[0].template) {
-
+            }
+            /* if the value is an array of templates parse them into the template */
+            else if (Array.isArray(value) && value[0] && value[0].template) {
+    
                 let html = "";
-
-                for(let fragment of value) {
+    
+                for (let fragment of value) {
                     events = events.concat(fragment.events);
                     html += fragment.template.innerHTML;
                 }
-
+    
                 return combined + string + html;
-
-                /* else add the string with its value to the template. */
-            } else {
+            }
+            /* else add the string with its value to the template. */ 
+            else {
                 return combined + string + value;
             }
+    
         }, "");
-
+    
         return { template, events };
     }
 
@@ -79,24 +81,28 @@ export class Compiler {
      */
     static _processTemplate({ template, events }) {
         const walker = document.createTreeWalker(template.content, 1);
-
+    
         let currentNode = walker.nextNode();
         let index = 0;
-
-        while (currentNode) {
-
-            if (currentNode.attributes) {
-                for (let attribute of currentNode.attributes) {
+    
+        while(currentNode) {
+    
+            if(currentNode.attributes) {
+                for(let i=0; i < currentNode.attributes.length; i++) {
                     const event = events[index];
+                    const attribute = currentNode.attributes[i];
 
-                    if (attribute.value.match(/{{e}}/)) {
+                    if(attribute.value.match(/{{e}}/)) {
+                        console.log(`${attribute.localName} was bound to an event`);
                         currentNode.addEventListener(attribute.localName.slice(2), event);
                         currentNode.removeAttribute(attribute.localName);
+                        console.log(currentNode.attributes);
                         index++;
+                        i--;
                     }
                 }
             }
-
+    
             currentNode = walker.nextNode();
         }
 
@@ -249,8 +255,6 @@ export class Compiler {
                 }
             }
         }
-
-
     }
 
     /**
@@ -282,6 +286,8 @@ export class Compiler {
         if (newNode.indeterminate != oldNode.indeterminate) {
             oldNode.indeterminate = newNode.indeterminate;
         }
+
+        if(oldNode.type == "file") return;
 
         if (newNode.value != oldNode.value) {
             oldNode.setAttribute("value", newNode.value);
