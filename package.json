@@ -1,11 +1,12 @@
 {
   "name": "jolt",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "A JavaScript framework for building lightning fast web apps",
   "main": "dist/jolt.cjs.js",
   "module": "dist/jolt.esm.js",
   "browser": "dist/jolt.umd.js",
   "unpkg": "dist/jolt.umd.js",
+  "types": "types/jolt.d.ts",
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint src",
@@ -21,7 +22,8 @@
     "framework"
   ],
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "exports": {
     ".": {
