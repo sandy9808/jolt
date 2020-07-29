@@ -5,28 +5,15 @@ import { terser } from "rollup-plugin-terser";
 export default {
     input: "src/index.js",
     output: [
-        {
-            file: "dist/jolt.esm.js",
-            format: "esm",
-            banner: "/* Copyright (c) 2020 Outwalk Studios */"
-        },
-        {
-            file: "dist/jolt.cjs.js",
-            format: "cjs",
-            banner: "/* Copyright (c) 2020 Outwalk Studios */"
-        },
-        {
-            file: "dist/jolt.umd.js",
-            format: "umd",
-            name: "Jolt",
-            plugins: [
-                terser({
-                    output: {
-                        preamble: "/* Copyright (c) 2020 Outwalk Studios */"
-                    }
-                })
-            ]
-        }
-
+        { file: "dist/jolt.esm.js", format: "esm" },
+        { file: "dist/jolt.cjs.js", format: "cjs" },
+        { file: "dist/jolt.umd.js", format: "umd", name: "Jolt" }
+    ],
+    plugins: [
+        terser({
+            output: {
+                preamble: "/* Copyright (c) 2020 Outwalk Studios */"
+            }
+        })
     ]
 }
