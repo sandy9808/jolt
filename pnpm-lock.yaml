@@ -4,6 +4,17 @@ importers:
       pnpm: 5.4.12
     specifiers:
       pnpm: ^5.4.12
+  packages/cli:
+    devDependencies:
+      '@rollup/plugin-json': 4.1.0_rollup@2.23.1
+      eslint: 7.6.0
+      rollup: 2.23.1
+      rollup-plugin-terser: 6.1.0_rollup@2.23.1
+    specifiers:
+      '@rollup/plugin-json': ^4.1.0
+      eslint: ^7.6.0
+      rollup: ^2.23.1
+      rollup-plugin-terser: ^6.1.0
   packages/jolt:
     devDependencies:
       eslint: 7.6.0

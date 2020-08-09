@@ -6,6 +6,7 @@
     "bootstrap": "pnpm install",
     "build": "pnpm run -r build",
     "lint": "pnpm run -r lint",
+    "update": "pnpm -r update",
     "deploy": "pnpm -r publish"
   },
   "devDependencies": {
