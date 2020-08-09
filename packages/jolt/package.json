@@ -1,0 +1,51 @@
+{
+  "name": "jolt",
+  "version": "3.3.0",
+  "description": "A JavaScript framework for building lightning fast web apps",
+  "main": "dist/jolt.cjs.js",
+  "module": "dist/jolt.esm.js",
+  "browser": "dist/jolt.umd.js",
+  "unpkg": "dist/jolt.umd.js",
+  "types": "types/jolt.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "keywords": [
+    "jolt",
+    "spa",
+    "html",
+    "frontend",
+    "web-components",
+    "template-literals",
+    "framework"
+  ],
+  "files": [
+    "dist",
+    "types"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/jolt.cjs.js",
+      "import": "./dist/jolt.esm.js",
+      "default": "./dist/jolt.esm.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OutwalkStudios/jolt.git",
+    "directory": "packages/jolt"
+  },
+  "bugs": {
+    "url": "https://github.com/OutwalkStudios/jolt/issues"
+  },
+  "homepage": "https://github.com/OutwalkStudios/jolt#readme",
+  "author": "Outwalk Studios <support@outwalkstudios.com> (https://www.outwalkstudios.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "rollup": "^2.23.1",
+    "rollup-plugin-terser": "^6.1.0"
+  }
+}

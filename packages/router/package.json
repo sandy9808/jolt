@@ -1,0 +1,53 @@
+{
+  "name": "@jolt/router",
+  "version": "1.0.4",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "The official router for Jolt",
+  "main": "dist/router.cjs.js",
+  "module": "dist/router.esm.js",
+  "unpkg": "dist/router.umd.js",
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "keywords": [
+    "jolt",
+    "spa",
+    "router",
+    "routing",
+    "history",
+    "hash"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/router.cjs.js",
+      "import": "./dist/router.esm.js",
+      "default": "./dist/router.esm.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OutwalkStudios/jolt.git",
+    "directory": "packages/router"
+  },
+  "bugs": {
+    "url": "https://github.com/OutwalkStudios/jolt/issues"
+  },
+  "homepage": "https://github.com/OutwalkStudios/jolt#readme",
+  "author": "Outwalk Studios <support@outwalkstudios.com> (https://www.outwalkstudios.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "rollup": "^2.23.1",
+    "rollup-plugin-terser": "^6.1.0"
+  },
+  "peerDependencies": {
+    "jolt": "^3.0.0"
+  }
+}

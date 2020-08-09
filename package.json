@@ -1,51 +1,13 @@
 {
   "name": "jolt",
-  "version": "3.3.0",
-  "description": "A JavaScript framework for building lightning fast web apps",
-  "main": "dist/jolt.cjs.js",
-  "module": "dist/jolt.esm.js",
-  "browser": "dist/jolt.umd.js",
-  "unpkg": "dist/jolt.umd.js",
-  "types": "types/jolt.d.ts",
-  "scripts": {
-    "build": "rollup -c",
-    "lint": "eslint src",
-    "docs": "jsdoc -r src README.md -d docs",
-    "prepublishOnly": "npm run lint && npm run build && npm run docs"
-  },
-  "keywords": [
-    "jolt",
-    "spa",
-    "html",
-    "frontend",
-    "web-components",
-    "framework"
-  ],
-  "files": [
-    "dist",
-    "types"
-  ],
-  "exports": {
-    ".": {
-      "require": "dist/jolt.cjs.js",
-      "import": "dist/jolt.esm.js",
-      "default": "dist/jolt.cjs.js"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/OutwalkStudios/jolt.git"
-  },
-  "author": "Outwalk Studios <support@outwalkstudios.com> (https://twitter.com/OutwalkStudios)",
+  "private": true,
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/OutwalkStudios/jolt/issues"
+  "scripts": {
+    "bootstrap": "pnpm install",
+    "build": "pnpm run -r build",
+    "lint": "pnpm run -r lint"
   },
-  "homepage": "https://github.com/OutwalkStudios/jolt#readme",
   "devDependencies": {
-    "eslint": "^7.5.0",
-    "jsdoc": "^3.6.5",
-    "rollup": "^2.23.0",
-    "rollup-plugin-terser": "^6.1.0"
+    "pnpm": "^5.4.12"
   }
 }
