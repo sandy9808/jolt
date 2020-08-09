@@ -5,7 +5,8 @@
   "scripts": {
     "bootstrap": "pnpm install",
     "build": "pnpm run -r build",
-    "lint": "pnpm run -r lint"
+    "lint": "pnpm run -r lint",
+    "deploy": "pnpm -r publish"
   },
   "devDependencies": {
     "pnpm": "^5.4.12"
