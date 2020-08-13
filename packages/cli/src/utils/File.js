@@ -10,7 +10,25 @@ import path from "path";
 export class File {
 
     /**
-     * Creates a directory
+     * loads a JSON file from the disk.
+     * @param {string} filename - The file to load.
+     * @return {Object}
+     */
+    static loadJSON(filename) {
+        return JSON.parse(fs.readFileSync(filename));
+    }
+
+    /**
+     * writes a JSON file to disk.
+     * @param {string} filename 
+     * @param {Object} data 
+     */
+    static writeJSON(filename, data) {
+        fs.writeFileSync(filename, JSON.stringify(data));
+    }
+
+    /**
+     * Creates a directory.
      * @param {string} directory - The directory to create.
      */
     static createDirectory(directory) {
@@ -50,6 +68,25 @@ export class File {
                 File.createDirectory(newPath);
                 File.copyDirectoryContents(originalPath, newPath);
             }
+        }
+    }
+
+    /**
+     * Deletes a directory and all files or folders inside it.
+     * @param {string} directory - The directory to delete.
+     */
+    static deleteDirectory(directory) {
+        if(fs.existsSync(directory)) {
+            const files = File.readDirectory(directory);
+
+            for(let file of files) {
+                const filepath = path.join(directory, file);
+    
+                if(fs.statSync(filepath).isDirectory()) File.deleteDirectory(filepath);
+                else fs.unlinkSync(filepath);
+            }
+
+            fs.rmdirSync(directory);
         }
     }
 }

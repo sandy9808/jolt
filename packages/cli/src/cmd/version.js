@@ -2,7 +2,7 @@
 import { version as v } from "../../package.json";
 
 /**
- * Logs the current cli version
+ * Logs the current cli version.
  * @private
  */
 function version() {

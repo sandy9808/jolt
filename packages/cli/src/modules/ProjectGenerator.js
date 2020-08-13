@@ -1,11 +1,11 @@
-/* import */
+/* imports */
 import { File } from "../utils/File";
 import path from "path";
 import fs from "fs";
 import { spawn, exec } from "child_process";
 
 /**
- * Project Generator that creates projects based on a template.
+ * ProjectGenerator that creates projects based on a template.
  * @class
  * @private
  */
@@ -13,33 +13,20 @@ export class ProjectGenerator {
 
     /**
      * @param {string} name - The project name.
+     * @param {Object} options - The generation options.
      */
-    constructor(name) {
-        this.project = {
-            name: name,
-            template: path.join(__dirname, "../template"),
-            dest: path.join(process.cwd(), name),
-            devPackages: [
-                "rollup@1.x.x",
-                "@rollup/plugin-node-resolve@8.x.x",
-                "@rollup/plugin-commonjs@11.x.x",
-                "@rollup/plugin-url@5.x.x",
-                "rollup-plugin-css-bundle@1.x.x",
-                "rollup-plugin-minify-html-literals@1.x.x",
-                "rollup-plugin-terser@5.x.x",
-                "@jolt/server@1.x.x",
-                "npm-run-all@4.x.x",
-                "jsdoc@3.x.x",
-                "eslint@7.x.x"
-            ],
-            packages: [
-                "jolt",
-                "@jolt/router"
-            ]
-        };
+    constructor(name, options = {}) {
+        this.project = { name: name, dest: path.join(process.cwd(), name) };
+
+        /* decide what template should be used for the project */
+        const template = (options.template || options.t) ? options.template || options.t : "javascript";
+        this.project.template = path.join(__dirname, `../templates/${template}`);
+
+        this.project.devPackages = [`@jolt/toolchain-${template}`];
+        this.project.packages = ["jolt", "@jolt/router"];
     }
 
-    /** Generates the project and sets it up */
+    /** Generates the Project. */
     create() {
         /* stop if the project already exists */
         if (fs.existsSync(this.project.dest)) {
@@ -47,76 +34,93 @@ export class ProjectGenerator {
             return;
         }
 
-        /* copy template files */
+        /* check if the requested template exists */
+        if (!fs.existsSync(this.project.template)) {
+            console.error("The requested template does not exists!");
+            return;
+        }
+
+        /* copy template files to destination */
         console.log(`Creating ${this.project.name}...\n`);
 
         File.createDirectory(this.project.dest);
         File.copyDirectoryContents(this.project.template, this.project.dest);
 
-        /* update template package.json to have the project name */
+        /* update the template's package.json to have the project name */
         try {
             const pkgPath = path.join(this.project.dest, "package.json");
-            let pkg = JSON.parse(fs.readFileSync(pkgPath));
+            const pkg = File.loadJSON(pkgPath);
             pkg.name = this.project.name;
-            fs.writeFileSync(pkgPath, JSON.stringify(pkg));
+            File.writeJSON(pkgPath, pkg);
         } catch {
-            console.error("Failed to update the package.json with the project name.\n");
+            console.error("Failed to update the package.json with the projet name.\n");
+            return;
         }
 
-        console.log("Installing dependencies, this could take a while.\n");
+        /* install all depedencies for the template */
+        console.log("Installing depedencies, this could take a while.\n");
 
-        /* install all dependencies for the template */
-        this.installDependencies()
-            .then(this.initializeGitRepository.bind(this))
-            .then(this.printStartInstructions.bind(this))
+        this._installDependencies()
+            .then(this._installDevDependencies.bind(this))
+            .then(this._initializeGitRepository.bind(this))
+            .then(this._printStartInstructions.bind(this))
             .catch(() => {
                 console.error(`\nFailed to setup ${this.project.name}`);
+                File.deleteDirectory(this.project.dest);
             });
     }
 
-    /** install template dependencies */
-    installDependencies() {
+    /**
+     * Installs dependencies.
+     * @private
+     */
+    _installDependencies() {
         return new Promise((resolve, reject) => {
-            const devThread = spawn("npm", ["install", "--save-dev"].concat(this.project.devPackages), {
+            const thread = spawn("npm", ["install", "--save"].concat(this.project.packages), {
                 cwd: this.project.dest,
                 stdio: ["ignore", 1, 2]
             });
 
-            devThread.on("close", (code) => {
-                if (code != 0) reject();
-                else {
-                    const thread = spawn("npm", ["install", "--save"].concat(this.project.packages), {
-                        cwd: this.project.dest,
-                        stdio: ["ignore", 1, 2]
-                    });
-
-                    thread.on("close", (code) => {
-                        if (code == 0) {
-                            console.log(`Successfully created ${this.project.name}\n`);
-                            resolve();
-                        }
-                        else reject();
-                    });
-                }
+            thread.on("close", (code) => {
+                if (code == 0) resolve();
+                else reject();
             });
         });
     }
 
-    /** initialize a new github repository */
-    initializeGitRepository() {
-        console.log("Initializing git respository...");
-
-
-        return new Promise((resolve) => {
-            const git = exec("git init", { cwd: this.project.dest }, function (error) {
-                if (error) {
-                    console.error(error.message);
-                }
+    /**
+     * Installs dev dependencies.
+     * @private
+     */
+    _installDevDependencies() {
+        return new Promise((resolve, reject) => {
+            const thread = spawn("npm", ["install", "--save-dev"].concat(this.project.devPackages), {
+                cwd: this.project.dest,
+                stdio: ["ignore", 1, 2]
             });
 
-            git.on("close", function (code) {
+            thread.on("close", (code) => {
+                if (code == 0) resolve();
+                else reject();
+            });
+        });
+    }
+
+    /**
+     * Initializes a git repository.
+     * @private
+     */
+    _initializeGitRepository() {
+        console.log("Initializing Git Repository...");
+
+        return new Promise((resolve) => {
+            const thread = exec("git init", { cwd: this.project.dest }, (error) => {
+                if (error) console.error(error.message);
+            });
+
+            thread.on("close", (code) => {
                 if (code == 0) {
-                    console.log("Successfully initialized the git repository\n");
+                    console.log("Successfully initialized the git repository.\n");
                     resolve();
                 } else {
                     console.error("Failed to create a new git repository.\n");
@@ -126,8 +130,12 @@ export class ProjectGenerator {
         });
     }
 
-    /** Prints the start instructions for the project */
-    printStartInstructions() {
+    /**
+     * Prints the start instructions.
+     * @private
+     */
+    _printStartInstructions() {
+        console.log(`Successfully created ${this.project.name}\n`);
         console.log("----------------------------------");
         console.log("Get started with your new project!\n");
         console.log(` > cd ${this.project.name}`);

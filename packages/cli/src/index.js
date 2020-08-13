@@ -3,6 +3,10 @@ import { Parser } from "./utils/Parser";
 import version from "./cmd/version";
 import help from "./cmd/help";
 import create from "./cmd/create";
+import build from "./cmd/build";
+import watch from "./cmd/watch";
+import lint from "./cmd/lint";
+import serve from "./cmd/serve";
 
 /* parse the cli arguments */
 const args = Parser.parseCLIArgs(process.argv.slice(2));
@@ -15,7 +19,11 @@ else if (args.help || args.h) cmd = "help";
 const commands = {
     "version": version,
     "help": help,
-    "create": create
+    "create": create,
+    "build": build,
+    "watch": watch,
+    "lint": lint,
+    "serve": serve
 };
 
 if (commands[cmd]) commands[cmd](args);

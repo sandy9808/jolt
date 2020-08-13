@@ -8,18 +8,49 @@ const helpMap = {
     Usage: jolt [command] <options>
 
     Options: 
-        -v, --version,
-        -h, --help
+        -v, --version ........ Logs the version of the cli.
+        -h, --help ........ Logs the help menu.
 
     Commands:
-        create <app-name> ........ Creates a new project.
+        create [app-name] <options> ........ Creates a new project.
+        build <options> ........ Builds the project.
+        watch <options> ........ Builds the project whenever a file is saved.
+        lint <options> ........ Lints the project codebase.
+        serve <options> ........ Runs the project on a development server.
     `,
 
     create: `
-    Usage: jolt create <app-name>
+    Usage: jolt create [app-name] <options>
 
     - Creates a new project.
+
+    Options:
+        -t, --template
     `,
+
+    build: `
+    Usage: jolt build <options>
+
+    - Builds the project.
+    `,
+
+    watch: `
+    Usage: jolt watch <options>
+
+    - Builds the project whenever a file is saved.
+    `,
+
+    lint: `
+    Usage: jolt lint <options>
+
+    - Lints the project codebase.
+    `,
+
+    serve: `
+    Usage: jolt serve <options>
+
+    - Runs the project on a development server.
+    `
 };
 
 /**

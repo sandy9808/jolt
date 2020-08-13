@@ -2,12 +2,12 @@
 import { ProjectGenerator } from "../modules/ProjectGenerator";
 
 /**
- * Creates a new project
+ * Creates a new project.
  * @param {Object} args - The cli arguments.
  * @private
  */
 function create(args) {
-    new ProjectGenerator(args._[1]).create();
+    new ProjectGenerator(args._[1], args).create();
 }
 
 export default create;
