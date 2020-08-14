@@ -11,6 +11,9 @@
  */
 export class Application {
 
+    /**
+     * @param {http.Server} server 
+     */
     constructor(server) {
         this._webServer = server;
 

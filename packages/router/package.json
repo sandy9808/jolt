@@ -8,6 +8,7 @@
   "main": "dist/router.cjs.js",
   "module": "dist/router.esm.js",
   "unpkg": "dist/router.umd.js",
+  "types": "types/router.d.ts",
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint src",
@@ -22,7 +23,8 @@
     "hash"
   ],
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "exports": {
     ".": {
