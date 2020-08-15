@@ -4,7 +4,7 @@
  * @private
  */
 const INJECTED_CODE = `
-<!-- Code injected by jolt-server -->
+<!-- Code injected by @jolt/server -->
 <script>
     const source = new EventSource("/reload");
     const reload = () => window.location.reload();
