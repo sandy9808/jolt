@@ -12,20 +12,18 @@ export class Component extends HTMLElement {
     constructor() {
         super();
 
-        /**
-         * The Component root.
-         * @type {ShadowRoot}
-         */
         this.root = this.attachShadow({ mode: "open" });
 
-        /**
-         * The state of the Component.
-         * @type {State}
-         */
         this.state = State.create(() => {
             Compiler.compile(this.render(), this.root);
             this.didUpdate();
         });
+        
+        this.attribs = {};
+
+        for(let attribute of this.attributes) {
+            this.attribs[attribute.localName] = attribute.value;
+        }
     }
 
     /**
@@ -75,18 +73,24 @@ export class Component extends HTMLElement {
      * @param {CustomElementConstructor|function} component - The Component.
      */
     static register(name, component) {
-        if(typeof component == "CustomElementConstructor") {
+        if(component.register) {
             window.customElements.define(name, component);
-        } else if (typeof component == "function") {
+        } else {
             window.customElements.define(name, class extends HTMLElement {
 
                 constructor() {
                     super();
-                    this.root = this.attachShadow({ mode: "open" });
+                    this.root = document.createElement("template");
+
+                    this.attribs = {};
+
+                    for(let attribute of this.attributes) {
+                        this.attribs[attribute.localName] = attribute.value;
+                    }
                 }
 
                 connectedCallback() {
-                    Compiler.compile(component(), this.root);
+                    Compiler.compile(component(this.attribs), this);
                     if(component.didLoad) component.didLoad();
                 }
 

@@ -12,9 +12,14 @@ declare class State {
     static createArrayProxy(array: Array<any>, callback?: StateCallback): any[];
 }
 
+declare interface Attributes {
+    [key: string]: string;
+}
+
 declare abstract class Component extends HTMLElement {
     root: ShadowRoot;
     state: State;
+    attribs: Attributes;
     constructor();
     connectedCallback(): void;
     disconnectedCallback(): void;
@@ -29,7 +34,8 @@ interface Template {
     template: HTMLTemplateElement;
     events: Function[];
 }
+
 declare function html(strings: TemplateStringsArray, ...values: any[]): Template;
 declare function render(component: Template, container: HTMLElement): void;
 
-export { Component, State, Template, html, render };
+export { Component, State, Template, Attributes, html, render };
