@@ -22,7 +22,7 @@ declare abstract class Component extends HTMLElement {
     didLoad(): void;
     didUpdate(): void;
     willUnload(): void;
-    static register(name: string, component: CustomElementConstructor): void;
+    static register(name: string, component: CustomElementConstructor|Function): void;
 }
 
 interface Template {

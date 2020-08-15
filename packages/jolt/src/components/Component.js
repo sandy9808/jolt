@@ -72,9 +72,28 @@ export class Component extends HTMLElement {
     /**
      * Regsiters the Component to make it available as an HTML tag.
      * @param {string} name - The Component tag name.
-     * @param {*} component - The Component.
+     * @param {CustomElementConstructor|function} component - The Component.
      */
     static register(name, component) {
-        window.customElements.define(name, component);
+        if(typeof component == "CustomElementConstructor") {
+            window.customElements.define(name, component);
+        } else if (typeof component == "function") {
+            window.customElements.define(name, class extends HTMLElement {
+
+                constructor() {
+                    super();
+                    this.root = this.attachShadow({ mode: "open" });
+                }
+
+                connectedCallback() {
+                    Compiler.compile(component(), this.root);
+                    if(component.didLoad) component.didLoad();
+                }
+
+                disconnectedCallback() {
+                    if(component.willUnload) component.willUnload();
+                }
+            });
+        }
     }
 }
