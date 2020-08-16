@@ -1,9 +1,9 @@
 /**
  * State Callback
  * @callback StateCallback
- * @param {Object} state - The state object.
- * @param {string} key - The state property name.
- * @param {*} value - The state property value.
+ * @param {State} [state] - The state object.
+ * @param {string} [key] - The state property name.
+ * @param {*} [value] - The state property value.
  */
 
 /**
@@ -21,46 +21,27 @@ export class State {
     }
 
     /**
-     * Gets the state of the component, used for function components
-     * @param {Object} state - The intial state.
-     * @param {function} [callback] - the callback to run when the state is updated.
-     * @return {Object}
-     */
-    static useState(state={}, callback) {
-        const index = State.currentHook;
-
-        State.hooks[State.currentHook] = State.hooks[State.currentHook] || (() => {
-            const newState = State.create(callback);
-            newState.set(state);
-            return newState;
-        })();
-
-        State.currentHook++;
-        return State.hooks[index];
-    }
-
-    /**
      * Creates a new state object and registers the handler for set events.
-     * @param {StateCallback} callback - The callback to run when a set event happens.
+     * @param {StateCallback} [callback] - The callback to run when a set event happens.
      * @return {State}
      */
     static create(callback) {
         return new Proxy(new State(), {
             set: (state, key, value) => {
                 /* prevent redundant state updates */
-                if(key == "prototype" || state[key] == value) {
+                if (key == "prototype" || state[key] == value) {
                     return true;
                 }
 
                 /* if the state property exists then it should be updated */
-                if(state[key] != undefined) {
+                if (state[key] != undefined) {
                     state[key] = value;
-                    if(callback) callback(state, key, value);
+                    if (callback) callback(state, key, value);
                     return true;
                 }
 
                 /* if the state property does not exist and is an array, create it as a proxy */
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     state[key] = State.createArrayProxy(value, callback);
                     return true;
                 }
@@ -74,32 +55,32 @@ export class State {
 
     /**
      * Creates a new array proxy, for calling the callback when an array is changed.
-     * @param {Array} array - The array to be wrapped in a proxy.
-     * @param {StateCallback} callback - The callback to run when a set event happens.
-     * @return {State}
+     * @param {Array.<*>} array - The array to be wrapped in a proxy.
+     * @param {StateCallback} [callback] - The callback to run when a set event happens.
+     * @return {Array.<*>}
      */
     static createArrayProxy(array, callback) {
         return new Proxy(array, {
             set: (state, key, value) => {
                 /* prevent redundant state updates */
-                if(key == "prototype" || state[key] == value) {
+                if (key == "prototype" || state[key] == value) {
                     return true;
                 }
 
                 /* if the state property does not exist and is an array, create it as a proxy */
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     state[key] = State.createArrayProxy(value, callback);
                     return true;
                 }
 
                 /* the state property does not exists, so it should be created */
                 state[key] = value;
-                if(callback) callback(state, key, value);
+                if (callback) callback(state, key, value);
                 return true;
             }
         });
     }
 }
 
-State.hooks = [];
-State.currentHook = 0;
+State._hooks = [];
+State._currentHook = 0;

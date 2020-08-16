@@ -1,15 +1,13 @@
-declare type StateCallback = (state?: Object, key?: string | number | symbol, value?: any) => void;
+declare type StateCallback = (state?: State, key?: string | number | symbol, value?: any) => void;
 
 declare class State {
-    private prototype;
-    private static currentHook;
-    private static hooks;
+    private prototype: any;
+    private static _hooks: Array<State>;
+    private static _currentHook: number;
 
-    set(state: Object): void;
-
-    static useState(state: Object, callback?: StateCallback): Object;
+    set(state: object): void;
     static create(callback?: StateCallback): State;
-    static createArrayProxy(array: Array<any>, callback?: StateCallback): any[];
+    static createArrayProxy(array: Array<any>, callback?: StateCallback): Array<any>;
 }
 
 declare interface Attributes {
@@ -20,22 +18,25 @@ declare abstract class Component extends HTMLElement {
     root: ShadowRoot;
     state: State;
     attribs: Attributes;
-    constructor();
-    connectedCallback(): void;
-    disconnectedCallback(): void;
+
+    private connectedCallback(): void;
+    private disconnectedCallback(): void;
+
     abstract render(): Template;
+
     didLoad(): void;
     didUpdate(): void;
     willUnload(): void;
+
     static register(name: string, component: CustomElementConstructor|Function): void;
 }
 
 interface Template {
     template: HTMLTemplateElement;
-    events: Function[];
+    events: Array<Function>;
 }
 
-declare function html(strings: TemplateStringsArray, ...values: any[]): Template;
+declare function html(strings: TemplateStringsArray, ...values: Array<any>): Template;
 declare function render(component: Template, container: HTMLElement): void;
 
 export { Component, State, Template, Attributes, html, render };

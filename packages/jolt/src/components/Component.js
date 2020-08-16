@@ -3,7 +3,7 @@ import { State } from "../common/State";
 import { Compiler } from "../common/Compiler";
 
 /**
- * Creates a WebComponent with an simple wrapper API, with additional features.
+ * Creates a Class Component with state management and lifecycle methods.
  * @class
  * @extends HTMLElement
  */
@@ -12,23 +12,26 @@ export class Component extends HTMLElement {
     constructor() {
         super();
 
+        /** @type {ShadowRoot} */
         this.root = this.attachShadow({ mode: "open" });
 
+        /** @type {State} */
         this.state = State.create(() => {
             Compiler.compile(this.render(), this.root);
             this.didUpdate();
         });
-        
+
+        /** @type {Object.<string, string>} */
         this.attribs = {};
 
-        for(let attribute of this.attributes) {
-            this.attribs[attribute.localName] = attribute.value;
+        for (let attrib of this.attributes) {
+            this.attribs[attrib.localName] = attrib.value;
         }
     }
 
     /**
      * WebComponent lifecycle method for being added to the DOM.
-     * @private
+     * @ignore
      */
     connectedCallback() {
         Compiler.compile(this.render(), this.root);
@@ -37,7 +40,7 @@ export class Component extends HTMLElement {
 
     /**
      * WebComponent lifecycle method for being removed from the DOM.
-     * @private
+     * @ignore
      */
     disconnectedCallback() {
         this.willUnload();
@@ -45,59 +48,40 @@ export class Component extends HTMLElement {
 
     /**
      * Renders the Component.
-     * @return {Template}
      * @abstract
+     * @return {Template}
      */
     render() { }
 
     /**
-     * Callback for when a Component is added to the DOM.
+     * Component lifecycle method for being added to the DOM.
      * @abstract
      */
     didLoad() { }
 
     /**
-     * Callback for when a Component's state is updated.
+     * Component lifecycle method for when the {@link State} is updated.
+     * @abstract
      */
     didUpdate() { }
 
     /**
-     * Callback for when a Component is being removed from the DOM.
+     * Component lifecycle method for being removed from the DOM.
      * @abstract
      */
     willUnload() { }
 
     /**
-     * Regsiters the Component to make it available as an HTML tag.
+     * Regsiters a Component to make it available as an HTML element.
      * @param {string} name - The Component tag name.
-     * @param {CustomElementConstructor|function} component - The Component.
+     * @param {CustomElementConstructor|Function} component - The Component.
      */
     static register(name, component) {
-        if(component.register) {
+        if (component.register) {
             window.customElements.define(name, component);
         } else {
-            window.customElements.define(name, class extends HTMLElement {
-
-                constructor() {
-                    super();
-                    this.root = document.createElement("template");
-
-                    this.attribs = {};
-
-                    for(let attribute of this.attributes) {
-                        this.attribs[attribute.localName] = attribute.value;
-                    }
-                }
-
-                connectedCallback() {
-                    Compiler.compile(component(this.attribs), this);
-                    if(component.didLoad) component.didLoad();
-                }
-
-                disconnectedCallback() {
-                    if(component.willUnload) component.willUnload();
-                }
-            });
+            window.customElements.define(name, Compiler.wrap(component));
         }
     }
+
 }

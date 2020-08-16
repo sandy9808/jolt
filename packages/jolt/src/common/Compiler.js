@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Template
  * @param {HTMLTemplateElement} template - The template element created.
- * @param {Array} events - The array of events to be bound to the elements.
+ * @param {Array.<Function>} events - The array of events to be bound to the elements.
  * @private
  */
 
@@ -15,7 +15,7 @@ export class Compiler {
     /**
      * Diffs the template and its container and make any changes.
      * @param {Template} template - The template to compile.
-     * @param {HTMlElement} container - The container elemnet.
+     * @param {HTMLElement} container - The container element.
      */
     static compile(template, container) {
         const templateNode = Compiler._processTemplate(template);
@@ -25,8 +25,8 @@ export class Compiler {
 
     /**
      * Creates a Template to be processed.
-     * @param {string[]} strings - String parts to be processed.
-     * @param {Array} values - Values to be processed.
+     * @param {TemplateStringsArray} strings - Template strings to be processed.
+     * @param {Array.<*>} values - Values to be processed.
      * @return {Template}
      */
     static createTemplate(strings, values) {
@@ -75,9 +75,38 @@ export class Compiler {
     }
 
     /**
-     * Processes the Template into a usable HTMLTemplateElement.
+     * Wraps a Function Component into a WebComponent.
+     * @param {Function} component - The Function Component to wrap.
+     * @returns {CustomElementConstructor}
+     */
+    static wrap(component) {
+        return class extends HTMLElement {
+
+            constructor() {
+                super();
+
+                this.attribs = {};
+
+                for(let attrib of this.attributes) {
+                    this.attribs[attrib.localName] = attrib.value;
+                }
+            }
+
+            connectedCallback() {
+                Compiler.compile(component(this.attribs), this);
+                if(component.didLoad) component.didLoad();
+            }
+
+            disconnectedCallback() {
+                if(component.willUnload) component.willUnload();
+            }
+        }
+    }
+
+    /**
+     * Processes the Template into a usable DOM Tree.
      * @param {Template} template - The template to process.
-     * @return {HTMLTemplateElement}
+     * @return {DocumentFragment}
      */
     static _processTemplate({ template, events }) {
         const walker = document.createTreeWalker(template.content, 1);

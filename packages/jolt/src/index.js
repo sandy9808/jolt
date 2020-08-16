@@ -4,8 +4,8 @@ import { State } from "./common/State";
 
 /**
  * Creates a Template to be rendered.
- * @param {string[]} strings - The string parts for the template.
- * @param {...any} values - The value parts for the template.
+ * @param {TemplateStringsArray} strings - The string parts for the template.
+ * @param {...*} values - The value parts for the template.
  * @return {Template}
  */
 export function html(strings, ...values) {
@@ -19,7 +19,7 @@ export function html(strings, ...values) {
  */
 export function render(template, container) {
     Compiler.compile(template, container);
-    State.currentHook = 0;
+    State._currentHook = 0;
 }
 
 export { State } from "./common/State";
