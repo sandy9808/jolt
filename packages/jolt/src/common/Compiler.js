@@ -100,7 +100,7 @@ export class Compiler {
             disconnectedCallback() {
                 if(component.willUnload) component.willUnload();
             }
-        }
+        };
     }
 
     /**

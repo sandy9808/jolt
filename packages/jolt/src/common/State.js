@@ -81,6 +81,3 @@ export class State {
         });
     }
 }
-
-State._hooks = [];
-State._currentHook = 0;
