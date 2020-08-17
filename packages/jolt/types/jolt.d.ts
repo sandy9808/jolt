@@ -17,6 +17,9 @@ declare interface ComponentOptions {
 }
 
 declare abstract class Component extends HTMLElement {
+
+    private _attributeObserver: MutationObserver;
+
     root: ShadowRoot;
     state: State;
     attribs: Attributes;
