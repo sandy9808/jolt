@@ -3,21 +3,29 @@ import { State } from "../common/State";
 import { Compiler } from "../common/Compiler";
 
 /**
+ * @typedef {Object} ComponentOptions
+ * @property {boolean} [disableShadowDOM=false] - If true, the component will not use a Shadow DOM.
+ */
+
+/**
  * Creates a Class Component with state management and lifecycle methods.
  * @class
  * @extends HTMLElement
  */
 export class Component extends HTMLElement {
 
-    constructor() {
+    /**
+     * @param {ComponentOptions} options 
+     */
+    constructor(options={}) {
         super();
 
         /** @type {ShadowRoot} */
-        this.root = this.attachShadow({ mode: "open" });
+        this.root = options.disableShadowDOM ? this : this.attachShadow({ mode: "open" });
 
         /** @type {State} */
         this.state = State.create(() => {
-            Compiler.compile(this.render(), this.root);
+            Compiler.compile(this.render(this.attribs), this.root);
             this.didUpdate();
         });
 
@@ -34,7 +42,7 @@ export class Component extends HTMLElement {
      * @ignore
      */
     connectedCallback() {
-        Compiler.compile(this.render(), this.root);
+        Compiler.compile(this.render(this.attribs), this.root);
         this.didLoad();
     }
 
@@ -74,14 +82,10 @@ export class Component extends HTMLElement {
     /**
      * Regsiters a Component to make it available as an HTML element.
      * @param {string} name - The Component tag name.
-     * @param {CustomElementConstructor|Function} component - The Component.
+     * @param {CustomElementConstructor} component - The Component.
      */
     static register(name, component) {
-        if (component.register) {
-            window.customElements.define(name, component);
-        } else {
-            window.customElements.define(name, Compiler.wrap(component));
-        }
+        window.customElements.define(name, component);
     }
 
 }

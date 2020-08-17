@@ -2,8 +2,6 @@ declare type StateCallback = (state?: State, key?: string | number | symbol, val
 
 declare class State {
     private prototype: any;
-    private static _hooks: Array<State>;
-    private static _currentHook: number;
 
     set(state: object): void;
     static create(callback?: StateCallback): State;
@@ -14,10 +12,16 @@ declare interface Attributes {
     [key: string]: string;
 }
 
+declare interface ComponentOptions {
+    disableShadowDOM?: boolean;
+}
+
 declare abstract class Component extends HTMLElement {
     root: ShadowRoot;
     state: State;
     attribs: Attributes;
+
+    constructor(options: ComponentOptions);
 
     private connectedCallback(): void;
     private disconnectedCallback(): void;

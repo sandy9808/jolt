@@ -32,12 +32,15 @@ export class Compiler {
     static createTemplate(strings, values) {
         const template = document.createElement("template");
         let events = [];
-    
+
         /* piece together the strings with the values */
         template.innerHTML = strings.reduce((combined, string, i) => {
             let value = values[i];
-            if(value == undefined) value = "";
-    
+            if (value == undefined) value = "";
+
+            /* if the string has a self closing or void web component, change it to a closing web component */
+            string = string.replace(/<([a-z]+-[a-z]+)([^>]*)\/?>/g, `<$1$2></$1>`);
+
             /* if the string is an event, add an event marker and add the event to the events array. */
             if (string.match(/ on.*="?$/) && typeof value == "function") {
                 events.push(value);
@@ -54,53 +57,24 @@ export class Compiler {
             }
             /* if the value is an array of templates parse them into the template */
             else if (Array.isArray(value) && value[0] && value[0].template) {
-    
+
                 let html = "";
-    
+
                 for (let fragment of value) {
                     events = events.concat(fragment.events);
                     html += fragment.template.innerHTML;
                 }
-    
+
                 return combined + string + html;
             }
-            /* else add the string with its value to the template. */ 
+            /* else add the string with its value to the template. */
             else {
                 return combined + string + value;
             }
-    
+
         }, "");
-    
+
         return { template, events };
-    }
-
-    /**
-     * Wraps a Function Component into a WebComponent.
-     * @param {Function} component - The Function Component to wrap.
-     * @returns {CustomElementConstructor}
-     */
-    static wrap(component) {
-        return class extends HTMLElement {
-
-            constructor() {
-                super();
-
-                this.attribs = {};
-
-                for(let attrib of this.attributes) {
-                    this.attribs[attrib.localName] = attrib.value;
-                }
-            }
-
-            connectedCallback() {
-                Compiler.compile(component(this.attribs), this);
-                if(component.didLoad) component.didLoad();
-            }
-
-            disconnectedCallback() {
-                if(component.willUnload) component.willUnload();
-            }
-        };
     }
 
     /**
@@ -110,18 +84,18 @@ export class Compiler {
      */
     static _processTemplate({ template, events }) {
         const walker = document.createTreeWalker(template.content, 1);
-    
+
         let currentNode = walker.nextNode();
         let index = 0;
-    
-        while(currentNode) {
-    
-            if(currentNode.attributes) {
-                for(let i=0; i < currentNode.attributes.length; i++) {
+
+        while (currentNode) {
+
+            if (currentNode.attributes) {
+                for (let i = 0; i < currentNode.attributes.length; i++) {
                     const event = events[index];
                     const attribute = currentNode.attributes[i];
 
-                    if(attribute.value.match(/{{e}}/)) {
+                    if (attribute.value.match(/{{e}}/)) {
                         currentNode.addEventListener(attribute.localName.slice(2), event);
                         currentNode.removeAttribute(attribute.localName);
                         index++;
@@ -129,7 +103,7 @@ export class Compiler {
                     }
                 }
             }
-    
+
             currentNode = walker.nextNode();
         }
 
@@ -215,7 +189,7 @@ export class Compiler {
 
                 if (oldMatch) {
                     const morphed = Compiler._walk(newChild, oldMatch);
-                    
+
                     if (morphed != oldMatch) offset++;
                     oldNode.insertBefore(morphed, oldChild);
 
@@ -267,16 +241,16 @@ export class Compiler {
         }
 
         length = oldAttributes.length - 1;
-        for(let i = length; i >= 0; --i) {
+        for (let i = length; i >= 0; --i) {
             const attribute = oldAttributes[i];
 
-            if(attribute.specified) {
-                if(attribute.namespaceURI) {
-                    if(!newNode.hasAttributeNS(attribute.namespaceURI, attribute.localName)) {
+            if (attribute.specified) {
+                if (attribute.namespaceURI) {
+                    if (!newNode.hasAttributeNS(attribute.namespaceURI, attribute.localName)) {
                         oldNode.removeAttributeNS(attribute.namespaceURI, attribute.localName);
                     }
                 } else {
-                    if(!newNode.hasAttributeNS(null, attribute.localName)) {
+                    if (!newNode.hasAttributeNS(null, attribute.localName)) {
                         oldNode.removeAttribute(attribute.localName);
                     }
                 }
@@ -314,7 +288,7 @@ export class Compiler {
             oldNode.indeterminate = newNode.indeterminate;
         }
 
-        if(oldNode.type == "file") return;
+        if (oldNode.type == "file") return;
 
         if (newNode.value != oldNode.value) {
             oldNode.setAttribute("value", newNode.value);
