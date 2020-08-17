@@ -44,6 +44,14 @@ export class Component extends HTMLElement {
     connectedCallback() {
         Compiler.compile(this.render(this.attribs), this.root);
         this.didLoad();
+
+        /* monitor the components attributes for changes */
+        this._attributeObserver = Compiler.createAttributeObserver((name, newValue) => {
+            this.attribs[name] = newValue;
+
+            Compiler.compile(this.render(this.attribs), this.root);
+            this.didUpdate();
+        });
     }
 
     /**
@@ -52,6 +60,7 @@ export class Component extends HTMLElement {
      */
     disconnectedCallback() {
         this.willUnload();
+        this._attributeObserver.disconnect();
     }
 
     /**

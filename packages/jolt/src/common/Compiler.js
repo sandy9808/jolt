@@ -5,6 +5,13 @@
  * @private
  */
 
+ /**
+  * Observer Callback
+ * @callback ObserverCallback
+ * @param {string} [name] - The attribute name.
+ * @param {string} [value] - The new attribute value.
+ */
+
 /**
  * Compiler for creating and processing templates, as well as performing a diffing algorithm.
  * @class
@@ -34,12 +41,9 @@ export class Compiler {
         let events = [];
 
         /* piece together the strings with the values */
-        template.innerHTML = strings.reduce((combined, string, i) => {
+        const templateSource = strings.reduce((combined, string, i) => {
             let value = values[i];
             if (value == undefined) value = "";
-
-            /* if the string has a self closing or void web component, change it to a closing web component */
-            string = string.replace(/<([a-z]+-[a-z]+)([^>]*)\/?>/g, `<$1$2></$1>`);
 
             /* if the string is an event, add an event marker and add the event to the events array. */
             if (string.match(/ on.*="?$/) && typeof value == "function") {
@@ -74,7 +78,31 @@ export class Compiler {
 
         }, "");
 
+        /* if the templateSource has a self closing or void web component, change it to a closing web component */
+        template.innerHTML = templateSource.replace(/<([a-z]+-[a-z]+)([^/>]*)(\/?)>/g, `<$1$2></$1>`);
+
         return { template, events };
+    }
+
+    /**
+     * Monitors an elements attributes for changes.
+     * @param {HTMLElement} element - The element to monitor.
+     * @param {ObserverCallback} callback - The callback to run when a change happens.
+     * @return {MutationObserver}
+     */
+    static createAttributeObserver(element, callback) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if(mutation.type == "attributes") {
+                    const name = mutation.attributeName;
+                    callback(name, mutation.target.getAttribute(name));
+                }
+            })
+        });
+
+        observer.observe(element, { attributes: true });
+
+        return observer;
     }
 
     /**
