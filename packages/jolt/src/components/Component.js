@@ -46,7 +46,7 @@ export class Component extends HTMLElement {
         this.didLoad();
 
         /* monitor the components attributes for changes */
-        this._attributeObserver = Compiler.createAttributeObserver((name, newValue) => {
+        this._attributeObserver = Compiler.createAttributeObserver(this, (name, newValue) => {
             this.attribs[name] = newValue;
 
             Compiler.compile(this.render(this.attribs), this.root);

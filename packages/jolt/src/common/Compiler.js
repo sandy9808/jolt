@@ -5,8 +5,8 @@
  * @private
  */
 
- /**
-  * Observer Callback
+/**
+ * Observer Callback
  * @callback ObserverCallback
  * @param {string} [name] - The attribute name.
  * @param {string} [value] - The new attribute value.
@@ -97,7 +97,7 @@ export class Compiler {
                     const name = mutation.attributeName;
                     callback(name, mutation.target.getAttribute(name));
                 }
-            })
+            });
         });
 
         observer.observe(element, { attributes: true });

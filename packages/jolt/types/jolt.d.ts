@@ -44,6 +44,6 @@ interface Template {
 }
 
 declare function html(strings: TemplateStringsArray, ...values: Array<any>): Template;
-declare function render(component: Template, container: HTMLElement): void;
+declare function render(component: string, container: HTMLElement): void;
 
 export { Component, State, Template, Attributes, html, render };

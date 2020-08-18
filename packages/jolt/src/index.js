@@ -12,12 +12,12 @@ export function html(strings, ...values) {
 }
 
 /**
- * Renders the template to the container element.
- * @param {Template} template - The template to render.
+ * Renders the component to the container element.
+ * @param {string} component - The name of the component to render.
  * @param {HTMLElement} container - The container element.
  */
-export function render(template, container) {
-    Compiler.compile(template, container);
+export function render(component, container) {
+    container.appendChild(document.createElement(component));
 }
 
 export { State } from "./common/State";
