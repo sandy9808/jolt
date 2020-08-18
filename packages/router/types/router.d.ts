@@ -1,5 +1,5 @@
 declare interface Routes {
-    [key: string]: string;
+    [key: string]: CustomElementConstructor;
 }
 
 declare interface Parameters {
@@ -14,8 +14,8 @@ declare class Router {
     constructor(routes: Routes, container: HTMLElement);
 
     listen(useHash?: boolean): void;
-    on(route: string, component: string): void;
-    notFound(component: string): void;
+    on(route: string, component: CustomElementConstructor): void;
+    notFound(component: CustomElementConstructor): void;
 
     static navigate(url: string): void;
     static getParameters(): Parameters;

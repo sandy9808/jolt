@@ -11,7 +11,7 @@ import { render } from "jolt";
 export class Router {
 
     /**
-     * @param {Object.<string, string>} routes - The mapping of components to their routes. 
+     * @param {Object.<string, CustomElementConstructor>} routes - The mapping of components to their routes. 
      * @param {HTMLElement} container - The app container element.
      */
     constructor(routes, container) {
@@ -36,7 +36,7 @@ export class Router {
     /**
      * Adds a route to the Router's route mapping.
      * @param {string} route - The route to add to the mapping.
-     * @param {string} component - The component to render when the route is requested.
+     * @param {CustomElementConstructor} component - The component to render when the route is requested.
      */
     on(route, component) {
         Router._routes[route] = component;
@@ -44,7 +44,7 @@ export class Router {
 
     /**
      * Sets the component to be rendered when the router can not find a matching route.
-     * @param {string} component - The view to be rendered when a 404 error occurs.
+     * @param {CustomElementConstructor} component - The view to be rendered when a 404 error occurs.
      */
     notFound(component) {
         Router._routes["notFound"] = component;
