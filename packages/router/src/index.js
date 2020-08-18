@@ -11,7 +11,7 @@ import { render } from "jolt";
 export class Router {
 
     /**
-     * @param {Object.<string, function>} routes - The mapping of components to their routes. 
+     * @param {Object.<string, string>} routes - The mapping of components to their routes. 
      * @param {HTMLElement} container - The app container element.
      */
     constructor(routes, container) {
@@ -36,7 +36,7 @@ export class Router {
     /**
      * Adds a route to the Router's route mapping.
      * @param {string} route - The route to add to the mapping.
-     * @param {function} component - The component to render when the route is requested.
+     * @param {string} component - The component to render when the route is requested.
      */
     on(route, component) {
         Router._routes[route] = component;
@@ -44,7 +44,7 @@ export class Router {
 
     /**
      * Sets the component to be rendered when the router can not find a matching route.
-     * @param {function} component - The view to be rendered when a 404 error occurs.
+     * @param {string} component - The view to be rendered when a 404 error occurs.
      */
     notFound(component) {
         Router._routes["notFound"] = component;
@@ -105,7 +105,7 @@ export class Router {
     static _resolve(url) {
         const route = Object.keys(Router._routes).filter((route) => Router._match(route, url))[0];
         if (route != null) {
-            render(Router._routes[route](), Router._container);
+            render(Router._routes[route], Router._container);
 
         } else {
             const notFoundRoute = Router._routes["notFound"];
@@ -115,7 +115,7 @@ export class Router {
                 return;
             }
 
-            render(notFoundRoute(), Router._container);
+            render(notFoundRoute, Router._container);
         }
     }
 }
