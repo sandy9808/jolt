@@ -15,7 +15,7 @@ import { Compiler } from "../common/Compiler";
 export class Component extends HTMLElement {
 
     /**
-     * @param {ComponentOptions} options 
+     * @param {ComponentOptions} [options] 
      */
     constructor(options={}) {
         super();
@@ -90,11 +90,15 @@ export class Component extends HTMLElement {
 
     /**
      * Regsiters a Component to make it available as an HTML element.
-     * @param {string} name - The Component tag name.
-     * @param {CustomElementConstructor} component - The Component.
+     * @param {CustomElementConstructor} component - The Component to register.
      */
-    static register(name, component) {
-        window.customElements.define(name, component);
+    static register(component) {
+        if (!component.selector) {
+            console.warn("Component missing static selector property.");
+            return;
+        }
+
+        window.customElements.define(component.selector, component);
     }
 
 }

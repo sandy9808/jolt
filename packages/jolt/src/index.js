@@ -13,11 +13,11 @@ export function html(strings, ...values) {
 
 /**
  * Renders the component to the container element.
- * @param {string} component - The name of the component to render.
+ * @param {CustomElementConstructor} component - The component to render.
  * @param {HTMLElement} container - The container element.
  */
 export function render(component, container) {
-    container.appendChild(document.createElement(component));
+    container.appendChild(document.createElement(component.selector));
 }
 
 export { State } from "./common/State";

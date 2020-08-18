@@ -24,18 +24,20 @@ declare abstract class Component extends HTMLElement {
     state: State;
     attribs: Attributes;
 
-    constructor(options: ComponentOptions);
+    static abstract selector: string;
+
+    constructor(options?: ComponentOptions);
 
     private connectedCallback(): void;
     private disconnectedCallback(): void;
 
-    abstract render(): Template;
+    abstract render(attribs?: Attributes): Template;
 
     didLoad(): void;
     didUpdate(): void;
     willUnload(): void;
 
-    static register(name: string, component: CustomElementConstructor|Function): void;
+    static register(component: CustomElementConstructor): void;
 }
 
 interface Template {
@@ -44,6 +46,6 @@ interface Template {
 }
 
 declare function html(strings: TemplateStringsArray, ...values: Array<any>): Template;
-declare function render(component: string, container: HTMLElement): void;
+declare function render(component: CustomElementConstructor, container: HTMLElement): void;
 
 export { Component, State, Template, Attributes, html, render };
