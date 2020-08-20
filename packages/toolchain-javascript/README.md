@@ -31,8 +31,6 @@ then add set the `toolchain` property in `jolt.json` to `@jolt/toolchain-javascr
 
 This toolchain powers the `build`, `watch`, `lint`, and `serve` commands for @jolt/cli.
 
-The serve command can be put into production mode by providing the `production` flag.
-
 The serve command will also accept [`@jolt/server`](https://www.npmjs.com/package/@jolt/server) options from a `server` property in `jolt.json`.
 
 ---

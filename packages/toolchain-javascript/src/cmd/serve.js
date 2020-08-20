@@ -14,20 +14,16 @@ function serve(options) {
         live: true
     };
 
-    if(options.production || options.p) {
-        server(Object.assign(defaultConfig, options.server || options));
-    } else {
-        runTasks([
-            function() {
-                watch(options);
-            },
-            function() {
-                server(Object.assign(defaultConfig, options.server || options));
-            }
-        ], function(error) {
-            console.error(error.message);
-        });
-    }
+    runTasks([
+        function () {
+            watch(options);
+        },
+        function () {
+            server(Object.assign(defaultConfig, options.server || options));
+        }
+    ], function (error) {
+        console.error(error.message);
+    });
 }
 
 /**
@@ -42,21 +38,21 @@ function runTasks(tasks, callback) {
 
     function done(error) {
         function end() {
-            if(callback) callback(error, results);
+            if (callback) callback(error, results);
             callback = null;
         }
 
-        if(isSync) process.nextTick(end);
+        if (isSync) process.nextTick(end);
         else end();
     }
 
     function each(index, error, result) {
         results[index] = result;
 
-        if(--pending == 0 || error) done(error);
+        if (--pending == 0 || error) done(error);
     }
 
-    if(!pending) done(null);
+    if (!pending) done(null);
     else {
         tasks.forEach((task, index) => {
             task((error, result) => each(index, error, result));
