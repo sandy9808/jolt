@@ -13,7 +13,7 @@ importers:
     specifiers:
       '@rollup/plugin-json': ^4.1.0
       eslint: ^7.7.0
-      rollup: ^2.26.3
+      rollup: ^2.26.4
       rollup-plugin-terser: ^6.1.0
   packages/jolt:
     devDependencies:
@@ -22,7 +22,7 @@ importers:
       rollup-plugin-terser: 6.1.0_rollup@2.26.4
     specifiers:
       eslint: ^7.7.0
-      rollup: ^2.26.3
+      rollup: ^2.26.4
       rollup-plugin-terser: ^6.1.0
   packages/router:
     devDependencies:
@@ -31,7 +31,7 @@ importers:
       rollup-plugin-terser: 6.1.0_rollup@2.26.4
     specifiers:
       eslint: ^7.7.0
-      rollup: ^2.26.3
+      rollup: ^2.26.4
       rollup-plugin-terser: ^6.1.0
   packages/server:
     devDependencies:
@@ -42,7 +42,7 @@ importers:
     specifiers:
       '@rollup/plugin-json': ^4.1.0
       eslint: ^7.7.0
-      rollup: ^2.26.3
+      rollup: ^2.26.4
       rollup-plugin-terser: ^6.1.0
   packages/toolchain-javascript:
     dependencies:
