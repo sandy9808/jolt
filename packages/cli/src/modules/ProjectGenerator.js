@@ -24,7 +24,8 @@ export class ProjectGenerator {
 
         this.project.devPackages = [
             `@jolt/toolchain-${template}`,
-            "@jolt/cli"];
+            "@jolt/cli"
+        ];
         this.project.packages = [
             "jolt",
             "@jolt/router"
