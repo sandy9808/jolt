@@ -3,21 +3,32 @@ import server from "@jolt/server";
 import watch from "./watch";
 
 /**
- * 
+ * Run a live reloading development server and rebuild the app when a file changes.
+ * @param {Object} options
  */
 function serve(options) {
-    runTasks([
-        function() {
-            watch(options);
-        },
-        function() {
-            server(options);
-        }
-    ], function(error) {
-        console.error(error.message);
-    });
+
+    if(options.mode == "production") {
+        server(options.server || options);
+    } else {
+        runTasks([
+            function() {
+                watch(options);
+            },
+            function() {
+                server(options);
+            }
+        ], function(error) {
+            console.error(error.message);
+        });
+    }
 }
 
+/**
+ * Run tasks in parallel.
+ * @param {Array.<Function>} tasks - A list of functions to run at the same time.
+ * @param {Function} callback - An error callback if a function fails.
+ */
 function runTasks(tasks, callback) {
     let results = [];
     let pending = tasks.length;

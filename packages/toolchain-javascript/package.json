@@ -23,7 +23,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/OutwalkStudios/jolt.git",
+        "url": "https://github.com/OutwalkStudios/jolt.git",
         "directory": "packages/toolchain-javascript"
     },
     "bugs": {

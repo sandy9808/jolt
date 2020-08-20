@@ -2,6 +2,9 @@
 import { ESLint } from "eslint";
 import eslintConfig from "../configs/eslint.json";
 
+/**
+ * Lint the project source code.
+ */
 async function lint() {
     const eslint = new ESLint({ baseConfig: eslintConfig });
     
