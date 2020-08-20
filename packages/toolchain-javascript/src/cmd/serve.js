@@ -8,15 +8,21 @@ import watch from "./watch";
  */
 function serve(options) {
 
+    const defaultConfig = {
+        root: options.dest,
+        spa: true,
+        live: true
+    };
+
     if(options.production || options.p) {
-        server(options.server || options);
+        server(Object.assign(defaultConfig, options.server || options));
     } else {
         runTasks([
             function() {
                 watch(options);
             },
             function() {
-                server(options.server || options);
+                server(Object.assign(defaultConfig, options.server || options));
             }
         ], function(error) {
             console.error(error.message);
