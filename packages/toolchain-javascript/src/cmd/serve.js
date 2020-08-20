@@ -8,7 +8,7 @@ import watch from "./watch";
  */
 function serve(options) {
 
-    if(options.mode == "production") {
+    if(options.production || options.p) {
         server(options.server || options);
     } else {
         runTasks([
@@ -16,7 +16,7 @@ function serve(options) {
                 watch(options);
             },
             function() {
-                server(options);
+                server(options.server || options);
             }
         ], function(error) {
             console.error(error.message);
