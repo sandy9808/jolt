@@ -90,15 +90,12 @@ export class Component extends HTMLElement {
 
     /**
      * Regsiters a Component to make it available as an HTML element.
+     * @param {string} selector - The Component's selector.
      * @param {CustomElementConstructor} component - The Component to register.
      */
-    static register(component) {
-        if (!component.selector) {
-            console.warn("Component missing static selector property.");
-            return;
-        }
-
-        window.customElements.define(component.selector, component);
+    static register(selector, component) {
+        component.selector = selector;
+        window.customElements.define(selector, component);
     }
 
 }

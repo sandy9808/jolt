@@ -24,8 +24,6 @@ declare abstract class Component extends HTMLElement {
     state: State;
     attribs: Attributes;
 
-    static abstract selector: string;
-
     constructor(options?: ComponentOptions);
 
     private connectedCallback(): void;
@@ -37,7 +35,7 @@ declare abstract class Component extends HTMLElement {
     didUpdate(): void;
     willUnload(): void;
 
-    static register(component: CustomElementConstructor): void;
+    static register(selector: string, component: CustomElementConstructor): void;
 }
 
 interface Template {
