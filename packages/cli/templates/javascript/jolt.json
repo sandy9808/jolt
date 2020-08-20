@@ -1,5 +1,5 @@
 {
     "main": "src/app.js",
-    "dist": "public",
+    "dest": "public",
     "toolchain": "@jolt/toolchain-javascript"
 }
