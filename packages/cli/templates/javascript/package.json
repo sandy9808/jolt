@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "rollup -c ./config/rollup.config.js",
-    "watch": "rollup -c ./config/rollup.config.js -w",
-    "lint": "eslint src -c ./config/.eslintrc.js",
-    "docs": "jsdoc -r src README.md -d docs",
-    "start": "jolt-server --root public --live --spa",
-    "dev": "npm-run-all --parallel watch start"
+    "build": "jolt build",
+    "watch": "jolt watch",
+    "lint": "jolt lint",
+    "dev": "jolt serve"
   }
 }
