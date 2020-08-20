@@ -22,8 +22,13 @@ export class ProjectGenerator {
         const template = (options.template || options.t) ? options.template || options.t : "javascript";
         this.project.template = path.join(__dirname, `../templates/${template}`);
 
-        this.project.devPackages = [`@jolt/toolchain-${template}`];
-        this.project.packages = ["jolt", "@jolt/router"];
+        this.project.devPackages = [
+            `@jolt/toolchain-${template}`,
+            "@jolt/cli"];
+        this.project.packages = [
+            "jolt",
+            "@jolt/router"
+        ];
     }
 
     /** Generates the Project. */
