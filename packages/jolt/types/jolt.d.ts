@@ -35,7 +35,7 @@ declare abstract class Component extends HTMLElement {
     didUpdate(): void;
     willUnload(): void;
 
-    static register(selector: string, component: CustomElementConstructor): void;
+    static register(selector: string, component: CustomElementConstructor|Function): void;
 }
 
 interface Template {
@@ -44,6 +44,6 @@ interface Template {
 }
 
 declare function html(strings: TemplateStringsArray, ...values: Array<any>): Template;
-declare function render(component: CustomElementConstructor, container: HTMLElement): void;
+declare function render(component: CustomElementConstructor|Function, container: HTMLElement): void;
 
 export { Component, State, Template, Attributes, html, render };
