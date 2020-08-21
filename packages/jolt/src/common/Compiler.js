@@ -137,7 +137,7 @@ export class Compiler {
             disconnectedCallback() {
                 this._attributeObserver.disconnect();
             }
-        }
+        };
     }
 
     /**
