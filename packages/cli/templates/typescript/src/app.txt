@@ -1,0 +1,23 @@
+import { Component, Template, html, render } from "jolt";
+import logo from "./logo.svg";
+import "./app.css";
+
+class App extends Component {
+
+    constructor() {
+        super({ disableShadowDOM: true });
+    }
+
+    render() : Template {
+        return html`
+        <div class="app-container">
+            <img src=${logo} class="app-logo" alt="logo" />
+            <a class="app-link" href="https://github.com/OutwalkStudios/jolt" target="_blank">
+                Get Started with Jolt
+            </a>
+        </div>
+    `;
+    }
+}
+
+render(App, document.body);

@@ -19,17 +19,21 @@ export class ProjectGenerator {
         this.project = { name: name, dest: path.join(process.cwd(), name) };
 
         /* decide what template should be used for the project */
-        const template = (options.template || options.t) ? options.template || options.t : "javascript";
-        this.project.template = path.join(__dirname, `../templates/${template}`);
+        this.template = (options.template || options.t) ? options.template || options.t : "javascript";
+        this.project.template = path.join(__dirname, `../templates/${this.template}`);
 
         this.project.devPackages = [
-            `@jolt/toolchain-${template}`,
+            `@jolt/toolchain-${this.template}`,
             "@jolt/cli"
         ];
         this.project.packages = [
             "jolt",
             "@jolt/router"
         ];
+
+        if (this.template == "typescript") {
+            this.project.devPackages.concat(["typescript", "tslib"]);
+        }
     }
 
     /** Generates the Project. */
@@ -50,7 +54,7 @@ export class ProjectGenerator {
         console.log(`Creating ${this.project.name}...\n`);
 
         File.createDirectory(this.project.dest);
-        File.copyDirectoryContents(this.project.template, this.project.dest);
+        File.copyDirectoryContents(this.project.template, this.project.dest, this.template);
 
         /* update the template's package.json to have the project name */
         try {

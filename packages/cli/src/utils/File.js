@@ -50,8 +50,9 @@ export class File {
      * Copies the contents from one directory to another.
      * @param {string} src - The source directory.
      * @param {string} dest - The destination directory.
+     * @param {string} template - The template name used for the project.
      */
-    static copyDirectoryContents(src, dest) {
+    static copyDirectoryContents(src, dest, template) {
         const filesToCreate = File.readDirectory(src);
 
         for(let file of filesToCreate) {
@@ -60,13 +61,16 @@ export class File {
             /* stop npm from renaming .gitingore files to .npmignore files */
             if(file == "gitignore.txt") file = ".gitignore";
 
+            /* rename app.txt files to the proper language extension */
+            if(file == "app.txt") file = `app.${(template == "javascript") ? "js" : "ts"}`;
+
             const newPath = path.join(dest, file);
             const stats = fs.statSync(originalPath);
 
             if(stats.isFile()) fs.writeFileSync(newPath, fs.readFileSync(originalPath));
             else if (stats.isDirectory()) {
                 File.createDirectory(newPath);
-                File.copyDirectoryContents(originalPath, newPath);
+                File.copyDirectoryContents(originalPath, newPath, template);
             }
         }
     }

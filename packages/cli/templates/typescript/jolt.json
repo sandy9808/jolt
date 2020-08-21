@@ -1,0 +1,5 @@
+{
+    "main": "src/app.ts",
+    "dest": "public",
+    "toolchain": "@jolt/toolchain-typescript"
+}
