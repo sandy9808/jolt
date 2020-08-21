@@ -23,12 +23,12 @@ export class ProjectGenerator {
         this.project.template = path.join(__dirname, `../templates/${this.template}`);
 
         this.project.devPackages = [
-            `@jolt/toolchain-${this.template}`,
-            "@jolt/cli"
+            `@jolt/toolchain-${this.template}@4.x.x`,
+            "@jolt/cli@4.x.x"
         ];
         this.project.packages = [
-            "jolt",
-            "@jolt/router"
+            "jolt@4.x.x",
+            "@jolt/router@4.x.x"
         ];
     }
 
