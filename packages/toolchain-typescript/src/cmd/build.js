@@ -33,8 +33,7 @@ async function build(options) {
                 ]
             }),
             css({
-                output: `${options.dest}/bundle.css`,
-                transform: (code) => code.replace(/[ \n\t\r]+/g, "")
+                output: `${options.dest}/bundle.css`
             }),
             minifyTemplate(),
             terser(),
