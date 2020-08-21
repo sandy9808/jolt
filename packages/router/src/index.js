@@ -105,7 +105,12 @@ export class Router {
     static _resolve(url) {
         const route = Object.keys(Router._routes).filter((route) => Router._match(route, url))[0];
         if (route != null) {
-            render(Router._routes[route], Router._container);
+            const component = Router._routes[route];
+            if(component.selector) {
+                render(component, Router._container);
+            } else {
+                console.warn("Jolt Router: Component has not been registered!");
+            }
 
         } else {
             const notFoundRoute = Router._routes["notFound"];
@@ -115,7 +120,11 @@ export class Router {
                 return;
             }
 
-            render(notFoundRoute, Router._container);
+            if(notFoundRoute.selector) {
+                render(notFoundRoute, Router._container);
+            } else {
+                console.warn("Jolt Router: Component has not been registered!");
+            }
         }
     }
 }
