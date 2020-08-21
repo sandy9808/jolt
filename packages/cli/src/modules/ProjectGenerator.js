@@ -69,8 +69,8 @@ export class ProjectGenerator {
             return;
         }
 
-        /* install all depedencies for the template */
-        console.log("Installing depedencies, this could take a while.\n");
+        /* install all dependencies for the template */
+        console.log("Installing dependencies, this could take a while.\n");
 
         this._installDependencies()
             .then(this._installDevDependencies.bind(this))
