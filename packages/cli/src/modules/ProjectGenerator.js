@@ -30,10 +30,6 @@ export class ProjectGenerator {
             "jolt",
             "@jolt/router"
         ];
-
-        if (this.template == "typescript") {
-            this.project.devPackages.concat(["typescript", "tslib"]);
-        }
     }
 
     /** Generates the Project. */
