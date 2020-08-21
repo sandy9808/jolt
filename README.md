@@ -11,11 +11,14 @@
     <a href="https://github.com/OutwalkStudios/jolt/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Jolt is released under the MIT license">
     </a>
+    <a href="https://www.patreon.com/outwalkstudios">
+        <img src="https://img.shields.io/badge/patreon-donate-green.svg" alt="Donate on Patreon">
+    </a>
     <a href="https://discord.gg/AA7qukU">
         <img src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" alt="Join us on Discord">
     </a>
-    <a href="https://www.patreon.com/outwalkstudios">
-        <img src="https://img.shields.io/badge/patreon-donate-green.svg" alt="Donate on Patreon">
+    <a href="https://twitter.com/OutwalkStudios">
+        <img src="https://img.shields.io/badge/follow-on%20twitter-4AA1EC.svg" alt="Follow us on Twitter">
     </a>
 </div>
 
@@ -40,64 +43,65 @@
 | Project | Description |
 |---------|-------------|
 | [jolt](https://www.npmjs.com/package/jolt)      | Core Framework |
-| [@jolt/server](https://www.npmjs.com/package/@jolt/server)        | Live Reloading Development Server |
+| [@jolt/cli](https://www.npmjs.com/package/@jolt/cli)        | Development CLI |
 | [@jolt/router](https://www.npmjs.com/package/@jolt/router)      | Single Page Application Routing |
-| [@jolt/cli](https://www.npmjs.com/package/@jolt/cli)        | Project Scaffolding |
+| [@jolt/server](https://www.npmjs.com/package/@jolt/server)        | Live Reloading Development Server |
 
 ---
 
 ## Installation
 
-Jolt is designed to fit into your existing workflows with no hassle. </br>
-You can install Jolt using [npm](https://www.npmjs.com/package/jolt) or add it to your page using a [CDN](https://unpkg.com/jolt) and script tag.
-When installing Jolt using a script tag, all Jolt features are in a `Jolt` namespace.
+To get started building applications in Jolt, the first step is to install the Jolt CLI,
+the CLI is used to create projects and handle ongoing tasks such as bundling, linting, and running a development server.
 
-Install using [npm](https://www.npmjs.com/package/jolt):
-```bash
-npm install jolt
+To install the Jolt CLI, run the following command:
+```
+npm install -g @jolt/cli
 ```
 
-Install using a [CDN](https://unpkg.com/jolt) and script tag:
-```html
-<script src="https://unpkg.com/jolt"></script>
-```
-
-Documentation is availiable [here](https://outwalkstudios.github.io/jolt/).
+You can read more on the Jolt CLI's [README](https://github.com/OutwalkStudios/jolt/tree/master/packages/cli).
 
 ---
 
 ## Getting Started
 
-The quickest way to get started with Jolt is to use [@jolt/cli](https://www.npmjs.com/package/@jolt/cli) to generate a new project. You can do so by running `npx @jolt/cli create my-app`.
+### Create a new Project
 
-If you are manually installing Jolt you can get a simple app up and running by creating a [function component](#function-components) and rendering it to a container element.
+You can create a new project by running the `create` command and supply the app name for the project.
+```
+jolt create <app-name>
+```
 
-```js
-import { html, render } from "jolt";
+The CLI will create a new project with the supplied name, install all the required dependencies, as well as configure the project config.
 
-function App() {
-    return html`
-        <h1>Hello World!</h1>
-    `;
-}
+### Run the Application
 
-render(App(), document.querySelector("#app"));
+The Jolt CLI comes with a built in live reloading development server.
+Running the `serve` command will launch a web server, watch your files, and build the app as you make changes to the files.
+```
+# Navigate to the project folder
+cd app-name
+
+# Launch the development server
+jolt serve
 ```
 
 ---
 
 ## Using Components In Your Application
 
-Components are the building blocks to your application, There are two types of components you can create, function components, and class components, depending on what the component is for will determine which type is a better fit.
+Components are the building blocks to your application, There are two types of components you can create, function components, and class components, depending on what the component is for will determine which type is a better fit. `Component.register` is used to register the component as a valid WebComponent.
+
+<strong>NOTICE:</strong> 
+- Component names are required to have hyphen in the name in order to not conflict with standardized HTML elements.
+- Components must be registerd with an element name in order to be available to use.
 
 ### Function Components
 
----
-
-For simple parts of your application or to simply render html, function components are the best option. They dont offer state management or lifecycle functions like class components do, but for small tasks, they make a great option.
+For simple parts of your application or to simply render html, function components are the best option. They dont offer state management or lifecycle functions like class components do, but they can react to changes in the component attributes. An Object containing all the components attributes is passed into the function when rendered.
 
 ```js
-import { html, render } from "jolt";
+import { Component, html, render } from "jolt";
 
 function App() {
     return html`
@@ -105,17 +109,17 @@ function App() {
     `;
 }
 
-render(App(), document.querySelector("#app"));
+Component.register("app-root", App);
+
+render(App, document.body);
 ```
 
 ### Class Components
 
---- 
-
-When you are building a component that needs state management or lifecycle methods, class components are the preferred option. A class component has a `state` property for updating the component state, as well as `didLoad()`, `didUpdate`, and `willUnload()` methods that are called during certain times in the components lifecycle. Class components are required to be registered with its own html tag such as `<hello-world></hello-world>`.
+When you are building a component that needs state management or lifecycle methods, you should use class components, A class component has a `state` property for updating the component state, as well as `didLoad()`, `didUpdate()`, and `willUnload()` methods that are called during certain times in the components lifecycle. An Object containing all the components attributes are passed into the components `render` method when rendered, as well as available as an `attribs` property.
 
 ```js
-import { html, Component } from "jolt";
+import { Component, html } from "jolt";
 
 class HelloWorld extends Component {
 
@@ -129,11 +133,26 @@ class HelloWorld extends Component {
 Component.register("hello-world", HelloWorld);
 ```
 
-The line `Component.register("hello-world", HelloWorld);` makes the component availible as `<hello-world></hello-world>`
+Class Components make use of the [ShadowDOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM), in order to disable this, you can pass a set of options into the components super constructor.
 
-<strong>NOTICE:</strong> 
-- Component names are required to have hyphen in the name in order to not conflict with standardized HTML elements.
-- Components must be registerd with an element name in order to be available to use.
+```js
+import { Component, html } from "jolt";
+
+class HelloWorld extends Component {
+
+    constructor() {
+        super({ disableShadowDOM: true });
+    }
+
+    render() {
+        return html`
+            <h1>Hello World!</h1>
+        `;
+    }
+}
+
+Component.register("hello-world", HelloWorld);
+```
 
 ---
 
@@ -149,19 +168,19 @@ html`<button onclick=${() => alert("I was clicked")}>Click Me!</button>`
 
 ## State Management With Jolt
 
-Jolt comes with a built-in solution to state management. State is localized to the class component containing the state property. The [Component](#class-components) class contains a `state` property that you can store your state in. When a property in the state object is changed it will update the part of the DOM that changed as a result.
+Jolt comes with a built-in solution to state management. State is localized to the component containing the state property. The [Component](#class-components) class contains a `state` property that you can store your state in. When a property in the state object is changed it will update the part of the DOM that changed as a result.
 
 You can set the initial state in the constructor or the didLoad method. When using the Component constructor you must always call the super constructor.
 
 ```js
-import { html, Component } from "jolt";
+import { Component, html } from "jolt";
 
 class MyComponent extends Component {
   constructor() {
     super();
 
     this.state.set({
-      date: new Date(),
+      date: new Date()
     });
   }
 
@@ -178,29 +197,11 @@ class MyComponent extends Component {
 }
 ```
 
-You can also use state with [Function Components](#function-components) by using the `State.useState` hook.
-The second argument of the State.useState function is an optional callback for when you want to call a function when the state updates,
-such as rendering the component.
-
-```js
-function App() {
-
-    let state = State.useState({ count: 0 }, () =>  {
-        render(App(), document.querySelector("#app"));
-    });
-
-    return html`
-        <h1>Count: ${state.count}</h1>
-        <button onclick=${() => state.count++}>Click Me</button>
-    `;
-}
-```
-
 ---
 
 ## Why Use Jolt
 
-Jolt is a lightweight frontend JavaScript framework. It was developed to make creating web apps in a very simple and easy way. Additionally it is designed to drop into any project or build process that you prefer. Unlike other frameworks that utilize a Virtual DOM, Jolt uses the real DOM and only makes changes to the elements that have changed. This makes Jolt very fast when making updates to the DOM. Jolt Components are built as an abstraction over native WebComponents with additonal features such as state management and event binding. Templates in Jolt are designed similar to JSX but without the compliation step. If you are looking for a powerful and lightweight framework to build your next app using the tools you love then Jolt may be the solution your looking for!
+Jolt is a lightweight frontend JavaScript framework. It was developed to make creating web apps in a very simple and easy way. It is designed to only use web standards meaning all the code you write can run directly in a browser without a build step. Unlike other frameworks that utilize a Virtual DOM, Jolt uses the real DOM and only makes changes to the elements that have changed. This makes Jolt very fast when making updates to the DOM. Jolt Components are built as an abstraction over native WebComponents with additonal features such as state management and event binding. Templates in Jolt are designed similar to JSX but without the compliation step. If you are looking for a powerful and lightweight framework to build your next app using the tools you love then Jolt may be the solution your looking for!
 
 ---
 

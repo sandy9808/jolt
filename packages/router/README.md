@@ -6,6 +6,8 @@ The official router for Jolt
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/OutwalkStudios/jolt-router/blob/master/LICENSE)
 [![Chat Server](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/AA7qukU)
 [![Donate](https://img.shields.io/badge/patreon-donate-green.svg)](https://www.patreon.com/outwalkstudios)
+[![Follow Us](https://img.shields.io/badge/follow-on%20twitter-4AA1EC.svg)](https://twitter.com/OutwalkStudios)
+
 ---
 
 ## Installation
@@ -17,8 +19,6 @@ Install using [npm](https://www.npmjs.com/package/@jolt/router):
 npm install --save-dev @jolt/router
 ```
 
-Documentation is availiable [here](https://outwalkstudios.github.io/jolt-router/).
-
 ---
 
 ## Routing with Jolt Router
@@ -27,7 +27,7 @@ The Router class supports both Push State Routing and Hash Based Routing.
 When a route is requested it will render the function component that is tied to the route.
 
 ```js
-import { html, render } from "jolt";
+import { Component, html, render } from "jolt";
 import { Router } from "@jolt/router";
 
 function App() {
@@ -36,9 +36,11 @@ function App() {
     `;
 }
 
+Component.register("app-root", App);
+
 const router = new Router({
     "/" : App
-}, document.querySelector("#app"));
+}, document.body);
 
 router.listen();
 ```
@@ -55,7 +57,7 @@ Additonially adding a `?` to the end of a route marks it as an optional paramete
 Example: `/users/:user`.
 
 ```js
-import { html, render } from "jolt";
+import { Component, html, render } from "jolt";
 import { Router } from "@jolt/router";
 
 function Users() {
@@ -66,9 +68,11 @@ function Users() {
     `;
 }
 
+Component.register("app-users", Users);
+
 const router = new Router({
     "/users/:user" : Users
-}, document.querySelector("#app"));
+}, document.body);
 
 router.listen();
 ```
@@ -86,9 +90,9 @@ The easiest way to have a server that supports push state routing is to use [@jo
 
 ## Reporting Issues
 
-If you are having trouble getting something to work with Jolt Router, you can ask in our [discord](https://discord.gg/AA7qukU) or create a new [Issue](https://github.com/OutwalkStudios/jolt-router/issues).
+If you are having trouble getting something to work with Jolt Router, you can ask in our [discord](https://discord.gg/AA7qukU) or create a new [Issue](https://github.com/OutwalkStudios/jolt/issues).
 
-If you find a bug or if something is not working properly, you can report it by creating a new [Issue](https://github.com/OutwalkStudios/jolt-router/issues).
+If you find a bug or if something is not working properly, you can report it by creating a new [Issue](https://github.com/OutwalkStudios/jolt/issues).
 
 If Jolt does not fit your needs or is missing a feature you would like to see, let us know! We would greatly appreciate your feedback on it.
 
@@ -98,4 +102,4 @@ You can contact Outwalk Studios directly by email using `support@outwalkstudios.
 
 ## License
 
-Jolt Router is licensed under the terms of the [**MIT**](https://github.com/OutwalkStudios/jolt-router/blob/master/LICENSE) license.
+Jolt Router is licensed under the terms of the [**MIT**](https://github.com/OutwalkStudios/jolt/blob/master/LICENSE) license.

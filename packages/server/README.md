@@ -6,6 +6,7 @@ A web server supporting live reloading, single page applications, and static fil
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/OutwalkStudios/jolt/blob/master/LICENSE)
 [![Chat Server](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/AA7qukU)
 [![Donate](https://img.shields.io/badge/patreon-donate-green.svg)](https://www.patreon.com/outwalkstudios)
+[![Follow Us](https://img.shields.io/badge/follow-on%20twitter-4AA1EC.svg)](https://twitter.com/OutwalkStudios)
 
 ---
 
@@ -96,7 +97,8 @@ app.get("/items/:item?", (req, res) => {
 ## Why?
 
 Jolt Server was developed to provide a easy setup for developing web apps.
-Most alternatives use a bunch of dependencies to achieve the desired functionality and as for the case with single page applications, they often dont work for complex routes. Jolt Server solves these problems by not using any dependencies, and making sure that single page applications that utilize push state routing will have no problems being run on this server.
+Most alternatives use a bunch of dependencies to achieve the desired functionality and as for the case with single page applications, they often dont work for complex routes.
+Jolt Server solves these problems by not using any dependencies, and making sure that single page applications that utilize push state routing will have no problems being run on this server.
 
 ---
 
