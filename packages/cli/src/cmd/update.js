@@ -33,7 +33,7 @@ async function update() {
  */
 function updateToolchain(toolchain) {
     return new Promise((resolve) => {
-        const thread = exec(`npm update ${toolchain}`, { cwd: process.cwd() }, (error) => {
+        const thread = exec(`npm update ${toolchain} @jolt/cli`, { cwd: process.cwd() }, (error) => {
             if(error) console.error(error.message);
         });
 
