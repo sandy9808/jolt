@@ -27,7 +27,7 @@ export class Config {
      */
     static loadToolchain(config) {
         const toolchain = (config.toolchain.startsWith("./")) ? path.join(process.cwd(), config.toolchain) : config.toolchain;
-        if(config.toolchain) return import(toolchain);
+        if (config.toolchain) return import(require.resolve(toolchain, { paths: [ process.cwd() ] }));
         else return null;
     }
 }
