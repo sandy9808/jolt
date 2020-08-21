@@ -17,7 +17,7 @@ export class Component extends HTMLElement {
     /**
      * @param {ComponentOptions} [options] 
      */
-    constructor(options={}) {
+    constructor(options = {}) {
         super();
 
         /** @type {ShadowRoot} */
@@ -91,11 +91,16 @@ export class Component extends HTMLElement {
     /**
      * Regsiters a Component to make it available as an HTML element.
      * @param {string} selector - The Component's selector.
-     * @param {CustomElementConstructor} component - The Component to register.
+     * @param {CustomElementConstructor|Function} component - The Component to register.
      */
     static register(selector, component) {
         component.selector = selector;
-        window.customElements.define(selector, component);
+
+        if (component.register) {
+            window.customElements.define(selector, component);
+        } else {
+            window.customElements.define(selector, Compiler.wrap(component));
+        }
     }
 
 }

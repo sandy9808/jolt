@@ -93,7 +93,7 @@ export class Compiler {
     static createAttributeObserver(element, callback) {
         const observer = new MutationObserver((mutations) => {
             mutations.forEach(mutation => {
-                if(mutation.type == "attributes") {
+                if (mutation.type == "attributes") {
                     const name = mutation.attributeName;
                     callback(name, mutation.target.getAttribute(name));
                 }
@@ -103,6 +103,41 @@ export class Compiler {
         observer.observe(element, { attributes: true });
 
         return observer;
+    }
+
+    /**
+     * Wraps a function component into a web component class.
+     * @param {Function} component - The function component to wrap/
+     * @return {CustomElementConstructor}
+     */
+    static wrap(component) {
+        return class extends HTMLElement {
+
+            constructor() {
+                super();
+                
+                /* parse the attributes */
+                this.attribs = {};
+                for (let attrib of this.attributes) {
+                    this.attribs[attrib.localName] = attrib.value;
+                }
+            }
+
+            connectedCallback() {
+                Compiler.compile(component(this.attribs), this);
+
+                /* monitor the components attributes for changes */
+                this._attributeObserver = Compiler.createAttributeObserver(this, (name, newValue) => {
+                    this.attribs[name] = newValue;
+
+                    Compiler.compile(component(this.attribs), this);
+                });
+            }
+
+            disconnectedCallback() {
+                this._attributeObserver.disconnect();
+            }
+        }
     }
 
     /**
