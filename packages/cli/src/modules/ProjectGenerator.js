@@ -49,8 +49,14 @@ export class ProjectGenerator {
         /* copy template files to destination */
         console.log(`Creating ${this.project.name}...\n`);
 
+        /* file filter for renaming template files */
+        const filter = {
+            "gitignore.txt": ".gitignore",
+            "app.txt": `app.${(this.template == "javascript") ? "js" : "ts"}`
+        };
+
         File.createDirectory(this.project.dest);
-        File.copyDirectoryContents(this.project.template, this.project.dest, this.template);
+        File.copyDirectoryContents(this.project.template, this.project.dest, filter);
 
         /* update the template's package.json to have the project name */
         try {
