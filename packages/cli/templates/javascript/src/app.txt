@@ -10,13 +10,13 @@ class App extends Component {
 
     render() {
         return html`
-        <div class="app-container">
-            <img src=${logo} class="app-logo" alt="logo" />
-            <a class="app-link" href="https://github.com/OutwalkStudios/jolt" target="_blank">
-                Get Started with Jolt
-            </a>
-        </div>
-    `;
+            <div class="app-container">
+                <img src=${logo} class="app-logo" alt="logo" />
+                <a class="app-link" href="https://github.com/OutwalkStudios/jolt" target="_blank">
+                    Get Started with Jolt
+                </a>
+            </div>
+        `;
     }
 }
 
