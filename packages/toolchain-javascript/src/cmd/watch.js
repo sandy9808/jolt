@@ -34,7 +34,13 @@ async function watch(options) {
                 css({
                     output: `${options.dest}/bundle.css`
                 }),
-                minifyTemplate(),
+                minifyTemplate({
+                    options: {
+                        minifyOptions: {
+                            keepClosingSlash: true
+                        }
+                    }
+                }),
                 terser(),
             ]
         },
