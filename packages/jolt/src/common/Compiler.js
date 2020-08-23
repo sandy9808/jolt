@@ -79,7 +79,7 @@ export class Compiler {
         }, "");
 
         /* if the templateSource has a self closing or void web component, change it to a closing web component */
-        template.innerHTML = templateSource.replace(/<([a-z]+-[a-z]+)([^/>]*)(\/?)>/g, `<$1$2></$1>`);
+        template.innerHTML = templateSource.replace(/<([a-z]+-[a-z]+)([^/>]*)\/>/g, `<$1$2></$1>`);
 
         return { template, events };
     }
