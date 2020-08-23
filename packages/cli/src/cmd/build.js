@@ -18,7 +18,7 @@ async function build(args) {
         const toolchain = await Config.loadToolchain(config);
 
         if (!toolchain) {
-            console.error(`Unable to find "toolchain" in jolt.json`);
+            console.error(`Unable to find the toolchain specified in jolt.json`);
             return;
         }
 

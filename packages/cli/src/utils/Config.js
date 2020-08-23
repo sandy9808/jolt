@@ -1,6 +1,7 @@
 /* imports */
 import { File } from "./File";
 import path from "path";
+import fs from "fs";
 
 /**
  * Config Utils Class
@@ -27,7 +28,9 @@ export class Config {
      */
     static loadToolchain(config) {
         const toolchain = (config.toolchain.startsWith("./")) ? path.join(process.cwd(), config.toolchain) : config.toolchain;
-        if (config.toolchain) return import(require.resolve(toolchain, { paths: [ process.cwd() ] }));
+        const toolchainPath = require.resolve(toolchain, { paths: [ process.cwd() ] });
+        const toolchainInstalled = fs.existsSync(toolchainPath);
+        if (config.toolchain && toolchainInstalled) return import(toolchainPath);
         else return null;
     }
 }
