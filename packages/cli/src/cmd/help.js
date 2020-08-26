@@ -24,9 +24,6 @@ const helpMap = {
     Usage: jolt create [app-name] <options>
 
     - Creates a new project.
-
-    Options:
-        -t, --template
     `,
 
     build: `
@@ -56,7 +53,7 @@ const helpMap = {
     update: `
     Usage: jolt update
 
-    - Updates the project's toolchain and CLI.
+    - Updates the project's config, toolchain, and CLI.
     `
 };
 

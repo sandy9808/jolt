@@ -26,6 +26,9 @@ This command will run a development server and rebuild if you change any of the 
 
  You can configure your project using the generated `jolt.json` file.
 
+ To use TypeScript, simply install `@jolt/toolchain-typescript`
+ and set that as your toolchain in `jolt/json`.
+
 ---
 
 ## Learn How to Develop Apps with Jolt

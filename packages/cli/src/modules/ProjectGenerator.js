@@ -16,14 +16,14 @@ export class ProjectGenerator {
      * @param {Object} options - The generation options.
      */
     constructor(name, options = {}) {
-        this.project = { name: name, dest: path.join(process.cwd(), name) };
-
-        /* decide what template should be used for the project */
-        this.template = (options.template || options.t) ? options.template || options.t : "javascript";
-        this.project.template = path.join(__dirname, `../templates/${this.template}`);
+        this.project = { 
+            name: name,
+            dest: path.join(process.cwd(), name),
+            template: path.join(__dirname, `../template`)
+        };
 
         this.project.devPackages = [
-            `@jolt/toolchain-${this.template}@4.x.x`,
+            "@jolt/toolchain-javascript@4.x.x",
             "@jolt/cli@4.x.x"
         ];
         this.project.packages = [
@@ -40,19 +40,12 @@ export class ProjectGenerator {
             return;
         }
 
-        /* check if the requested template exists */
-        if (!fs.existsSync(this.project.template)) {
-            console.error("The requested template does not exists!");
-            return;
-        }
-
         /* copy template files to destination */
         console.log(`Creating ${this.project.name}...\n`);
 
         /* file filter for renaming template files */
         const filter = {
-            "gitignore.txt": ".gitignore",
-            "app.txt": `app.${(this.template == "javascript") ? "js" : "ts"}`
+            "gitignore.txt": ".gitignore"
         };
 
         File.createDirectory(this.project.dest);
