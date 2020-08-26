@@ -16,20 +16,20 @@ declare interface ComponentOptions {
     disableShadowDOM?: boolean;
 }
 
-declare abstract class Component<A, S> extends HTMLElement {
+declare abstract class Component<S> extends HTMLElement {
 
     private _attributeObserver: MutationObserver;
 
     root: ShadowRoot;
     state: S;
-    attribs: A;
+    attribs: Attributes;
 
     constructor(options?: ComponentOptions);
 
     private connectedCallback(): void;
     private disconnectedCallback(): void;
 
-    abstract render(attribs?: A): Template;
+    abstract render(attribs?: Attributes): Template;
 
     didLoad(): void;
     didUpdate(): void;
