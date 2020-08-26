@@ -18,7 +18,7 @@ export function html(strings, ...values) {
  */
 export function render(component, container) {
     if(component.selector) {
-        container.appendChild(document.createElement(component.selector));
+        Compiler.compile(html`<${component.selector}></${component.selector}>`, container);
     } else {
         console.warn("Jolt: Component has not been registered!");
     }
