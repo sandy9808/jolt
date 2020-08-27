@@ -60,7 +60,8 @@ async function build(options) {
 
     const output = {
         file: `${options.dest}/bundle.js`,
-        format: "iife"
+        format: "iife",
+        sourcemap: options.sourcemap
     };
 
     try {

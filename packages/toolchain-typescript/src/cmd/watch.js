@@ -48,7 +48,8 @@ async function watch(options) {
         },
         out: {
             file: `${options.dest}/bundle.js`,
-            format: "iife"
+            format: "iife",
+            sourcemap: options.sourcemap
         }
     };
 
@@ -64,7 +65,7 @@ async function watch(options) {
     watchOptions.onwarn = function (warning) {
         console.warn(`Jolt Warning: ${warning.message}`);
         if (warning.loc) {
-            console.warn(`File: ${warning.loc.file}`);
+            console.warn(`File: ${warning.id}`);
             console.warn(`Line: ${warning.loc.line}, Column: ${warning.loc.column}`);
             if (warning.frame) { console.warn(warning.frame); }
         }
@@ -80,7 +81,7 @@ async function watch(options) {
             case "ERROR":
                 console.error(`\nJolt StackTrace: ${event.error.message}`);
                 if (event.error.loc) {
-                    console.error(`File: ${event.error.loc.file}`);
+                    console.error(`File: ${event.error.id}`);
                     console.error(`Line: ${event.error.loc.line}, Column: ${event.error.loc.column}`);
                     if (event.error.frame) { console.warn(event.error.frame); }
                 }

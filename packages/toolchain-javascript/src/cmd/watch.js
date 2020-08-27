@@ -60,7 +60,8 @@ async function watch(options) {
         },
         out: {
             file: `${options.dest}/bundle.js`,
-            format: "iife"
+            format: "iife",
+            sourcemap: options.sourcemap
         }
     };
 
