@@ -13,6 +13,6 @@ function App() {
     `;
 }
 
-Component.register("app-root", App);
+Component.register("app-root", App, { disableShadowDOM: true });
 
 render(App, document.body);

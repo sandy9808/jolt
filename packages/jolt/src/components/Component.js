@@ -14,14 +14,11 @@ import { Compiler } from "../common/Compiler";
  */
 export class Component extends HTMLElement {
 
-    /**
-     * @param {ComponentOptions} [options] 
-     */
-    constructor(options = {}) {
+    constructor() {
         super();
 
         /** @type {ShadowRoot} */
-        this.root = options.disableShadowDOM ? this : this.attachShadow({ mode: "open" });
+        this.root = this.constructor.options.disableShadowDOM ? this : this.attachShadow({ mode: "open" });
 
         /** @type {State} */
         this.state = State.create(() => {
@@ -92,9 +89,11 @@ export class Component extends HTMLElement {
      * Regsiters a Component to make it available as an HTML element.
      * @param {string} selector - The Component's selector.
      * @param {CustomElementConstructor|Function} component - The Component to register.
+     * @param {ComponentOptions} [options] - The Component Options
      */
-    static register(selector, component) {
+    static register(selector, component, options={}) {
         component.selector = selector;
+        component.options = options;
 
         if (component.register) {
             window.customElements.define(selector, component);

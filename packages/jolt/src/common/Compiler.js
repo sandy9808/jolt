@@ -115,6 +115,8 @@ export class Compiler {
 
             constructor() {
                 super();
+
+                this.root = component.options.disableShadowDOM ? this : this.attachShadow({ mode: "open" });
                 
                 /* parse the attributes */
                 this.attribs = {};
@@ -124,13 +126,13 @@ export class Compiler {
             }
 
             connectedCallback() {
-                Compiler.compile(component(this.attribs), this);
+                Compiler.compile(component(this.attribs), this.root);
 
                 /* monitor the components attributes for changes */
-                this._attributeObserver = Compiler.createAttributeObserver(this, (name, newValue) => {
+                this._attributeObserver = Compiler.createAttributeObserver(this.root, (name, newValue) => {
                     this.attribs[name] = newValue;
 
-                    Compiler.compile(component(this.attribs), this);
+                    Compiler.compile(component(this.attribs), this.root);
                 });
             }
 
