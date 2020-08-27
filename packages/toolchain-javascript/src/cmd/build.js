@@ -1,5 +1,6 @@
 /* imports */
 import { rollup } from "rollup";
+import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import url from "@rollup/plugin-url";
@@ -16,6 +17,19 @@ async function build(options) {
     const input = {
         input: options.main,
         plugins: [
+            babel({
+                babelHelpers: "bundled",
+                exclude: "node_modules/**",
+                presets: [
+                    [
+                        "@babel/preset-env",
+                        {
+                            "targets": options.targets
+                        }
+                    ]
+                ],
+                plugins: ["@babel/plugin-proposal-class-properties"]
+            }),
             resolve(),
             commonjs(),
             url({

@@ -33,7 +33,11 @@
     "author": "Outwalk Studios <support@outwalkstudios.com> (https://www.outwalkstudios.com/)",
     "license": "MIT",
     "dependencies": {
+        "@babel/core": "^7.11.4",
+        "@babel/plugin-proposal-class-properties": "^7.10.4",
+        "@babel/preset-env": "^7.11.0",
         "@jolt/server": "^4.4.0",
+        "@rollup/plugin-babel": "^5.2.0",
         "@rollup/plugin-commonjs": "^15.0.0",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^9.0.0",
