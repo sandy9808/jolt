@@ -23,11 +23,8 @@ async function update() {
         }
 
         try {
-            console.log(0);
             await updateConfig(config);
-            console.log(1);
             if(!File.isFilePath(config.toolchain)) {
-                console.log(2);
                 await updateToolchain(config.toolchain);
             }
 

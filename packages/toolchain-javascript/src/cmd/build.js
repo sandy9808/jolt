@@ -28,7 +28,8 @@ async function build(options) {
                         }
                     ]
                 ],
-                plugins: ["@babel/plugin-proposal-class-properties"]
+                plugins: ["@babel/plugin-proposal-class-properties"],
+                sourceMaps: options.sourcemap
             }),
             resolve(),
             commonjs(),

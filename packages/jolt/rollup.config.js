@@ -1,4 +1,5 @@
 /* imports */
+import babel from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 
 /* build config */
@@ -10,6 +11,19 @@ export default {
         { file: "dist/jolt.umd.js", format: "umd", name: "Jolt" }
     ],
     plugins: [
+        babel({
+            babelHelpers: "bundled",
+            exclude: "node_modules/**",
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": "> 1.5%, not dead"
+                    }
+                ]
+            ],
+            plugins: ["@babel/plugin-proposal-class-properties"]
+        }),
         terser({
             output: {
                 preamble: "/* Copyright (c) 2020 Outwalk Studios */"
