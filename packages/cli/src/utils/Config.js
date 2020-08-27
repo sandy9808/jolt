@@ -28,7 +28,7 @@ export class Config {
      */
     static loadToolchain(config) {
         const toolchain = (config.toolchain.startsWith("./")) ? path.join(process.cwd(), config.toolchain) : config.toolchain;
-        const toolchainPath = (path.isAbsolute(toolchain)) ? path.join(process.cwd(), toolchain) : path.join(process.cwd(), "node_modules", toolchain);
+        const toolchainPath = (path.isAbsolute(toolchain)) ? toolchain : path.join(process.cwd(), "node_modules", toolchain);
 
         if(config.toolchain && fs.existsSync(toolchainPath)) return import(require.resolve(toolchain, { paths: [ process.cwd() ] }));
         else return null;
