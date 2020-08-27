@@ -15,7 +15,7 @@ export class ProjectGenerator {
      * @param {string} name - The project name.
      * @param {Object} options - The generation options.
      */
-    constructor(name, options = {}) {
+    constructor(name) {
         this.project = { 
             name: name,
             dest: path.join(process.cwd(), name),

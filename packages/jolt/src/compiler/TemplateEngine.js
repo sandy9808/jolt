@@ -4,12 +4,12 @@
  * @param {Array.<Function>} events - The array of events to be bound to the elements.
  */
 
- /**
-  * Templating Engine for components.
-  * @class
-  * @private
-  */
- export class TemplateEngine {
+/**
+ * Templating Engine for components.
+ * @class
+ * @private
+ */
+export class TemplateEngine {
 
     /**
      * Creates a Template to be processed.
@@ -97,4 +97,4 @@
 
         return template.content;
     }
- }
+}

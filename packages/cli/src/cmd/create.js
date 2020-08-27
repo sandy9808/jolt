@@ -7,7 +7,7 @@ import { ProjectGenerator } from "../modules/ProjectGenerator";
  * @private
  */
 function create(args) {
-    new ProjectGenerator(args._[1], args).create();
+    new ProjectGenerator(args._[1]).create();
 }
 
 export default create;
