@@ -33,8 +33,6 @@ You can generate a project using the `create` command and optionally supply a te
 jolt create <options>
 ```
 
-The available templates by default are `javascript` and `typescript`. If no template is supplied the javascript template is used.
-
 ### Building A Project
 
 You can build the project by using the `build` command or the `watch` command.

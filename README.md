@@ -95,6 +95,7 @@ Components are the building blocks to your application, There are two types of c
 <strong>NOTICE:</strong> 
 - Component names are required to have hyphen in the name in order to not conflict with standardized HTML elements.
 - Components must be registerd with an element name in order to be available to use.
+- Components make use of the [ShadowDOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM), this can be disabled by passing `{ disableShadowDOM: true }` as a third argument to `Component.register`.
 
 ### Function Components
 
@@ -122,27 +123,6 @@ When you are building a component that needs state management or lifecycle metho
 import { Component, html } from "jolt";
 
 class HelloWorld extends Component {
-
-    render() {
-        return html`
-            <h1>Hello World!</h1>
-        `;
-    }
-}
-
-Component.register("hello-world", HelloWorld);
-```
-
-Class Components make use of the [ShadowDOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM), in order to disable this, you can pass a set of options into the components super constructor.
-
-```js
-import { Component, html } from "jolt";
-
-class HelloWorld extends Component {
-
-    constructor() {
-        super({ disableShadowDOM: true });
-    }
 
     render() {
         return html`
