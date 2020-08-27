@@ -21,9 +21,15 @@ async function update() {
             console.error(`Unable to find "toolchain" in jolt.json`);
             return;
         }
+
         try {
+            console.log(0);
             await updateConfig(config);
-            await updateToolchain(config.toolchain);
+            console.log(1);
+            if(!File.isFilePath(config.toolchain)) {
+                console.log(2);
+                await updateToolchain(config.toolchain);
+            }
 
             console.log("Successfully updated your project.");
         } catch {
@@ -51,6 +57,8 @@ function updateConfig(config) {
                     config[field] = templateConfig[field];
                 }
             }
+
+            File.writeJSON(path.join(process.cwd(), "jolt.json"), config);
 
             resolve();
         } catch {

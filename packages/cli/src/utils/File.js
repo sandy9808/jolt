@@ -24,7 +24,7 @@ export class File {
      * @param {Object} data 
      */
     static writeJSON(filename, data) {
-        fs.writeFileSync(filename, JSON.stringify(data));
+        fs.writeFileSync(filename, JSON.stringify(data, null, 4));
     }
 
     /**
@@ -90,5 +90,14 @@ export class File {
 
             fs.rmdirSync(directory);
         }
+    }
+
+    /**
+     * Checks if a string is a filepath without attempting to load it.
+     * @param {string} filepath - The file path to check.
+     * @return {boolean};
+     */
+    static isFilePath(filepath) {
+        return (filepath.includes("/") && !filepath.startsWith("@"));
     }
 }
