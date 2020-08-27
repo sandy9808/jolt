@@ -26,7 +26,7 @@ declare abstract class Component<S> extends HTMLElement {
 
     private connectedCallback(): void;
     private disconnectedCallback(): void;
-
+    
     abstract render(attribs?: Attributes): Template;
 
     didLoad(): void;

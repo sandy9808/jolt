@@ -1,5 +1,7 @@
 /* imports */
-import { Compiler } from "./common/Compiler";
+import { TemplateEngine } from "./compiler/TemplateEngine";
+import { Reconciler } from "./compiler/Reconciler";
+
 
 /**
  * Creates a Template to be rendered.
@@ -8,7 +10,7 @@ import { Compiler } from "./common/Compiler";
  * @return {Template}
  */
 export function html(strings, ...values) {
-    return Compiler.createTemplate(strings, values);
+    return TemplateEngine.createTemplate(strings, values);
 }
 
 /**
@@ -18,11 +20,11 @@ export function html(strings, ...values) {
  */
 export function render(component, container) {
     if(component.selector) {
-        Compiler.compile(html`<${component.selector}></${component.selector}>`, container);
+        Reconciler.reconcil(html`<${component.selector}></${component.selector}>`, container);
     } else {
         console.warn("Jolt: Component has not been registered!");
     }
 }
 
-export { State } from "./common/State";
+export { State } from "./components/State";
 export { Component } from "./components/Component";

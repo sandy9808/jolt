@@ -1,6 +1,7 @@
 /* imports */
-import { State } from "../common/State";
-import { Compiler } from "../common/Compiler";
+import { State } from "./State";
+import { Compiler } from "../compiler/Compiler";
+import { Reconciler } from "../compiler/Reconciler";
 
 /**
  * @typedef {Object} ComponentOptions
@@ -22,7 +23,7 @@ export class Component extends HTMLElement {
 
         /** @type {State} */
         this.state = State.create(() => {
-            Compiler.compile(this.render(this.attribs), this.root);
+            Reconciler.reconcil(this.render(this.attribs), this.root);
             this.didUpdate();
         });
 
@@ -39,14 +40,14 @@ export class Component extends HTMLElement {
      * @ignore
      */
     connectedCallback() {
-        Compiler.compile(this.render(this.attribs), this.root);
+        Reconciler.reconcil(this.render(this.attribs), this.root);
         this.didLoad();
 
         /* monitor the components attributes for changes */
         this._attributeObserver = Compiler.createAttributeObserver(this, (name, newValue) => {
             this.attribs[name] = newValue;
 
-            Compiler.compile(this.render(this.attribs), this.root);
+            Reconciler.reconcil(this.render(this.attribs), this.root);
             this.didUpdate();
         });
     }
