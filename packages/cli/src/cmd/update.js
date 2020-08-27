@@ -47,7 +47,7 @@ function updateConfig(config) {
             const templateKeys = Object.keys(templateConfig);
 
             for(let field of templateKeys) {
-                if(config[field] == undefined) {
+                if(typeof config[field] !== typeof templateConfig[field]) {
                     config[field] = templateConfig[field];
                 }
             }
