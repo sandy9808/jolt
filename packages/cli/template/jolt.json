@@ -3,5 +3,5 @@
     "dest": "public",
     "toolchain": "@jolt/toolchain-javascript",
     "targets": "> 1.5%, not dead",
-    "sourcemap": true
+    "sourcemap": false
 }
