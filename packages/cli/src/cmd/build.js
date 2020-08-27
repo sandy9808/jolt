@@ -31,7 +31,7 @@ async function build(args) {
             toolchain.build(Object.assign(config, args));
 
         } else {
-            console.error(`Failed to validate "jolt.json", please run "jolt update" to restore your config.`);
+            console.error(`Failed to validate "jolt.json", please run "jolt update" to fix your config.`);
         }
 
     } catch (error) {
