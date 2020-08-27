@@ -15,19 +15,24 @@ async function lint(args) {
             return;
         }
 
-        const toolchain = await Config.loadToolchain(config);
+        if (Config.validateConfig(config)) {
+            const toolchain = await Config.loadToolchain(config);
 
-        if (!toolchain) {
-            console.error(`Unable to find the toolchain specified in jolt.json`);
-            return;
+            if (!toolchain) {
+                console.error(`Unable to find the toolchain specified in jolt.json`);
+                return;
+            }
+
+            if (!toolchain.lint) {
+                console.error(`Toolchain does not expose a "lint" function.`);
+                return;
+            }
+
+            toolchain.lint(Object.assign(config, args));
+            
+        } else {
+            console.error(`Failed to validate "jolt.json", please run "jolt update" to restore your config.`);
         }
-
-        if(!toolchain.lint) {
-            console.error(`Toolchain does not expose a "lint" function.`);
-            return;
-        }
-
-        toolchain.lint(Object.assign(config, args));
 
     } catch (error) {
         console.error(error.message);

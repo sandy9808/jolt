@@ -10,24 +10,29 @@ async function serve(args) {
     try {
         const config = Config.loadConfig();
 
-        if(!config) {
+        if (!config) {
             console.error("The serve command can only be run inside a jolt workspace.");
             return;
         }
 
-        const toolchain = await Config.loadToolchain(config);
+        if (Config.validateConfig(config)) {
+            const toolchain = await Config.loadToolchain(config);
 
-        if(!toolchain) {
-            console.error(`Unable to find the toolchain specified in jolt.json`);
-            return;
+            if (!toolchain) {
+                console.error(`Unable to find the toolchain specified in jolt.json`);
+                return;
+            }
+
+            if (!toolchain.serve) {
+                console.error(`Toolchain does not expose a "serve" function.`);
+                return;
+            }
+
+            toolchain.serve(Object.assign(config, args));
+            
+        } else {
+            console.error(`Failed to validate "jolt.json", please run "jolt update" to restore your config.`);
         }
-
-        if(!toolchain.serve) {
-            console.error(`Toolchain does not expose a "serve" function.`);
-            return;
-        }
-
-        toolchain.serve(Object.assign(config, args));
 
     } catch (error) {
         console.error(error.message);
