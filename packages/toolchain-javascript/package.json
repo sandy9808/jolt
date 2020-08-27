@@ -33,7 +33,7 @@
     "author": "Outwalk Studios <support@outwalkstudios.com> (https://www.outwalkstudios.com/)",
     "license": "MIT",
     "dependencies": {
-        "@jolt/server": "^4.3.0",
+        "@jolt/server": "^4.4.0",
         "@rollup/plugin-commonjs": "^15.0.0",
         "@rollup/plugin-json": "^4.1.0",
         "@rollup/plugin-node-resolve": "^9.0.0",
