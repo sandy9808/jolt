@@ -33,7 +33,7 @@ declare abstract class Component<S> extends HTMLElement {
     didUpdate(): void;
     willUnload(): void;
 
-    static register(selector: string, component: CustomElementConstructor|Function, options?: ComponentOptions): void;
+    static register(selector: string, component: CustomElementConstructor|Function): void;
 }
 
 interface Template {

@@ -47,7 +47,7 @@ export class Compiler {
             constructor() {
                 super();
 
-                this.root = component.options.disableShadowDOM ? this : this.attachShadow({ mode: "open" });
+                this.root = this.attachShadow({ mode: "open" });
                 
                 /* parse the attributes */
                 this.attribs = {};

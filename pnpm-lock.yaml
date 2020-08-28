@@ -81,7 +81,7 @@ importers:
       '@babel/core': 7.11.4
       '@babel/plugin-proposal-class-properties': 7.10.4_@babel+core@7.11.4
       '@babel/preset-env': 7.11.0_@babel+core@7.11.4
-      '@jolt/server': 4.4.0
+      '@jolt/server': 4.7.0
       '@rollup/plugin-babel': 5.2.0_@babel+core@7.11.4+rollup@2.26.6
       '@rollup/plugin-commonjs': 15.0.0_rollup@2.26.6
       '@rollup/plugin-json': 4.1.0_rollup@2.26.6
@@ -96,7 +96,7 @@ importers:
       '@babel/core': ^7.11.4
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.0
-      '@jolt/server': ^4.4.0
+      '@jolt/server': ^4.7.0
       '@rollup/plugin-babel': ^5.2.0
       '@rollup/plugin-commonjs': ^15.0.0
       '@rollup/plugin-json': ^4.1.0
@@ -109,7 +109,7 @@ importers:
       rollup-plugin-terser: ^7.0.0
   packages/toolchain-typescript:
     dependencies:
-      '@jolt/server': 4.4.0
+      '@jolt/server': 4.7.0
       '@rollup/plugin-commonjs': 15.0.0_rollup@2.26.6
       '@rollup/plugin-json': 4.1.0_rollup@2.26.6
       '@rollup/plugin-node-resolve': 9.0.0_rollup@2.26.6
@@ -132,7 +132,7 @@ importers:
       '@babel/core': ^7.11.4
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.0
-      '@jolt/server': ^4.4.0
+      '@jolt/server': ^4.7.0
       '@rollup/plugin-babel': ^5.2.0
       '@rollup/plugin-commonjs': ^15.0.0
       '@rollup/plugin-json': ^4.1.0
@@ -927,7 +927,7 @@ packages:
       '@babel/plugin-transform-typeof-symbol': 7.10.4_@babel+core@7.11.4
       '@babel/plugin-transform-unicode-escapes': 7.10.4_@babel+core@7.11.4
       '@babel/plugin-transform-unicode-regex': 7.10.4_@babel+core@7.11.4
-      '@babel/preset-modules': 0.1.3_@babel+core@7.11.4
+      '@babel/preset-modules': 0.1.4_@babel+core@7.11.4
       '@babel/types': 7.11.0
       browserslist: 4.14.0
       core-js-compat: 3.6.5
@@ -938,7 +938,7 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-2u1/k7rG/gTh02dylX2kL3S0IJNF+J6bfDSp4DI2Ma8QN6Y9x9pmAax59fsCk6QUQG0yqH47yJWA+u1I1LccAg==
-  /@babel/preset-modules/0.1.3_@babel+core@7.11.4:
+  /@babel/preset-modules/0.1.4_@babel+core@7.11.4:
     dependencies:
       '@babel/core': 7.11.4
       '@babel/helper-plugin-utils': 7.10.4
@@ -949,7 +949,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     resolution:
-      integrity: sha512-Ra3JXOHBq2xd56xSF7lMKXdjBn3T772Y1Wet3yWnkDly9zHvJki029tAFzvAAK5cf4YV3yoxuP61crYRol6SVg==
+      integrity: sha512-J36NhwnfdzpmH41M1DrnkkgAqhZaqr/NBdPfQ677mLzlaXo+oDiv1deyCDtgAhz8p328otdob0Du7+xgHGZbKg==
   /@babel/runtime/7.11.2:
     dependencies:
       regenerator-runtime: 0.13.7
@@ -982,11 +982,11 @@ packages:
       to-fast-properties: 2.0.0
     resolution:
       integrity: sha512-O53yME4ZZI0jO1EVGtF1ePGl0LHirG4P1ibcD80XyzZcKhcMFeCXmh4Xb1ifGBIV233Qg12x4rBfQgA+tmOukA==
-  /@jolt/server/4.4.0:
+  /@jolt/server/4.7.0:
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-yqQi0lbWLroF/qYxihlj/lyLhQCqvHvjSrYF3e6ihierRVeczi3tCTgB2XcmxcaUmoFw3laei+B9MdL9T1fZxw==
+      integrity: sha512-RzuL65UlMsPQZZSH2361cwFMJu3Ay5eWgeX1sXRjeDyOvhtvfh3mvf0ok/uXrCyGLqtTcPqdjwvAOn4g9Id3gQ==
   /@rollup/plugin-babel/5.2.0_@babel+core@7.11.4+rollup@2.26.6:
     dependencies:
       '@babel/core': 7.11.4
@@ -1072,7 +1072,7 @@ packages:
       integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
   /@types/clean-css/4.2.2:
     dependencies:
-      '@types/node': 14.6.0
+      '@types/node': 14.6.1
     dev: false
     resolution:
       integrity: sha512-xiTJn3bmDh1lA8c6iVJs4ZhHw+pcmxXlJQXOB6G1oULaak8rmarIeFKI4aTJ7849dEhaO612wgIualZfbxTJwA==
@@ -1102,16 +1102,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-7+2BITlgjgDhH0vvwZU/HZJVyk+2XUlvxXe8dFMedNX/aMkaOq++rMAFXc0tM7ij15QaWlbdQASBR9dihi+bDQ==
-  /@types/node/14.6.0:
+  /@types/node/14.6.1:
     resolution:
-      integrity: sha512-mikldZQitV94akrc4sCcSjtJfsTKt4p+e/s0AGscVA6XArQ9kFclP+ZiYUMnq987rc6QlYxXv/EivqlfSLxpKA==
+      integrity: sha512-HnYlg/BRF8uC1FyKRFZwRaCPTPYKa+6I8QiUZFLredaGOou481cgFS4wKRFyKvQtX8xudqkSdBczJHIYSQYKrQ==
   /@types/relateurl/0.2.28:
     dev: false
     resolution:
       integrity: sha1-a9p9uGU/piZD9e5p6facEaOS46Y=
   /@types/resolve/1.17.1:
     dependencies:
-      '@types/node': 14.6.0
+      '@types/node': 14.6.1
     dev: false
     resolution:
       integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==
@@ -1293,7 +1293,7 @@ packages:
   /browserslist/4.14.0:
     dependencies:
       caniuse-lite: 1.0.30001118
-      electron-to-chromium: 1.3.550
+      electron-to-chromium: 1.3.552
       escalade: 3.0.2
       node-releases: 1.1.60
     engines:
@@ -1426,9 +1426,9 @@ packages:
       node: '>=6.0.0'
     resolution:
       integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
-  /electron-to-chromium/1.3.550:
+  /electron-to-chromium/1.3.552:
     resolution:
-      integrity: sha512-MWDHoJsSieBaJ6mObvi3V0eKZufR1iMJl56VIGdXCgFHyCUbVDGm2IMXUNjDxgbGbKa3tA5+zJmHuBQqRxGiLA==
+      integrity: sha512-8K28xz8WRBZw/tmP7W3bTC3M5RI58QyS4O7uX7m2zxLKniMO79CNg5wkuRw2Qya621Cuqa3pCGs3FHZptltB1Q==
   /emoji-regex/7.0.3:
     resolution:
       integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
@@ -1786,7 +1786,7 @@ packages:
       integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
   /jest-worker/26.3.0:
     dependencies:
-      '@types/node': 14.6.0
+      '@types/node': 14.6.1
       merge-stream: 2.0.0
       supports-color: 7.1.0
     engines:

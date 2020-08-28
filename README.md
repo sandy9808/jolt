@@ -95,7 +95,7 @@ Components are the building blocks to your application, There are two types of c
 <strong>NOTICE:</strong> 
 - Component names are required to have hyphen in the name in order to not conflict with standardized HTML elements.
 - Components must be registerd with an element name in order to be available to use.
-- Components make use of the [ShadowDOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM), this can be disabled by passing `{ disableShadowDOM: true }` as a third argument to `Component.register`.
+- Components make use of the [ShadowDOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM).
 
 ### Function Components
 
