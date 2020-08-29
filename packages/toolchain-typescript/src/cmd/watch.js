@@ -18,6 +18,13 @@ async function watch(options) {
         in: {
             input: options.main,
             plugins: [
+                minifyTemplate({
+                    options: {
+                        minifyOptions: {
+                            keepClosingSlash: true
+                        }
+                    }
+                }),
                 typescript(),
                 resolve(),
                 commonjs(),
@@ -35,13 +42,6 @@ async function watch(options) {
                 }),
                 css({
                     output: `${options.dest}/bundle.css`
-                }),
-                minifyTemplate({
-                    options: {
-                        minifyOptions: {
-                            keepClosingSlash: true
-                        }
-                    }
                 }),
                 terser(),
             ]

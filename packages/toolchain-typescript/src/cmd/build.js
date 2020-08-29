@@ -17,6 +17,13 @@ async function build(options) {
     const input = {
         input: options.main,
         plugins: [
+            minifyTemplate({
+                options: {
+                    minifyOptions: {
+                        keepClosingSlash: true
+                    }
+                }
+            }),
             typescript(),
             resolve(),
             commonjs(),
@@ -34,13 +41,6 @@ async function build(options) {
             }),
             css({
                 output: `${options.dest}/bundle.css`
-            }),
-            minifyTemplate({
-                options: {
-                    minifyOptions: {
-                        keepClosingSlash: true
-                    }
-                }
             }),
             terser(),
         ]
