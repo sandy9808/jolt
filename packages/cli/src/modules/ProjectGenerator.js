@@ -81,7 +81,7 @@ export class ProjectGenerator {
      */
     _installDependencies() {
         return new Promise((resolve, reject) => {
-            const thread = spawn("npm", ["install", "--save"].concat(this.project.packages), {
+            const thread = spawn(/^win/.test(process.platform()) ? "npm.cmd" : "npm", ["install", "--save"].concat(this.project.packages), {
                 cwd: this.project.dest,
                 stdio: ["ignore", 1, 2]
             });
@@ -99,7 +99,7 @@ export class ProjectGenerator {
      */
     _installDevDependencies() {
         return new Promise((resolve, reject) => {
-            const thread = spawn("npm", ["install", "--save-dev"].concat(this.project.devPackages), {
+            const thread = spawn(/^win/.test(process.platform()) ? "npm.cmd" : "npm", ["install", "--save-dev"].concat(this.project.devPackages), {
                 cwd: this.project.dest,
                 stdio: ["ignore", 1, 2]
             });
