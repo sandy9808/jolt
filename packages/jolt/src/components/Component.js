@@ -1,7 +1,12 @@
 /* imports */
-import { State } from "./State";
-import { Compiler } from "../compiler/Compiler";
-import { Reconciler } from "../compiler/Reconciler";
+import { Reconciler } from "../runtime/Reconciler";
+
+/**
+ * @typedef {Object} ComponentOptions
+ * @property {string} name
+ * @property {boolean} [useShadow=true]
+ * @property {string|Array.<string>} [styles]
+ */
 
 /**
  * Creates a Class Component with state management and lifecycle methods.
@@ -14,19 +19,13 @@ export class Component extends HTMLElement {
         super();
 
         /** @type {ShadowRoot} */
-        this.root = this.attachShadow({ mode: "open" });
-
-        /** @type {State} */
-        this.state = State.create(() => {
-            Reconciler.reconcil(this.render(this.attribs), this.root);
-            this.didUpdate();
-        });
+        this.root = (this.constructor.options.useShadow) ? this.attachShadow({ mode: "open" }) : this;
 
         /** @type {Object.<string, string>} */
         this.attribs = {};
 
-        for (let attrib of this.attributes) {
-            this.attribs[attrib.localName] = attrib.value;
+        for (let attribute of this.attributes) {
+            this.attribs[attribute.localName] = attribute.value;
         }
     }
 
@@ -35,16 +34,8 @@ export class Component extends HTMLElement {
      * @ignore
      */
     connectedCallback() {
-        Reconciler.reconcil(this.render(this.attribs), this.root);
+        Reconciler.reconcile(this.render(this.attribs), this.root);
         this.didLoad();
-
-        /* monitor the components attributes for changes */
-        this._attributeObserver = Compiler.createAttributeObserver(this, (name, newValue) => {
-            this.attribs[name] = newValue;
-
-            Reconciler.reconcil(this.render(this.attribs), this.root);
-            this.didUpdate();
-        });
     }
 
     /**
@@ -53,7 +44,6 @@ export class Component extends HTMLElement {
      */
     disconnectedCallback() {
         this.willUnload();
-        this._attributeObserver.disconnect();
     }
 
     /**
@@ -82,18 +72,13 @@ export class Component extends HTMLElement {
     willUnload() { }
 
     /**
-     * Regsiters a Component to make it available as an HTML element.
-     * @param {string} selector - The Component's selector.
-     * @param {CustomElementConstructor|Function} component - The Component to register.
+     * Registers a Component to make it available as an HTMLElement.
+     * @param {ComponentOptions} options,
+     * @param {CustomElementConstructor|Function} component
      */
-    static register(selector, component) {
-        component.selector = selector;
-
-        if (component.register) {
-            window.customElements.define(selector, component);
-        } else {
-            window.customElements.define(selector, Compiler.wrap(component));
-        }
+    static register(options, component) {
+        component.selector = options.name;
+        component.options = options;
+        window.customElements.define(options.name, component);
     }
-
 }

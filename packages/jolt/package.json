@@ -1,11 +1,10 @@
 {
   "name": "jolt",
-  "version": "4.8.0",
+  "version": "5.0.0",
   "description": "A JavaScript framework for building lightning fast web apps",
   "main": "dist/jolt.cjs.js",
   "module": "dist/jolt.esm.js",
   "browser": "dist/jolt.umd.js",
-  "unpkg": "dist/jolt.umd.js",
   "types": "types/jolt.d.ts",
   "scripts": {
     "build": "rollup -c",
@@ -44,12 +43,12 @@
   "author": "Outwalk Studios <support@outwalkstudios.com> (https://www.outwalkstudios.com/)",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.11.4",
+    "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-env": "^7.11.5",
     "@rollup/plugin-babel": "^5.2.0",
-    "eslint": "^7.7.0",
-    "rollup": "^2.26.6",
-    "rollup-plugin-terser": "^6.1.0"
+    "eslint": "^7.8.1",
+    "rollup": "^2.26.9",
+    "rollup-plugin-terser": "^7.0.1"
   }
 }
