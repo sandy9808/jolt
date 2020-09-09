@@ -22,7 +22,7 @@ export class TemplateEngine {
         let events = [];
 
         /* piece together the template strings with the template values */
-        const source = strings.reduce((combined, string, i) => {
+        let source = strings.reduce((combined, string, i) => {
             let value = values[i];
             if (value == undefined) value = "";
 
@@ -53,7 +53,6 @@ export class TemplateEngine {
                 }
 
                 return combined + string + html;
-
             }
 
             /* else add the string with its value to the Template */
@@ -62,9 +61,11 @@ export class TemplateEngine {
             }
         }, "");
 
+        const selfClosingRegex = /<([a-z]+-[a-z]+)([^/>]*)\/>/g;
+
         /* if the source has a self closing web component, change it to a closing web component */
-        if (source.match(/<([a-z]+-[a-z]+)([^/>]*)\/>/g)) {
-            source = source.replace(/<([a-z]+-[a-z]+)([^/>]*)\/>/g, `<$1$2></$1>`);
+        if (selfClosingRegex.test(source)) {
+            source = source.replace(selfClosingRegex, `<$1$2></$1>`);
         }
 
         template.innerHTML = source;
@@ -78,27 +79,30 @@ export class TemplateEngine {
      * @return {DocumentFragment}
      */
     static processTemplate({ template, events }) {
-        const walker = document.createTreeWalker(template.content, 1);
 
-        let currentNode = walker.nextNode();
-        let index = 0;
+        if (events.length > 0) {
+            const walker = document.createTreeWalker(template.content, 1);
 
-        while (currentNode) {
-            if (currentNode.attributes) {
-                for (let i = 0; i < currentNode.attributes.length; i++) {
-                    const event = events[index];
-                    const attribute = currentNode.attributes[i];
+            let currentNode = walker.nextNode();
+            let index = 0;
 
-                    if (attribute.value.match(/{{e}}/)) {
-                        currentNode.addEventListener(attribute.localName.slice(2), event);
-                        currentNode.removeAttribute(attribute.localName);
-                        index++;
-                        i--;
+            while (currentNode) {
+                if (currentNode.attributes) {
+                    for (let i = 0; i < currentNode.attributes.length; i++) {
+                        const event = events[index];
+                        const attribute = currentNode.attributes[i];
+
+                        if (attribute.value == "{{e}}") {
+                            currentNode.addEventListener(attribute.localName.slice(2), event);
+                            currentNode.removeAttribute(attribute.localName);
+                            index++;
+                            i--;
+                        }
                     }
                 }
-            }
 
-            currentNode = walker.nextNode();
+                currentNode = walker.nextNode();
+            }
         }
 
         return template.content;
@@ -121,4 +125,14 @@ export class TemplateEngine {
     static isTemplateArray(value) {
         return (Array.isArray(value) && value[0] && value.template && value.events);
     }
+}
+
+/**
+ * Creates a {@link Template} to be rendered.
+ * @param {TemplateStringsArray} strings 
+ * @param  {...*} values
+ * @return {Template}
+ */
+export function html(strings, ...values) {
+    return TemplateEngine.createTemplate(strings, values);
 }
