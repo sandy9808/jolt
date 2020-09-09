@@ -1,32 +1,32 @@
 /* imports */
+import { Runtime } from "../runtime/Runtime";
 import { Reconciler } from "../runtime/Reconciler";
+import { html } from "../runtime/TemplateEngine";
 
 /**
- * @typedef {Object} ComponentOptions
- * @property {string} name
- * @property {boolean} [useShadow=true]
- * @property {string|Array.<string>} [styles]
- */
-
-/**
- * Creates a Class Component with state management and lifecycle methods.
+ * Component for building reusable pieces of a UI.
  * @class
- * @extends HTMLElement
+ * @extends {HTMLElement}
  */
 export class Component extends HTMLElement {
 
     constructor() {
         super();
 
-        /** @type {ShadowRoot} */
-        this.root = (this.constructor.options.useShadow) ? this.attachShadow({ mode: "open" }) : this;
+        /* load the component options */
+        const { useShadow } = Runtime.getComponentOptions(this.constructor);
 
-        /** @type {Object.<string, string>} */
-        this.attribs = {};
-
-        for (let attribute of this.attributes) {
-            this.attribs[attribute.localName] = attribute.value;
-        }
+        /**
+         * The component attributes
+         * @type {Object.<string,string>}
+         */
+        this.attribs = Runtime.getComponentAttributes(this);
+        
+        /** 
+         * The component render root
+         * @type {ShadowRoot|HTMLElement}
+         */
+        this.root = useShadow ? this.attachShadow({ mode: "open" }) : this;
     }
 
     /**
@@ -46,39 +46,50 @@ export class Component extends HTMLElement {
         this.willUnload();
     }
 
-    /**
-     * Renders the Component.
-     * @abstract
-     * @return {Template}
-     */
-    render() { }
+    /* returns the components template */
+    render() {}
 
-    /**
-     * Component lifecycle method for being added to the DOM.
-     * @abstract
-     */
-    didLoad() { }
+    /* gets called when the component is finished being added to the DOM */
+    didLoad() {}
 
-    /**
-     * Component lifecycle method for when the {@link State} is updated.
-     * @abstract
-     */
-    didUpdate() { }
+    /* gets called when the component is updated */
+    didUpdate(key, value) {}
 
-    /**
-     * Component lifecycle method for being removed from the DOM.
-     * @abstract
-     */
-    willUnload() { }
+    /* gets called before updating the state, to determine if the dom should be updated or not */
+    shouldUpdate(key, value) {
+        return true;
+    }
 
-    /**
-     * Registers a Component to make it available as an HTMLElement.
-     * @param {ComponentOptions} options,
-     * @param {CustomElementConstructor|Function} component
-     */
-    static register(options, component) {
+    /* gets called when the component is about to be removed from the DOM & memory */
+    willUnload() {}
+
+    /* creates a component with the options and component definition, making it usable */
+    static create(options, component) {
+        if(!options.name) {
+            console.warn("Jolt: ComponentOptions.name is required.");
+            return;
+        }
+
         component.selector = options.name;
-        component.options = options;
-        window.customElements.define(options.name, component);
+        component.options = Object.assign({
+            useShadow: true
+        }, options);
+
+        if(component.constructor instanceof Component) {
+            window.customElements.define(options.name, component);
+        } else if(component.constructor instanceof Function) {
+            window.customElements.define(options.name, Runtime.wrapFunction(component));
+        } else {
+            console.error("Jolt: Unsupported Component Definition.");
+        }
+    }
+
+    /* mounts a component to a container element */
+    static mount(component, container) {
+        if(component.selector) {
+            Reconciler.reconcile(html`<${component.selector}></${component.selector}>`, container);
+        } else {
+            console.warn(`Jolt: Components must be created with "Component.create".`);
+        }
     }
 }
