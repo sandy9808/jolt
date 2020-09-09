@@ -123,7 +123,7 @@ export class TemplateEngine {
      * @return {boolean}
      */
     static isTemplateArray(value) {
-        return (Array.isArray(value) && value[0] && value.template && value.events);
+        return (Array.isArray(value) && value[0] && value[0].template && value[0].events);
     }
 }
 
