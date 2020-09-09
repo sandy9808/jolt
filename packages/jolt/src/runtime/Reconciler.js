@@ -31,7 +31,7 @@ export class Reconciler {
         else if (newNode.tagName !== oldNode.tagName) return newNode;
         else {
             Reconciler.diff(newNode, oldNode);
-            if(!newNode.tagName.includes("-")) Reconciler.diffChildren(newNode, oldNode);
+            if(newNode.tagName && !newNode.tagName.includes("-")) Reconciler.diffChildren(newNode, oldNode);
             return oldNode;
         }
     }
