@@ -17,7 +17,6 @@ export class Reconciler {
         const templateNode = TemplateEngine.processTemplate(template);
         Reconciler.diff(templateNode, container);
         Reconciler.diffChildren(templateNode, container);
-        
     }
 
     /**
@@ -32,7 +31,7 @@ export class Reconciler {
         else if (newNode.tagName !== oldNode.tagName) return newNode;
         else {
             Reconciler.diff(newNode, oldNode);
-            Reconciler.diffChildren(newNode, oldNode);
+            if(!newNode.tagName.includes("-")) Reconciler.diffChildren(newNode, oldNode);
             return oldNode;
         }
     }
@@ -87,6 +86,7 @@ export class Reconciler {
             }
         }
 
+        /* remove extra attributes found on the original DOM element that were not on the target element */
         length = oldAttributes.length - 1;
         for (let i = length; i >= 0; --i) {
             const attribute = oldAttributes[i];
@@ -118,20 +118,24 @@ export class Reconciler {
             const oldChild = oldNode.childNodes[i];
             const newChild = newNode.childNodes[i - offset];
 
+            /* if both nodes are empty, do nothing */
             if (!oldChild && !newChild) {
                 break;
             }
 
+            /* if there is no new child, remove the old child */
             else if (!newChild) {
                 oldNode.removeChild(oldChild);
                 i--;
             }
 
+            /* if there is no old child, add the new child */
             else if (!oldChild) {
                 oldNode.appendChild(newChild);
                 offset++;
             }
 
+            /* if both nodes are the same, see if they need updating */
             else if (Reconciler.isSameNode(newChild, oldChild)) {
                 const morphed = Reconciler.walk(newChild, oldChild);
                 if (morphed != oldChild) {
@@ -140,6 +144,7 @@ export class Reconciler {
                 }
             }
 
+            /* else both nodes do not share an ID or placeholder, try to rearrange them */
             else {
                 let oldMatch = null;
 
@@ -152,6 +157,14 @@ export class Reconciler {
                 }
 
                 if (oldMatch) {
+                    const morphed = Reconciler.walk(newChild, oldChild);
+                    if (morphed != oldMatch) {
+                        oldNode.replaceChild(morphed, oldChild);
+                        offset++;
+                    }
+                }
+
+                else if (!newChild.id && !oldChild.id) {
                     const morphed = Reconciler.walk(newChild, oldChild);
                     if (morphed != oldChild) {
                         oldNode.replaceChild(morphed, oldChild);
@@ -226,7 +239,9 @@ export class Reconciler {
             oldNode.value = newValue;
         }
 
-        oldNode.firstChild.nodeValue = newValue;
+        if (oldNode.firstChild && oldNode.firstChild.nodeValue != newValue) {
+            oldNode.firstChild.nodeValue = newValue;
+        }
     }
 
     /**
@@ -236,9 +251,9 @@ export class Reconciler {
      * @return {boolean}
      */
     static isSameNode(a, b) {
-        if(a.id) return (a.id == b.id);
-        if(a.tagName != b.tagName) return false;
-        if(a.type == 3) return (a.nodeValue == b.nodeValue);
+        if (a.id) return (a.id == b.id);
+        if (a.tagName != b.tagName) return false;
+        if (a.nodeType == 3) return (a.nodeValue == b.nodeValue);
         return false;
     }
 }
