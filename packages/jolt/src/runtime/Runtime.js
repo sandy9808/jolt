@@ -9,12 +9,24 @@ import { Reconciler } from "./Reconciler";
  */
 
 /**
+ * Observer Callback
+ * @callback ObserverCallback
+ * @param {string} [name]
+ * @param {string} [value]
+ */
+
+/**
  * Component Runtime, used to power the component internals.
  * @class
  * @private
  */
 export class Runtime {
 
+    /**
+     * Wraps a Function Component into a WebComponent class.
+     * @param {Function} component
+     * @return {CustomElementConstructor} 
+     */
     static wrapFunction(component) {
         return class extends HTMLElement {
 
@@ -39,6 +51,15 @@ export class Runtime {
 
             connectedCallback() {
                 Reconciler.reconcile(component(this.attribs), this.root);
+
+                this._observer = Runtime.getAttributeObserver(this.root, (name, value) => {
+                    this.attribs[name] = value;
+                    Reconciler.reconcile(component(this.attribs), this.root);
+                });
+            }
+
+            disconnectedCallback() {
+                this._observer.disconnect();
             }
         }
     }
@@ -71,5 +92,24 @@ export class Runtime {
         return attributes;
     }
 
-    static applyComponentStyles(component, styles) { }
+    /**
+     * Observes an elements attributes for changes.
+     * @param {HTMLElement} element 
+     * @param {ObserverCallback} callback
+     * @return {MutationObserver}
+     */
+    static getAttributeObserver(element, callback) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if(mutation.type == "attributes") {
+                    const name = mutation.attributeName;
+                    callback(name, mutation.target.getAttribute(name));
+                }
+            });
+        });
+
+        observer.observe(element, { attributes: true });
+
+        return observer;
+    }
 }

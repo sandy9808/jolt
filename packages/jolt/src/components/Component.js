@@ -2,6 +2,7 @@
 import { Runtime } from "../runtime/Runtime";
 import { Reconciler } from "../runtime/Reconciler";
 import { html } from "../runtime/TemplateEngine";
+import { State } from "./State";
 
 /**
  * Component for building reusable pieces of a UI.
@@ -27,6 +28,26 @@ export class Component extends HTMLElement {
          * @type {ShadowRoot|HTMLElement}
          */
         this.root = useShadow ? this.attachShadow({ mode: "open" }) : this;
+
+        /**
+         * The component state
+         * @type {State}
+         */
+        this.state = State.createState((key, value) => {
+            if(this.shouldUpdate(key, value)) {
+                Reconciler.reconcile(this.render(this.attribs), this.root);
+                this.didUpdate(key, value);
+            }
+        });
+
+        /* observe the component attributes for changes */
+        this._observer = Runtime.getAttributeObserver(this.root, (key, value) => {
+            this.attribs[key] = value;
+            if(this.shouldUpdate(key, value)) {
+                Reconciler.reconcile(component(this.attribs), this.root);
+                this.didUpdate(key, value);
+            }
+        });
     }
 
     /**
@@ -44,26 +65,51 @@ export class Component extends HTMLElement {
      */
     disconnectedCallback() {
         this.willUnload();
+        this._observer.disconnect();
     }
 
-    /* returns the components template */
+    /**
+     * Renders the Component.
+     * @param {Object.<string,string>} [attribs]
+     * @abstract
+     * @return {Template}
+     */
     render() {}
 
-    /* gets called when the component is finished being added to the DOM */
+    /**
+     * Component lifecycle method for being added to the DOM.
+     * @abstract
+     */
     didLoad() {}
 
-    /* gets called when the component is updated */
-    didUpdate(key, value) {}
+    /**
+     * Component lifecycle method for when the {@link State} or attributes change.
+     * @param {string} [key]
+     * @param {*} [value]
+     * @abstract
+     */
+    didUpdate() {}
 
-    /* gets called before updating the state, to determine if the dom should be updated or not */
-    shouldUpdate(key, value) {
+    /**
+     * Component lifecycle method for determining if the view should update or not.
+     * @param {string} [key] 
+     * @param {*} [value]
+     * @return {boolean} 
+     */
+    shouldUpdate() {
         return true;
     }
 
-    /* gets called when the component is about to be removed from the DOM & memory */
+    /**
+     * Component lifecycle method for being removed from the DOM.
+     */
     willUnload() {}
 
-    /* creates a component with the options and component definition, making it usable */
+    /**
+     * Registers a Component to make it available as an HTML element.
+     * @param {ComponentOptions} options
+     * @param {CustomElementConstructor|Function} component
+     */
     static create(options, component) {
         if(!options.name) {
             console.warn("Jolt: ComponentOptions.name is required.");
@@ -84,7 +130,11 @@ export class Component extends HTMLElement {
         }
     }
 
-    /* mounts a component to a container element */
+    /**
+     * Mounts the component to the container element.
+     * @param {CustomElementConstructor|Function} component 
+     * @param {HTMLElement} container 
+     */
     static mount(component, container) {
         if(component.selector) {
             Reconciler.reconcile(html`<${component.selector}></${component.selector}>`, container);
