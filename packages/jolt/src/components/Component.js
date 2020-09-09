@@ -121,12 +121,10 @@ export class Component extends HTMLElement {
             useShadow: true
         }, options);
 
-        if(component.constructor instanceof Component) {
+        if(component.create) {
             window.customElements.define(options.name, component);
-        } else if(component.constructor instanceof Function) {
+        } else{
             window.customElements.define(options.name, Runtime.wrapFunction(component));
-        } else {
-            console.error("Jolt: Unsupported Component Definition.");
         }
     }
 
