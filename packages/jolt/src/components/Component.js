@@ -39,15 +39,6 @@ export class Component extends HTMLElement {
                 this.didUpdate(key, value);
             }
         });
-
-        /* observe the component attributes for changes */
-        this._observer = Runtime.getAttributeObserver(this.root, (key, value) => {
-            this.attribs[key] = value;
-            if(this.shouldUpdate(key, value)) {
-                Reconciler.reconcile(component(this.attribs), this.root);
-                this.didUpdate(key, value);
-            }
-        });
     }
 
     /**
@@ -57,6 +48,16 @@ export class Component extends HTMLElement {
     connectedCallback() {
         Reconciler.reconcile(this.render(this.attribs), this.root);
         this.didLoad();
+
+        /* observe the component attributes for changes */
+        this._observer = Runtime.getAttributeObserver(this, (key, value) => {
+            this.attribs[key] = value;
+            
+            if(this.shouldUpdate(key, value)) {
+                Reconciler.reconcile(component(this.attribs), this.root);
+                this.didUpdate(key, value);
+            }
+        });
     }
 
     /**

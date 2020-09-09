@@ -65,7 +65,7 @@ export class Reconciler {
         const oldAttributes = oldNode.attributes;
 
         let length = newAttributes.length - 1;
-        for (let i = length - 1; i > - 0; --i) {
+        for (let i = length; i >= 0; --i) {
             const attribute = newAttributes[i];
             const name = attribute.localName;
             const value = attribute.value;

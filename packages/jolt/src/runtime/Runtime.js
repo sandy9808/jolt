@@ -52,8 +52,8 @@ export class Runtime {
             connectedCallback() {
                 Reconciler.reconcile(component(this.attribs), this.root);
 
-                this._observer = Runtime.getAttributeObserver(this.root, (name, value) => {
-                    this.attribs[name] = value;
+                this._observer = Runtime.getAttributeObserver(this, (key, value) => {
+                    this.attribs[key] = value;
                     Reconciler.reconcile(component(this.attribs), this.root);
                 });
             }
@@ -86,7 +86,7 @@ export class Runtime {
         const attributes = {};
 
         for (let attribute of component.attributes) {
-            attributes[attribute.localName] = attribute.value;
+            attributes[attribute.localName] = (attribute.value != "") ? attribute.value : true;
         }
 
         return attributes;
@@ -100,16 +100,15 @@ export class Runtime {
      */
     static getAttributeObserver(element, callback) {
         const observer = new MutationObserver((mutations) => {
-            mutations.forEach(mutation => {
+            for(let mutation of mutations) {
                 if(mutation.type == "attributes") {
                     const name = mutation.attributeName;
                     callback(name, mutation.target.getAttribute(name));
                 }
-            });
+            }
         });
 
         observer.observe(element, { attributes: true });
-
         return observer;
     }
 }
