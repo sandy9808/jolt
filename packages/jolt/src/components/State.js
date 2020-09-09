@@ -43,12 +43,6 @@ export class State {
                     return true;
                 }
 
-                /* if the state property does not exist and the value is an object, create an object proxy */
-                if(value.constructor == Object) {
-                    state[key] = State.createObjectProxy(value, callback);
-                    return true;
-                }
-
                 /* the state property does not exists, so it should be created */
                 state[key] = value;
                 return true;
@@ -74,46 +68,9 @@ export class State {
                     return true;
                 }
 
-                /* if the state property does not exist and the value is an object, create an object proxy */
-                if(value.constructor == Object) {
-                    state[key] = State.createObjectProxy(value, callback);
-                    return true;
-                }
-
                 /* the state property does not exists, so it should be created */
                 state[key] = value;
                 callback(key, value);
-                return true;
-            }
-        });
-    }
-
-    /**
-     * Creates a new object proxy for calling the callback when the object is changed.
-     * @param {Object} object
-     * @param {StateCallback} callback
-     * @return {Object}
-     */
-    static createObjectProxy(object, callback) {
-        return new Proxy(object, {
-            set: (state, key, value) => {
-                /* prevent redundant state updates */
-                if(key == "prototype" || state[key] == value) return true;
-
-                /* if the state property does not exist and the value is an array, create an array proxy */
-                if(Array.isArray(value)) {
-                    state[key] = State.createArrayProxy(value, callback);
-                    return true;
-                }
-
-                /* if the state property does not exist and the value is an object, create an object proxy */
-                if(value.constructor == Object) {
-                    state[key] = State.createObjectProxy(value, callback);
-                    return true;
-                }
-
-                /* the state property does not exists, so it should be created */
-                state[key] = value;
                 return true;
             }
         });
