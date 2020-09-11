@@ -15,7 +15,8 @@ export class Component extends HTMLElement {
         super();
 
         /* load the component options */
-        const { useShadow } = Runtime.getComponentOptions(this.constructor);
+        const { useShadow, styles } = Runtime.getComponentOptions(this.constructor);
+        this.styles = Runtime.createComponentStyle(styles);
 
         /**
          * The component attributes
@@ -35,7 +36,7 @@ export class Component extends HTMLElement {
          */
         this.state = State.createState((key, value) => {
             if(this.shouldUpdate(key, value)) {
-                Reconciler.reconcile(this.render(this.attribs), this.root);
+                Runtime.render(this.render(this.attribs), this.styles, this.root);
                 this.didUpdate(key, value);
             }
         });
@@ -46,7 +47,7 @@ export class Component extends HTMLElement {
      * @ignore
      */
     connectedCallback() {
-        Reconciler.reconcile(this.render(this.attribs), this.root);
+        Runtime.render(this.render(this.attribs), this.styles, this.root);
         this.didLoad();
 
         /* observe the component attributes for changes */
@@ -54,7 +55,7 @@ export class Component extends HTMLElement {
             this.attribs[key] = value;
             
             if(this.shouldUpdate(key, value)) {
-                Reconciler.reconcile(component(this.attribs), this.root);
+                Runtime.render(this.render(this.attribs), this.styles, this.root);
                 this.didUpdate(key, value);
             }
         });
@@ -103,6 +104,7 @@ export class Component extends HTMLElement {
 
     /**
      * Component lifecycle method for being removed from the DOM.
+     * @abstract
      */
     willUnload() {}
 
@@ -117,7 +119,6 @@ export class Component extends HTMLElement {
             return;
         }
 
-        component.selector = options.name;
         component.options = Object.assign({
             useShadow: true
         }, options);
@@ -135,10 +136,10 @@ export class Component extends HTMLElement {
      * @param {HTMLElement} container 
      */
     static mount(component, container) {
-        if(component.selector) {
-            Reconciler.reconcile(html`<${component.selector}></${component.selector}>`, container);
+        if(component.options.name) {
+            Reconciler.reconcile(html`<${component.options.name}></${component.options.name}>`, container);
         } else {
-            console.warn(`Jolt: Components must be created with "Component.create".`);
+            console.warn(`Jolt: Components must be registered before being used.`);
         }
     }
 }

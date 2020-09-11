@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} Template
- * @param {HTMLTemplateElement} template
+ * @param {string} source
  * @param {Array.<Function>} events
  */
 
@@ -18,7 +18,6 @@ export class TemplateEngine {
      * @return {Template}
      */
     static createTemplate(strings, values) {
-        const template = document.createElement("template");
         let events = [];
 
         /* piece together the template strings with the template values */
@@ -32,7 +31,7 @@ export class TemplateEngine {
                 return combined + string + "{{e}}";
             }
 
-            /* if the string is an attribute assignment without quoates, add quotes to the assignment */
+            /* if the string is an attribute assignment without quotes, add quotes to the assignment */
             else if (string.match(/ .*=$/)) {
                 return combined + string + `"${value}"`;
             }
@@ -40,7 +39,7 @@ export class TemplateEngine {
             /* if the value is a Template, combine the template with this Template */
             else if (TemplateEngine.isTemplate(value)) {
                 events = events.concat(value.events);
-                return combined + string + value.template.innerHTML;
+                return combined + string + value.source;
             }
 
             /* if the value is an array of Templates, parse them into this Template */
@@ -49,7 +48,7 @@ export class TemplateEngine {
 
                 for (let fragment of value) {
                     events = events.concat(fragment.events);
-                    html += fragment.template.innerHTML;
+                    html += fragment.source;
                 }
 
                 return combined + string + html;
@@ -68,9 +67,7 @@ export class TemplateEngine {
             source = source.replace(selfClosingRegex, `<$1$2></$1>`);
         }
 
-        template.innerHTML = source;
-
-        return { template, events };
+        return { source, events };
     }
 
     /**
@@ -78,30 +75,32 @@ export class TemplateEngine {
      * @param {Template} template
      * @return {DocumentFragment}
      */
-    static processTemplate({ template, events }) {
+    static processTemplate({ source, events }) {
+        const template = document.createElement("template");
+        template.innerHTML = source;
 
+
+        /* if there are events to bind, walk through the template and bind the events */
         if (events.length > 0) {
             const walker = document.createTreeWalker(template.content, 1);
 
-            let currentNode = walker.nextNode();
+            let currentNode;
             let index = 0;
 
-            while (currentNode) {
-                if (currentNode.attributes) {
-                    for (let i = 0; i < currentNode.attributes.length; i++) {
-                        const event = events[index];
+            while (currentNode = walker.nextNode()) {
+
+                if (currentNode.hasAttributes()) {
+                    const length = currentNode.attributes.length - 1;
+
+                    for (let i = length; i >= 0; --i) {
                         const attribute = currentNode.attributes[i];
 
                         if (attribute.value == "{{e}}") {
-                            currentNode.addEventListener(attribute.localName.slice(2), event);
+                            currentNode.addEventListener(attribute.localName.slice(2), events[index++]);
                             currentNode.removeAttribute(attribute.localName);
-                            index++;
-                            i--;
                         }
                     }
                 }
-
-                currentNode = walker.nextNode();
             }
         }
 
@@ -114,7 +113,7 @@ export class TemplateEngine {
      * @return {boolean}
      */
     static isTemplate(value) {
-        return (typeof value == "object" && value.template && value.events);
+        return (typeof value == "object" && value.source && value.events);
     }
 
     /**
@@ -123,7 +122,7 @@ export class TemplateEngine {
      * @return {boolean}
      */
     static isTemplateArray(value) {
-        return (Array.isArray(value) && value[0] && value[0].template && value[0].events);
+        return (Array.isArray(value) && value[0] && value[0].source && value[0].events);
     }
 }
 

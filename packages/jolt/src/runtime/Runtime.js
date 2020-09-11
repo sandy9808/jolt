@@ -34,7 +34,8 @@ export class Runtime {
                 super();
 
                 /* load the component options */
-                const { useShadow } = Runtime.getComponentOptions(component);
+                const { useShadow, styles } = Runtime.getComponentOptions(component);
+                this.styles = Runtime.createComponentStyle(styles);
 
                 /**
                  * The component attributes
@@ -50,11 +51,11 @@ export class Runtime {
             }
 
             connectedCallback() {
-                Reconciler.reconcile(component(this.attribs), this.root);
+                Runtime.render(component(this.attribs), this.styles, this.root);
 
                 this._observer = Runtime.getAttributeObserver(this, (key, value) => {
                     this.attribs[key] = value;
-                    Reconciler.reconcile(component(this.attribs), this.root);
+                    Runtime.render(component(this.attribs), this.styles, this.root);
                 });
             }
 
@@ -71,7 +72,6 @@ export class Runtime {
      */
     static getComponentOptions(component) {
         return {
-            name: component.options.name,
             styles: component.options.styles,
             useShadow: component.options.useShadow,
         };
@@ -86,7 +86,7 @@ export class Runtime {
         const attributes = {};
 
         for (let attribute of component.attributes) {
-            attributes[attribute.localName] = (attribute.value != "") ? attribute.value : true;
+            attributes[attribute.localName] = attribute.value;
         }
 
         return attributes;
@@ -100,8 +100,8 @@ export class Runtime {
      */
     static getAttributeObserver(element, callback) {
         const observer = new MutationObserver((mutations) => {
-            for(let mutation of mutations) {
-                if(mutation.type == "attributes") {
+            for (let mutation of mutations) {
+                if (mutation.type == "attributes") {
                     const name = mutation.attributeName;
                     callback(name, mutation.target.getAttribute(name));
                 }
@@ -110,5 +110,36 @@ export class Runtime {
 
         observer.observe(element, { attributes: true });
         return observer;
+    }
+
+    /**
+     * Creates the component stylesheet
+     * @param {Array.<string>} styles
+     * @return {string}
+     */
+    static createComponentStyle(styles) {
+        if(!styles) return null;
+
+        let style = "";
+
+        for(let sheet of styles) {
+            style += sheet;
+        }
+
+        return style;
+    }
+
+    /**
+     * Render the component
+     * @param {Template} template 
+     * @param {string} styles 
+     * @param {HTMLElement} container 
+     */
+    static render(template, styles, container) {
+        if (styles) {
+            template.source += `<style>${styles}</style>`;
+        }
+
+        Reconciler.reconcile(template, container);
     }
 }
