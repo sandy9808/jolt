@@ -33,7 +33,7 @@ export class Reconciler {
             Reconciler.diff(newNode, oldNode);
 
             /* if the element is a component, we dont need to diff its children */
-            if(newNode.tagName && !newNode.tagName.includes("-")) Reconciler.diffChildren(newNode, oldNode);
+            if (newNode.tagName && !newNode.tagName.includes("-")) Reconciler.diffChildren(newNode, oldNode);
 
             return oldNode;
         }
@@ -45,7 +45,7 @@ export class Reconciler {
      * @param {Node} oldNode 
      */
     static diff(newNode, oldNode) {
-        if(newNode.isEqualNode(oldNode)) return;
+        if (newNode.isEqualNode(oldNode)) return;
 
         let nodeType = newNode.nodeType;
         let nodeName = newNode.nodeName;
@@ -83,7 +83,7 @@ export class Reconciler {
             } else {
                 if (!oldNode.hasAttribute(name)) oldNode.setAttribute(name, value);
                 else {
-                    if (oldNode.getAttribute(name) != value) { 
+                    if (oldNode.getAttribute(name) != value) {
                         if (value == "null" || value == "undefined") oldNode.removeAttribute(name);
                         else oldNode.setAttribute(name, value);
                     }
@@ -117,8 +117,8 @@ export class Reconciler {
      * @param {Node} oldNode 
      */
     static diffChildren(newNode, oldNode) {
-        if(newNode.isEqualNode(oldNode)) return;
-        
+        if (newNode.isEqualNode(oldNode)) return;
+
         let offset = 0;
 
         for (let i = 0; ; i++) {

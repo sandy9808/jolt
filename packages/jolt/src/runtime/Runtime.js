@@ -4,7 +4,7 @@ import { Reconciler } from "./Reconciler";
 /**
  * @typedef {Object} ComponentOptions
  * @property {string} name
- * @property {string|Array.<string>} [styles]
+ * @property {Array.<string>} [styles]
  * @property {boolean} [useShadow=true]
  */
 
@@ -62,7 +62,7 @@ export class Runtime {
             disconnectedCallback() {
                 this._observer.disconnect();
             }
-        }
+        };
     }
 
     /**
@@ -73,7 +73,7 @@ export class Runtime {
     static getComponentOptions(component) {
         return {
             styles: component.options.styles,
-            useShadow: component.options.useShadow,
+            useShadow: component.options.useShadow || true,
         };
     }
 
@@ -118,11 +118,11 @@ export class Runtime {
      * @return {string}
      */
     static createComponentStyle(styles) {
-        if(!styles) return null;
+        if (!styles) return null;
 
         let style = "";
 
-        for(let sheet of styles) {
+        for (let sheet of styles) {
             style += sheet;
         }
 

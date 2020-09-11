@@ -87,7 +87,7 @@ export class TemplateEngine {
             let currentNode;
             let index = 0;
 
-            while (currentNode = walker.nextNode()) {
+            while ((currentNode = walker.nextNode())) {
 
                 if (currentNode.hasAttributes()) {
                     const length = currentNode.attributes.length - 1;

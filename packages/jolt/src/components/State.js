@@ -1,7 +1,7 @@
 /**
  * State Callback
  * @callback StateCallback
- * @param {string} [key]
+ * @param {string|number|symbol} [key]
  * @param {*} [value]
  */
 
@@ -28,17 +28,17 @@ export class State {
         return new Proxy(new State(), {
             set: (state, key, value) => {
                 /* prevent redundant state updates */
-                if(key == "prototype" || state[key] == value) return true;
+                if (key == "prototype" || state[key] == value) return true;
 
                 /* if state property exists, it should be updated. */
-                if(state[key] != undefined) {
+                if (state[key] != undefined) {
                     state[key] = value;
                     callback(key, value);
                     return true;
                 }
 
                 /* if the state property does not exist and the value is an array, create an array proxy */
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     state[key] = State.createArrayProxy(value, callback);
                     return true;
                 }
@@ -60,10 +60,10 @@ export class State {
         return new Proxy(array, {
             set: (state, key, value) => {
                 /* prevent redundant state updates */
-                if(key == "prototype" || state[key] == value) return true;
+                if (key == "prototype" || state[key] == value) return true;
 
                 /* if the state property does not exist and the value is an array, create an array proxy */
-                if(Array.isArray(value)) {
+                if (Array.isArray(value)) {
                     state[key] = State.createArrayProxy(value, callback);
                     return true;
                 }

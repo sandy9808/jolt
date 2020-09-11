@@ -23,7 +23,7 @@ export class Component extends HTMLElement {
          * @type {Object.<string,string>}
          */
         this.attribs = Runtime.getComponentAttributes(this);
-        
+
         /** 
          * The component render root
          * @type {ShadowRoot|HTMLElement}
@@ -35,7 +35,7 @@ export class Component extends HTMLElement {
          * @type {State}
          */
         this.state = State.createState((key, value) => {
-            if(this.shouldUpdate(key, value)) {
+            if (this.shouldUpdate(key, value)) {
                 Runtime.render(this.render(this.attribs), this.styles, this.root);
                 this.didUpdate(key, value);
             }
@@ -53,8 +53,8 @@ export class Component extends HTMLElement {
         /* observe the component attributes for changes */
         this._observer = Runtime.getAttributeObserver(this, (key, value) => {
             this.attribs[key] = value;
-            
-            if(this.shouldUpdate(key, value)) {
+
+            if (this.shouldUpdate(key, value)) {
                 Runtime.render(this.render(this.attribs), this.styles, this.root);
                 this.didUpdate(key, value);
             }
@@ -76,13 +76,13 @@ export class Component extends HTMLElement {
      * @abstract
      * @return {Template}
      */
-    render() {}
+    render() { }
 
     /**
      * Component lifecycle method for being added to the DOM.
      * @abstract
      */
-    didLoad() {}
+    didLoad() { }
 
     /**
      * Component lifecycle method for when the {@link State} or attributes change.
@@ -90,7 +90,7 @@ export class Component extends HTMLElement {
      * @param {*} [value]
      * @abstract
      */
-    didUpdate() {}
+    didUpdate() { }
 
     /**
      * Component lifecycle method for determining if the view should update or not.
@@ -106,7 +106,7 @@ export class Component extends HTMLElement {
      * Component lifecycle method for being removed from the DOM.
      * @abstract
      */
-    willUnload() {}
+    willUnload() { }
 
     /**
      * Registers a Component to make it available as an HTML element.
@@ -114,20 +114,15 @@ export class Component extends HTMLElement {
      * @param {CustomElementConstructor|Function} component
      */
     static create(options, component) {
-        if(!options.name) {
+        component.options = options;
+
+        if (!options.name) {
             console.warn("Jolt: ComponentOptions.name is required.");
             return;
         }
 
-        component.options = Object.assign({
-            useShadow: true
-        }, options);
-
-        if(component.create) {
-            window.customElements.define(options.name, component);
-        } else{
-            window.customElements.define(options.name, Runtime.wrapFunction(component));
-        }
+        if (component.create) window.customElements.define(options.name, component);
+        else window.customElements.define(options.name, Runtime.wrapFunction(component));
     }
 
     /**
@@ -136,10 +131,7 @@ export class Component extends HTMLElement {
      * @param {HTMLElement} container 
      */
     static mount(component, container) {
-        if(component.options.name) {
-            Reconciler.reconcile(html`<${component.options.name}></${component.options.name}>`, container);
-        } else {
-            console.warn(`Jolt: Components must be registered before being used.`);
-        }
+        if (component.options.name) Reconciler.reconcile(html`<${component.options.name}></${component.options.name}>`, container);
+        else console.warn(`Jolt: Components must be registered before being used.`);
     }
 }
