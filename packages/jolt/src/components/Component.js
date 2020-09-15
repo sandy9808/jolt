@@ -131,7 +131,7 @@ export class Component extends HTMLElement {
      * @param {HTMLElement} container 
      */
     static mount(component, container) {
-        if (component.options.name) Reconciler.reconcile(html`<${component.options.name}></${component.options.name}>`, container);
+        if (component.options) Reconciler.reconcile(html`<${component.options.name}></${component.options.name}>`, container);
         else console.warn(`Jolt: Components must be registered before being used.`);
     }
 }
