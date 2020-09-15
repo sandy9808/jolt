@@ -79,21 +79,18 @@ export class Router {
      * @private
      */
     static _match(route, url) {
-        const names = [];
+        let names = [];
+        let index = 0;
 
-        const regexPath = route.replace(/:(\w+)\?/g, (full, name) => {
-            names.push(name);
-            return "?([^/]+)";
-        }).replace(/:(\w+)/g, (full, name) => {
-            names.push(name);
+        const regexPath = "^" + route.replace(/([:*])(\w+)\?/g, (full, colon, name) => {
+            names[index++] = name;
+            return "?([^/]+)?";
+        }).replace(/([:*])(\w+)/g, (full, colon, name) => {
+            names[index++] = name;
             return "([^/]+)";
-        }) + "(?:/|$)";
-
-        console.log(regexPath);
+        }) + "/?$";
 
         const match = url.match(new RegExp(regexPath));
-
-        console.log(match);
 
         if(match) {
             Router._parameters = match.slice(1).reduce((params, value, index) => {
@@ -101,7 +98,6 @@ export class Router {
                 return params;
             }, {});
         }
-
         return match;
     }
 
