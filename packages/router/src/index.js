@@ -81,7 +81,7 @@ export class Router {
      * Matches a url to a route.
      * @param {string} route 
      * @param {string} url 
-     * @return {Array}
+     * @return {Array.<string>}
      * @private
      */
     static _match(route, url) {

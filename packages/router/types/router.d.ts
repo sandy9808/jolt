@@ -22,7 +22,7 @@ declare class Router {
     static notFound(component: CustomElementConstructor | Function): void;
     static navigate(url: string): void;
     static getParameters(): Parameters;
-    private static _match(route: string, url: string): Array;
+    private static _match(route: string, url: string): Array<string>;
     private static _resolve(url: string): void;
 }
 
