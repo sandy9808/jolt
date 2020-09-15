@@ -2,20 +2,26 @@
 import { Component } from "jolt";
 
 /**
+ * @typedef {Object} RouterOptions
+ * @property {boolean} [useHash=false]
+ */
+
+/**
  * Creates a Router that handles parsing parameterized routes
  * and rendering the component associated with the current url.
  * @class
  */
 export class Router {
 
-    static _routes;
+    static _routes = {};
     static _container;
     static _parameters;
 
     /**
+     * Set the application routes.
      * @param {Object.<string, CustomElementConstructor|Function} routes
      */
-    constructor(routes = {}) {
+    static set(routes = {}) {
         Router._routes = routes;
     }
 
@@ -24,7 +30,7 @@ export class Router {
      * @param {HTMLElement} container 
      * @param {RouterOptions} options 
      */
-    mount(container, options = {}) {
+    static mount(container, options = {}) {
         Router._container = container;
 
         const mode = (options.useHash) ? "hashchange" : "popstate";
@@ -41,7 +47,7 @@ export class Router {
      * @param {string} route 
      * @param {CustomElementConstructor|Function} component 
      */
-    on(route, component) {
+    static on(route, component) {
         Router._routes[route] = component;
     }
 
@@ -49,7 +55,7 @@ export class Router {
      * Sets the component to be rendered when the router can not find a matching route.
      * @param {CustomElementConstructor|Function} component 
      */
-    notFound(component) {
+    static notFound(component) {
         Router._routes["notFound"] = component;
     }
 
@@ -82,22 +88,26 @@ export class Router {
         let names = [];
         let index = 0;
 
-        const regexPath = "^" + route.replace(/([:*])(\w+)\?/g, (full, colon, name) => {
-            names[index++] = name;
-            return "?([^/]+)?";
-        }).replace(/([:*])(\w+)/g, (full, colon, name) => {
-            names[index++] = name;
-            return "([^/]+)";
-        }) + "/?$";
+        /* parse the route into a regular expression to match against a url */
+        const regex = route
+            .replace(/([:*])(\w+)\?/g, (full, colon, name) => {
+                names[index++] = name;
+                return "?([^/]+)?";
+            })
+            .replace(/([:*])(\w+)/g, (full, colon, name) => {
+                names[index++] = name;
+                return "([^/]+)";
+            });
 
-        const match = url.match(new RegExp(regexPath));
+        const match = url.match(new RegExp(`^${regex}/?$`));
 
-        if(match) {
+        if (match) {
             Router._parameters = match.slice(1).reduce((params, value, index) => {
                 params[names[index]] = value;
                 return params;
             }, {});
         }
+
         return match;
     }
 
@@ -109,11 +119,11 @@ export class Router {
     static _resolve(url) {
         const route = Object.keys(Router._routes).filter((route) => Router._match(route, url))[0];
 
-        if(route != null) Component.mount(Router._routes[route], Router._container);
+        if (route != null) Component.mount(Router._routes[route], Router._container);
         else {
             const routeNotFound = Router._routes["notFound"];
 
-            if(!routeNotFound) {
+            if (!routeNotFound) {
                 document.write(`ERROR 404: ${url} not found!`);
                 return;
             }
@@ -121,6 +131,4 @@ export class Router {
             Component.mount(routeNotFound, Router._container);
         }
     }
-
-
 }
