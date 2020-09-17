@@ -37,7 +37,7 @@ export class WebServer {
 
     /** Starts the WebServer. */
     listen() {
-        this._httpServer = this._createServer((req, res) => {
+        this._httpServer = this._createServer(async (req, res) => {
 
             const endpoint = this._resolveEndpoint(req);
 
@@ -49,17 +49,9 @@ export class WebServer {
 
             req.params = this._endpointParameters;
 
-            let body = "";
+            if(req.method !== "GET") req.body = await this._resolveRequestBody(req);
 
-            req.on("data", (data) => {
-                body += data;
-            });
-
-            req.on("end", () => {
-                if(body.length > 0) req.body = JSON.parse(body);
-                else req.body = {};
-                endpoint(req, res);
-            });
+            endpoint(req, res);
         });
 
         this._httpServer.listen(this._port, () => {
@@ -125,6 +117,25 @@ export class WebServer {
         }
 
         return match;
+    }
+
+    /**
+     * Resolves the request body
+     * @param {http.ClientRequest|http2.Http2ServerRequest} req
+     * @return {Promise.<Object>}
+     */
+    _resolveRequestBody(req) {
+        return new Promise((resolve) => {
+            let body = "";
+
+            req.on("data", (data) => {
+                body += data;
+            });
+
+            req.on("end", () => {
+                resolve(JSON.parse(body));
+            });
+        });
     }
 
     /**
