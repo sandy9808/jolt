@@ -48,7 +48,18 @@ export class WebServer {
             }
 
             req.params = this._endpointParameters;
-            endpoint(req, res);
+
+            let body = "";
+
+            req.on("data", (data) => {
+                body += data;
+            });
+
+            req.on("end", () => {
+                if(body.length > 0) req.body = JSON.parse(body);
+                else req.body = {};
+                endpoint(req, res);
+            });
         });
 
         this._httpServer.listen(this._port, () => {
