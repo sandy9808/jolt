@@ -11,7 +11,7 @@ const App = () => {
             </a>
         </div>
     `;
-}
+};
 
 Component.create({
     name: "app-root",
