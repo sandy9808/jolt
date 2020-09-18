@@ -1,6 +1,5 @@
 {
     "main": "src/app.js",
     "dest": "public",
-    "toolchain": "@jolt/toolchain-javascript",
-    "targets": "> 1.5%, not dead"
+    "toolchain": "@jolt/toolchain-javascript"
 }

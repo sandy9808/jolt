@@ -9,13 +9,18 @@ import fs from "fs";
  */
 export class Config {
 
+    static _defaults = {
+        targets: "> 1.5%, not dead",
+        sourcemaps: false
+    };
+
     /**
      * Loads the config from jolt.json
      * @return {Object}
      */
     static loadConfig() {
         try {
-            return File.readJSON(path.join(process.cwd(), "jolt.json"));
+            return Object.assign(Config._defaults, File.readJSON(path.join(process.cwd(), "jolt.json")));
         } catch {
             return null;
         }
