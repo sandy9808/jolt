@@ -10,7 +10,7 @@ import path from "path";
  */
 async function update() {
     try {
-        const config = Config.loadConfig();
+        const config = Config.loadRawConfig();
 
         if (!config) {
             console.error("The update command can only be run inside a jolt workspace.");

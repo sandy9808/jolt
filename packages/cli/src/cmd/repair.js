@@ -9,7 +9,7 @@ import path from "path";
  */
 async function repair() {
     try {
-        const config = Config.loadConfig();
+        const config = Config.loadRawConfig();
 
         if (!config) {
             console.error("The repair command can only be run inside a jolt workspace.");
