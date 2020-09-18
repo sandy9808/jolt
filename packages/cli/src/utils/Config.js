@@ -27,10 +27,10 @@ export class Config {
         }
     }
 
-     /**
-     * Loads the config from jolt.json without defaults
-     * @return {Object}
-     */
+    /**
+    * Loads the config from jolt.json without defaults
+    * @return {Object}
+    */
     static loadRawConfig() {
         try {
             return File.readJSON(path.join(process.cwd(), "jolt.json"));
