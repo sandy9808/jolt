@@ -3,6 +3,7 @@ import { Parser } from "./utils/Parser";
 import version from "./cmd/version";
 import help from "./cmd/help";
 import create from "./cmd/create";
+import generate from "./cmd/generate";
 import update from "./cmd/update";
 import repair from "./cmd/repair";
 import build from "./cmd/build";
@@ -22,6 +23,8 @@ const commands = {
     "version": version,
     "help": help,
     "create": create,
+    "generate": generate,
+    "gen": generate,
     "update": update,
     "repair": repair,
     "build": build,

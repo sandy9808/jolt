@@ -12,12 +12,14 @@ export class ComponentGenerator {
 
     /**
      * @param {string} name
+     * @param {string} type
+     * @param {string} [dest]
      */
-    constructor(name) {
+    constructor(name, type, dest) {
         this.component = {
             name: name,
-            dest: path.join(process.cwd(), name),
-            template: path.join(__dirname, "../templates/component")
+            dest: path.join(process.cwd(), dest, name),
+            template: path.join(__dirname, `../templates/${type}-component`)
         };
     }
 
@@ -35,15 +37,19 @@ export class ComponentGenerator {
         }
 
         /* copy the template files to the destination */
-        console.log(`Creating ${this.component.name}...\n`);
 
         const filter = {
             "componentjs.txt": `${this.component.name}.js`,
             "componentcss.txt": `${this.component.name}.css`
         };
 
-        File.createDirectory(this.component.dest);
-        File.copyDirectoryContents(this.component.template, this.component.dest, filter);
+        try {
+            File.createDirectory(this.component.dest);
+            File.copyDirectoryContents(this.component.template, this.component.dest, filter);
+        } catch {
+            console.error("Failed to generate the component.");
+            return;
+        }
 
         /* update the template's placeholders with the component name */
         try {
@@ -51,17 +57,20 @@ export class ComponentGenerator {
             let source = fs.readFileSync(filepath, "utf8");
             source = source.replace(/{{component-name}}/g, this.component.name);
 
+            /* get the component definition name */
             const parts = this.component.name.split("-");
-            const name = `${parts[0].charAt(0).toUpperCase() + parts[0].slice(1)}${parts[1].charAt(0).toUpperCase() + parts[1].slice(1)}`;
+            const word1 = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+            const word2 = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+            const name = word1 + word2;
+
             source = source.replace(/{{component}}/g, name);
 
             fs.writeFileSync(filepath, source);
         } catch (error) {
-            console.log(error);
             console.error(`Failed to create ${this.component.name}.\n`);
             return;
         }
 
-        console.log(`Successfully created ${this.component.name}\n`);
+        console.log(`Generated a ${this.component.name} component.`);
     }
 }

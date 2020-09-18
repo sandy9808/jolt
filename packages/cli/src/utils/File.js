@@ -32,7 +32,7 @@ export class File {
      * @param {string} directory 
      */
     static createDirectory(directory) {
-        if(!fs.existsSync(directory)) fs.mkdirSync(directory);
+        if(!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
     }
 
     /**

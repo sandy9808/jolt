@@ -14,12 +14,14 @@ import { exec } from "child_process";
 export class ProjectGenerator {
 
     /**
-     * @param {string} name 
+     * @param {string} name
+     * @param {string} dest
      */
-    constructor(name) {
+    constructor(name, dest) {
         this.project = {
             name: name,
-            dest: path.join(process.cwd(), name),
+            dest: path.join(process.cwd(), dest, name),
+            rawDest: dest,
             template: path.join(__dirname, "../templates/project")
         };
 
@@ -49,8 +51,13 @@ export class ProjectGenerator {
             "gitignore.txt": ".gitignore"
         };
 
-        File.createDirectory(this.project.dest);
-        File.copyDirectoryContents(this.project.template, this.project.dest, filter);
+        try {
+            File.createDirectory(this.project.dest);
+            File.copyDirectoryContents(this.project.template, this.project.dest, filter);
+        } catch {
+            console.error("Failed to create the project template.");
+            return;
+        }
 
         /* update the template's package.json to have the project name */
         try {
@@ -142,7 +149,8 @@ export class ProjectGenerator {
         console.log(`Successfully created ${this.project.name}\n`);
         console.log("----------------------------------");
         console.log("Get started with your new project!\n");
-        console.log(` > cd ${this.project.name}`);
+        if(this.project.rawDest == ".") console.log(` > cd ${this.project.name}`);
+        else console.log(` > cd ${this.project.rawDest}/${this.project.name}`);
         console.log(" > npm run dev");
         console.log("----------------------------------\n");
     }

@@ -1,6 +1,5 @@
 /* imports */
 import { ProjectGenerator } from "../modules/ProjectGenerator";
-import { ComponentGenerator } from "../modules/ComponentGenerator";
 
 /**
  * Creates a new project.
@@ -8,8 +7,8 @@ import { ComponentGenerator } from "../modules/ComponentGenerator";
  * @private
  */
 function create(args) {
-    if(args.component || args.c) new ComponentGenerator(args._[1]).create();
-    else new ProjectGenerator(args._[1]).create();
+    const dest = (args.dest || args.d) ? args.dest || args.d : ".";
+    new ProjectGenerator(args._[1], dest).create();
 }
 
 export default create;
