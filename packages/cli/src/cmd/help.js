@@ -15,7 +15,8 @@ const helpMap = {
         watch <options> ........ Builds the project whenever a file is saved.
         lint <options> ........ Lints the project codebase.
         serve <options> ........ Runs the project on a development server.
-        update ........ Updates the project's toolchain and CLI.
+        update ........ Updates the project's config, toolchain and CLI.
+        repair ........ Repairs the project's config file.
     `,
 
     create: `
@@ -46,6 +47,11 @@ const helpMap = {
     update: `
     Usage: jolt update
     - Updates the project's config, toolchain, and CLI.
+    `,
+
+    repair: `
+    Usage: jolt repair
+    - Repairs the project's config file.
     `
 };
 
