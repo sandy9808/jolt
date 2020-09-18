@@ -22,6 +22,28 @@ export class Config {
     }
 
     /**
+     * Validates that the required config fields exist.
+     * @param {Object} config
+     * @return {boolean}
+     */
+    static validate(config) {
+        try {
+            const templateConfig = File.readJSON(path.join(__dirname, "../template/jolt.json"));
+            const templateKeys = Object.keys(templateConfig);
+
+            for (let field of templateKeys) {
+                if (typeof config[field] !== typeof templateConfig[field]) {
+                    return false;
+                }
+            }
+
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
      * Loads the toolchain from the config.
      * @param {Object} config
      * @return {Object}
