@@ -1,9 +1,6 @@
 {
     "main": "src/app.js",
     "dest": "public",
-    "toolchain": "@jolt/toolchain-javascript",
-    "build": {
-        "type": "app",
-        "lang": "javascript"
-    }
+    "lang": "javascript",
+    "toolchain": "@jolt/toolchain-javascript"
 }
