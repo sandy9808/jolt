@@ -20,7 +20,7 @@ export class ProjectGenerator {
         this.project = {
             name: name,
             dest: path.join(process.cwd(), name),
-            template: path.join(__dirname, "../template")
+            template: path.join(__dirname, "../templates/project")
         };
 
         this.project.devPackages = [

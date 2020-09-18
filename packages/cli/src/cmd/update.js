@@ -23,7 +23,7 @@ async function update() {
         }
 
         try {
-            const templateConfig = File.readJSON(path.join(__dirname, "../template/jolt.json"));
+            const templateConfig = File.readJSON(path.join(__dirname, "../templates/project/jolt.json"));
             const templateKeys = Object.keys(templateConfig);
 
             for (let field of templateKeys) {

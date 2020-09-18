@@ -1,0 +1,11 @@
+import { Component, html } from "jolt";
+import style from "./{{component-name}}.css";
+
+const {{component}} = () => {
+    return html``;
+};
+
+Component.create({
+    name: "{{component-name}}",
+    styles: [style]
+}, {{component}});
