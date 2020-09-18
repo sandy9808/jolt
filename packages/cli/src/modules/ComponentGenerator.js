@@ -40,7 +40,8 @@ export class ComponentGenerator {
 
         const filter = {
             "componentjs.txt": `${this.component.name}.js`,
-            "componentcss.txt": `${this.component.name}.css`
+            "componentcss.txt": `${this.component.name}.css`,
+            "componentindex.txt": "index.js"
         };
 
         try {
@@ -53,8 +54,9 @@ export class ComponentGenerator {
 
         /* update the template's placeholders with the component name */
         try {
-            const filepath = path.join(this.component.dest, `${this.component.name}.js`);
-            let source = fs.readFileSync(filepath, "utf8");
+            /* update the component source file */
+            const sourcepath = path.join(this.component.dest, `${this.component.name}.js`);
+            let source = fs.readFileSync(sourcepath, "utf8");
             source = source.replace(/{{component-name}}/g, this.component.name);
 
             /* get the component definition name */
@@ -65,7 +67,14 @@ export class ComponentGenerator {
 
             source = source.replace(/{{component}}/g, name);
 
-            fs.writeFileSync(filepath, source);
+            fs.writeFileSync(sourcepath, source);
+
+            /* update the component index file */
+            const indexpath = path.join(this.component.dest, "index.js");
+            source = fs.readFileSync(indexpath, "utf8");
+            source = source.replace(/{{component-name}}/g, this.component.name);
+
+            fs.writeFileSync(indexpath, source);
         } catch (error) {
             console.error(`Failed to create ${this.component.name}.\n`);
             return;
