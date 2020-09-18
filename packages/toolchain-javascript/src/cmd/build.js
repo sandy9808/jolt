@@ -11,8 +11,8 @@ async function build(options) {
     const config = getRollupConfig(options);
 
     try {
-        const bundle = await rollup.rollup(config.input);
-        await bundle.write(config.output);
+        const bundle = await rollup.rollup(config.in);
+        await bundle.write(config.out);
         console.log(`${options.main} -> ${options.dest}`);
     } catch (error) {
         console.error(`\nJolt StackTrace: ${error.message}`);
