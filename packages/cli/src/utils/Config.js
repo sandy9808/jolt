@@ -12,7 +12,8 @@ export class Config {
     static _defaults = {
         targets: "> 1.5%, not dead",
         sourcemaps: false,
-        minify: true
+        minify: true,
+        preamble: ""
     };
 
     /**
