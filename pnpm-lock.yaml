@@ -89,7 +89,7 @@ importers:
       '@babel/core': 7.11.6
       '@babel/plugin-proposal-class-properties': 7.10.4_@babel+core@7.11.6
       '@babel/preset-env': 7.11.5_@babel+core@7.11.6
-      '@jolt/server': 4.8.0
+      '@jolt/server': 5.0.0
       '@rollup/plugin-babel': 5.2.1_@babel+core@7.11.6+rollup@2.27.1
       '@rollup/plugin-commonjs': 15.0.0_rollup@2.27.1
       '@rollup/plugin-json': 4.1.0_rollup@2.27.1
@@ -105,7 +105,7 @@ importers:
       '@babel/core': ^7.11.6
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.5
-      '@jolt/server': ^4.8.0
+      '@jolt/server': ^5.0.0
       '@rollup/plugin-babel': ^5.2.1
       '@rollup/plugin-commonjs': ^15.0.0
       '@rollup/plugin-json': ^4.1.0
@@ -968,11 +968,11 @@ packages:
       node: ^10.12.0 || >=12.0.0
     resolution:
       integrity: sha512-4YVwPkANLeNtRjMekzux1ci8hIaH5eGKktGqR0d3LWsKNn5B2X/1Z6Trxy7jQXl9EBGE6Yj02O+t09FMeRllaA==
-  /@jolt/server/4.8.0:
+  /@jolt/server/5.0.0:
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-ZVqOu9wYOsbdXnp0uUliNMTJyuC5F+uheiYsuIIeOufV3i9YKhtfvvWr03fv8sJT2aIEuTh51CGDsqB2MmIM3g==
+      integrity: sha512-vljyT4iqgCSzXIJvA9kK7REnS/AyVyx3mYHHnlIPRAfuwfJ9skaNp7sgVlq0ZROfIINu72cCE00QfIeHrZLWew==
   /@rollup/plugin-babel/5.2.1_@babel+core@7.11.6+rollup@2.27.1:
     dependencies:
       '@babel/core': 7.11.6
