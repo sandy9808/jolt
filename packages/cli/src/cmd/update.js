@@ -10,7 +10,7 @@ import path from "path";
  */
 async function update() {
     try {
-        const config = Config.loadRawConfig();
+        const config = Config.loadConfig();
 
         /* check if the config exists */
         if (!config) {

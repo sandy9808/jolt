@@ -9,30 +9,11 @@ import fs from "fs";
  */
 export class Config {
 
-    static _defaults = {
-        targets: "> 1.5%, not dead",
-        sourcemaps: false,
-        minify: true,
-        preamble: ""
-    };
-
     /**
      * Loads the config from jolt.json
      * @return {Object}
      */
     static loadConfig() {
-        try {
-            return Object.assign(Config._defaults, File.readJSON(path.join(process.cwd(), "jolt.json")));
-        } catch {
-            return null;
-        }
-    }
-
-    /**
-    * Loads the config from jolt.json without defaults
-    * @return {Object}
-    */
-    static loadRawConfig() {
         try {
             return File.readJSON(path.join(process.cwd(), "jolt.json"));
         } catch {

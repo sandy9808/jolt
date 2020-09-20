@@ -9,7 +9,7 @@ import path from "path";
  */
 async function repair() {
     try {
-        const config = Config.loadRawConfig();
+        const config = Config.loadConfig();
 
         /* check if the config exists */
         if (!config) {
