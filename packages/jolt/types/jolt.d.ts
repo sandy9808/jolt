@@ -23,12 +23,13 @@ declare interface Template {
     events: Array<Function>
 }
 
-declare abstract class Component<T> extends HTMLElement {
+declare abstract class Component<T extends State> extends HTMLElement {
 
     private _observer: MutationObserver;
 
-    root: T;
     attribs: Attributes;
+    root: ShadowRoot|HTMLElement;
+    state: T
 
     private connectedCallback(): void;
     private disconnectedCallback(): void;
