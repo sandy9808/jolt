@@ -12,20 +12,24 @@ async function update() {
     try {
         const config = Config.loadRawConfig();
 
+        /* check if the config exists */
         if (!config) {
             console.error("The update command can only be run inside a jolt workspace.");
             return;
         }
 
+        /* check to see if the toolchain property exists in the config */
         if (!config.toolchain) {
             console.error(`Unable to find "toolchain" in jolt.json`);
             return;
         }
 
         try {
+            /* get the list of required config properties */
             const templateConfig = File.readJSON(path.join(__dirname, "../templates/project/jolt.json"));
             const templateKeys = Object.keys(templateConfig);
 
+            /* compare the config with the default config and add any missing required properties */
             for (let field of templateKeys) {
                 if (typeof config[field] !== typeof templateConfig[field]) {
                     config[field] = templateConfig[field];
@@ -34,6 +38,7 @@ async function update() {
 
             File.writeJSON(path.join(process.cwd(), "jolt.json"), config);
 
+            /* update any jolt specific developer dependencies */
             await updateDevDependencies(config);
             console.log("Successfully updated your project.");
         } catch {

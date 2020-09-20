@@ -6,6 +6,6 @@
         "build": "jolt build",
         "watch": "jolt watch",
         "lint": "jolt lint",
-        "dev": "jolt serve"
+        "serve": "jolt serve"
     }
 }

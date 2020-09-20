@@ -1,0 +1,9 @@
+{
+    "main": [
+        "src/index.js",
+        "src/hello-world"
+    ],
+    "dest": "dist",
+    "type": "library",
+    "toolchain": "@jolt/toolchain-javascript"
+}

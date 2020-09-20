@@ -42,4 +42,13 @@ export class Parser {
 
         return tmp;
     }
+
+    /**
+     * Returns the value if it exists, otherwise returns null
+     * @param {*} name 
+     */
+    static exists(name) {
+        if (name) return name;
+        else return false;
+    }
 }

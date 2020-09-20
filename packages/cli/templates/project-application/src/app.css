@@ -12,11 +12,13 @@ div {
     justify-content: center;
     color: black;
 }
+
 img {
     height: 40vmin;
     pointer-events: none;
     margin-bottom: 50px;
 }
+
 a {
     color: grey;
     font-size: 30px;

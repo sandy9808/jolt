@@ -32,7 +32,7 @@ export class File {
      * @param {string} directory 
      */
     static createDirectory(directory) {
-        if(!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
+        if (!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
     }
 
     /**
@@ -50,18 +50,18 @@ export class File {
      * @param {string} dest 
      * @param {Object.<string,string>} [filterMap] 
      */
-    static copyDirectoryContents(src, dest, filterMap={}) {
+    static copyDirectoryContents(src, dest, filterMap = {}) {
         const filesToCreate = File.readDirectory(src);
 
-        for(let file of filesToCreate) {
+        for (let file of filesToCreate) {
             const originalPath = path.join(src, file);
 
-            if(filterMap[file]) file = filterMap[file];
+            if (filterMap[file]) file = filterMap[file];
 
             const newPath = path.join(dest, file);
             const stats = fs.statSync(originalPath);
 
-            if(stats.isFile()) fs.writeFileSync(newPath, fs.readFileSync(originalPath));
+            if (stats.isFile()) fs.writeFileSync(newPath, fs.readFileSync(originalPath));
             else if (stats.isDirectory()) {
                 File.createDirectory(newPath);
                 File.copyDirectoryContents(originalPath, newPath, filterMap);
@@ -74,13 +74,13 @@ export class File {
      * @param {string} directory 
      */
     static deleteDirectory(directory) {
-        if(fs.existsSync(directory)) {
+        if (fs.existsSync(directory)) {
             const files = File.readDirectory(directory);
 
-            for(let file of files) {
+            for (let file of files) {
                 const filepath = path.join(directory, file);
 
-                if(fs.statSync(filepath).isDirectory()) File.deleteDirectory(filepath);
+                if (fs.statSync(filepath).isDirectory()) File.deleteDirectory(filepath);
                 else fs.unlinkSync(filepath);
             }
 

@@ -12,6 +12,7 @@ const helpMap = {
     Commands:
         create [app-name] <options> ........ Creates a new project.
         generate [component-name] <options> ........ Generates a new component.
+        gen [component-name] <options> ........ Generates a new component.
         build <options> ........ Builds the project.
         watch <options> ........ Builds the project whenever a file is saved.
         lint <options> ........ Lints the project codebase.
@@ -25,6 +26,7 @@ const helpMap = {
     - Creates a new project.
 
     Options:
+        -t, --type ........ Set the project type.
         -d, --dest ........ Set the output destination for the project.
     `,
 
@@ -33,7 +35,7 @@ const helpMap = {
     - Generates a new component.
 
     Options:
-        -c, --class ........ Tells the generator to make a class component.
+        -t, --type ........ Set the component type.
         -d, --dest ........ Set the output destination for the component.
     `,
 
@@ -42,7 +44,7 @@ const helpMap = {
     - Generates a new component.
 
     Options:
-        -c, --class ........ Tells the generator to make a class component.
+        -t, --type ........ Set the component type.
         -d, --dest ........ Set the output destination for the component.
     `,
 
