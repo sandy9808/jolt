@@ -34,7 +34,10 @@ This command will run a development server and rebuild if you change any of the 
 ## Getting Ready to Publsh
 
 When your ready to publish your library, remove the `"private": true` in package.json and fill out any other fields you may want to add.
-when your package.json file is ready, just run `npm publish`
+when your package.json file is ready, just run `npm publish`.
+
+Make sure that all components you want to include in your library are specified in the jolt.json `main` field.
+This allows the components to be imported independantly instead of importing the entire library.
 
 ---
 
