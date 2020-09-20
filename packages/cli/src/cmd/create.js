@@ -30,7 +30,7 @@ function create(args) {
  * @private
  */
 function validateType(type) {
-    if (type == "application" || type == "library") return type;
+    if (["application", "library"].includes(type)) return type;
     else return "application";
 }
 

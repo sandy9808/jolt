@@ -51,7 +51,7 @@ export class ComponentGenerator {
             return;
         }
 
-        console.log(`Generated a ${this.component.name} component.`);
+        console.log(`Generated a ${this.name} component.\n`);
     }
 
     /** Updates the files of the generated component. */

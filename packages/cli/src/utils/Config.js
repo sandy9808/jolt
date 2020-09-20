@@ -47,11 +47,11 @@ export class Config {
      */
     static validate(config) {
         try {
-            const templateConfig = File.readJSON(path.join(__dirname, "../templates/project/jolt.json"));
+            const templateConfig = File.readJSON(path.join(__dirname, `../templates/project-${config.type}/jolt.json`));
             const templateKeys = Object.keys(templateConfig);
 
             for (let field of templateKeys) {
-                if (typeof config[field] !== typeof templateConfig[field]) {
+                if (!config[field]) {
                     return false;
                 }
             }

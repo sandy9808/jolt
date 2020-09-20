@@ -18,6 +18,7 @@ export class ProjectGenerator {
      */
     constructor(name, type, dest) {
         this.name = name;
+        this.type = type;
         this.unresolvedDest = dest;
         this.dest = path.join(process.cwd(), dest, name);
         this.template = path.join(__dirname, `../templates/project-${type}`);
@@ -80,10 +81,12 @@ export class ProjectGenerator {
         File.writeJSON(packagePath, packageSource);
 
         /* update index.html */
-        const indexPath = path.join(this.dest, "public", "index.html");
-        let indexSource = fs.readFileSync(indexPath, "utf8");
-        indexSource = indexSource.replace("<title>Template</title>", `<title>${this.name}</title>`);
-        fs.writeFileSync(indexPath, indexSource);
+        if(this.type == "application") {
+            const indexPath = path.join(this.dest, "public", "index.html");
+            let indexSource = fs.readFileSync(indexPath, "utf8");
+            indexSource = indexSource.replace("<title>Template</title>", `<title>${this.name}</title>`);
+            fs.writeFileSync(indexPath, indexSource);
+        }
     }
 
     /** Installs the template dependencies. */
@@ -135,9 +138,13 @@ export class ProjectGenerator {
         console.log(`Successfully created ${this.name}\n`);
         console.log("----------------------------------");
         console.log("Get started with your new project!\n");
+
         if (this.unresolvedDest == ".") console.log(` > cd ${this.name}`);
         else console.log(` > cd ${this.unresolvedDest}/${this.name}`);
-        console.log(" > npm run serve");
+
+        if(this.type == "library") console.log(" > npm run build");
+        else console.log(" > npm run serve");
+
         console.log("----------------------------------\n");
     }
 }
