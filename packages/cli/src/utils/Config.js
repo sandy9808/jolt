@@ -31,7 +31,7 @@ export class Config {
             const requiredKeys = ["main", "dest", "toolchain"];
 
             for (let field of requiredKeys) {
-                if (config[field] != undefined) return false;
+                if (config[field] == undefined) return false;
             }
 
             return true;

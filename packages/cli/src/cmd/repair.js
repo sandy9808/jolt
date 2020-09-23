@@ -28,7 +28,7 @@ async function repair() {
 
             /* compare the config with the default config and add any missing required properties */
             for (let field of requiredKeys) {
-                if (config[field] != undefined) config[field] = defaultConfig[field];
+                if (config[field] == undefined) config[field] = defaultConfig[field];
             }
 
             File.writeJSON(path.join(process.cwd(), "jolt.json"), config);
