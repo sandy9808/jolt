@@ -56,7 +56,7 @@ export class ProjectGenerator {
         const templateValues = {
             "project-name": this.name,
             "toolchain": this.toolchain
-        }
+        };
 
         try {
             File.createDirectory(this.dest);
