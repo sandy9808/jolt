@@ -1,5 +1,5 @@
 {
-    "name": "@jolt/router",
+    "name": "@jleeson/router",
     "version": "4.8.0",
     "publishConfig": {
         "access": "public"

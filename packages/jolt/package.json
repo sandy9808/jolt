@@ -1,6 +1,9 @@
 {
-  "name": "jolt",
+  "name": "@jleeson/jolt",
   "version": "4.8.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A JavaScript framework for building lightning fast web apps",
   "main": "dist/jolt.cjs.js",
   "module": "dist/jolt.esm.js",
