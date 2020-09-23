@@ -1,16 +1,63 @@
 /* imports */
-import babel from "@rollup/plugin-babel";
+import minifyTemplate from "rollup-plugin-html-literals";
+import css from "rollup-plugin-import-css";
+import folder from "rollup-plugin-import-folder";
+import url from "@rollup/plugin-url";
+import includepaths from "rollup-plugin-includepaths";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import url from "@rollup/plugin-url";
-import css from "rollup-plugin-import-css";
-import minifyTemplate from "rollup-plugin-html-literals";
+import babel from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 
 function getRollupConfig(options) {
 
     /* setup rollup plugins */
     const plugins = [
+
+        /* minify html tagged template literals */
+        minifyTemplate({
+            options: {
+                minifyOptions: {
+                    keepClosingSlash: true
+                }
+            }
+        }),
+
+        /* import css */
+        css({
+            output: `${options.dest}/bundle.css`,
+            minify: options.minify
+        }),
+
+        /* import components by the folder name */
+        folder(),
+
+        /* import assets */
+        url({
+            limit: 0,
+            publicPath: "./assets/",
+            destDir: "./public/assets",
+            include: [
+                "**/*.svg",
+                "**/*.png",
+                "**/*.jpg",
+                "**/*.jpeg",
+                "**/*.gif"
+            ]
+        }),
+
+        /* map aliases to file paths */
+        includepaths({
+            include: options.mappings
+        }),
+
+        /* resolve node modules */
+        resolve(),
+
+        /* import commonjs as es modules */
+        commonjs(),
+
+        /* transpile code */
         babel({
             babelHelpers: "bundled",
             exclude: "node_modules/**",
@@ -25,45 +72,14 @@ function getRollupConfig(options) {
             plugins: ["@babel/plugin-proposal-class-properties"],
             sourceMaps: options.sourcemap
         }),
-        resolve(),
-        commonjs(),
-        url({
-            limit: 0,
-            publicPath: "./assets/",
-            destDir: `./${options.dest}/assets`,
-            include: [
-                "**/*.svg",
-                "**/*.png",
-                "**/*.jpg",
-                "**/*.jpeg",
-                "**/*.gif"
-            ]
-        }),
-        css({
-            output: `${options.dest}/bundle.css`,
-            minify: options.minify
+
+        /* minify code */
+        terser({
+            output: {
+                preamble: options.preamble
+            }
         })
     ];
-
-    if (options.minify) {
-        plugins.unshift(
-            minifyTemplate({
-                options: {
-                    minifyOptions: {
-                        keepClosingSlash: true
-                    }
-                }
-            })
-        );
-
-        plugins.push(
-            terser({
-                output: {
-                    preamble: options.preamble
-                }
-            })
-        );
-    }
 
     const input = {
         input: options.main,

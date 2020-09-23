@@ -90,36 +90,34 @@ importers:
       '@babel/plugin-proposal-class-properties': 7.10.4_@babel+core@7.11.6
       '@babel/preset-env': 7.11.5_@babel+core@7.11.6
       '@jolt/server': 5.0.0
-      '@rollup/plugin-alias': 3.1.1_rollup@2.28.1
       '@rollup/plugin-babel': 5.2.1_@babel+core@7.11.6+rollup@2.28.1
       '@rollup/plugin-commonjs': 15.1.0_rollup@2.28.1
-      '@rollup/plugin-json': 4.1.0_rollup@2.28.1
       '@rollup/plugin-node-resolve': 9.0.0_rollup@2.28.1
       '@rollup/plugin-url': 5.0.1_rollup@2.28.1
       babel-eslint: 10.1.0_eslint@7.9.0
       eslint: 7.9.0
       rollup: 2.28.1
       rollup-plugin-html-literals: 1.1.1_rollup@2.28.1
-      rollup-plugin-import-css: 1.1.1_rollup@2.28.1
+      rollup-plugin-import-css: 1.1.2_rollup@2.28.1
       rollup-plugin-import-folder: 1.0.0_rollup@2.28.1
+      rollup-plugin-includepaths: 0.2.4
       rollup-plugin-terser: 7.0.2_rollup@2.28.1
     specifiers:
       '@babel/core': ^7.11.6
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.5
       '@jolt/server': ^5.0.0
-      '@rollup/plugin-alias': ^3.1.1
       '@rollup/plugin-babel': ^5.2.1
       '@rollup/plugin-commonjs': ^15.1.0
-      '@rollup/plugin-json': ^4.1.0
       '@rollup/plugin-node-resolve': ^9.0.0
       '@rollup/plugin-url': ^5.0.1
       babel-eslint: ^10.1.0
       eslint: ^7.9.0
       rollup: ^2.28.1
       rollup-plugin-html-literals: ^1.1.1
-      rollup-plugin-import-css: ^1.1.1
+      rollup-plugin-import-css: ^1.1.2
       rollup-plugin-import-folder: ^1.0.0
+      rollup-plugin-includepaths: ^0.2.4
       rollup-plugin-terser: ^7.0.2
 lockfileVersion: 5.1
 packages:
@@ -977,17 +975,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-vljyT4iqgCSzXIJvA9kK7REnS/AyVyx3mYHHnlIPRAfuwfJ9skaNp7sgVlq0ZROfIINu72cCE00QfIeHrZLWew==
-  /@rollup/plugin-alias/3.1.1_rollup@2.28.1:
-    dependencies:
-      rollup: 2.28.1
-      slash: 3.0.0
-    dev: false
-    engines:
-      node: '>=8.0.0'
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0
-    resolution:
-      integrity: sha512-hNcQY4bpBUIvxekd26DBPgF7BT4mKVNDF5tBG4Zi+3IgwLxGYRY0itHs9D0oLVwXM5pvJDWJlBQro+au8WaUWw==
   /@rollup/plugin-babel/5.2.1_@babel+core@7.11.6+rollup@2.28.1:
     dependencies:
       '@babel/core': 7.11.6
@@ -1026,6 +1013,7 @@ packages:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.28.1
       rollup: 2.28.1
+    dev: true
     peerDependencies:
       rollup: ^1.20.0 || ^2.0.0
     resolution:
@@ -2055,15 +2043,15 @@ packages:
       rollup: ^1.x.x||^2.x.x
     resolution:
       integrity: sha512-2JlAP9jaD24iajC3sFS6wOYnxNMq4V4jIBLTPYz8mp3vMjOuQlA9Ep6Bu8StvQjRm2RTLkFWA5HPJlEKe8bftQ==
-  /rollup-plugin-import-css/1.1.1_rollup@2.28.1:
+  /rollup-plugin-import-css/1.1.2_rollup@2.28.1:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.28.1
       rollup: 2.28.1
     dev: false
     peerDependencies:
-      rollup: ^1.x.x||^2.x.x
+      rollup: ^2.x.x
     resolution:
-      integrity: sha512-VfsogavhZZYqo5HlxciaQGvJGgyMSjYMKEl2y61SaQ8WNFk/8SM7BEJmYfqi99RnZtxmgPz81UgMKklz1g5Ugg==
+      integrity: sha512-Vgoku4JTpdi6RDBbJXk7CdlQFKI+PXk6OwxLzDSfyCGgm/HfxlM1odrfK8WpyqSVH4r2chZnSf2wn58FEji9eQ==
   /rollup-plugin-import-folder/1.0.0_rollup@2.28.1:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.28.1
@@ -2073,6 +2061,10 @@ packages:
       rollup: ^1.x.x||^2.x.x
     resolution:
       integrity: sha512-Q8sVDwEOf4Ae158XiOqL+AV8Ha2m1V3XMK3t4ndm2fdVuew4ZNo3+w1u2bkrLTDCIJ/RGP93qY/zYE4gYOFdng==
+  /rollup-plugin-includepaths/0.2.4:
+    dev: false
+    resolution:
+      integrity: sha512-iZen+XKVExeCzk7jeSZPJKL7B67slZNr8GXSC5ROBXtDGXDBH8wdjMfdNW5hf9kPt+tHyIvWh3wlE9bPrZL24g==
   /rollup-plugin-terser/7.0.2_rollup@2.28.1:
     dependencies:
       '@babel/code-frame': 7.10.4
@@ -2134,12 +2126,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
-  /slash/3.0.0:
-    dev: false
-    engines:
-      node: '>=8'
-    resolution:
-      integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
   /slice-ansi/2.1.0:
     dependencies:
       ansi-styles: 3.2.1

@@ -7,8 +7,8 @@ import serve from "./cmd/serve";
 const defaultConfig = {
     targets: "> 1.5%, not dead",
     minify: true,
-    preamble: "",
     sourcemap: false,
+    preamble: null,
     mappings: null,
     devServer: null
 };
