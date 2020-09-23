@@ -14,7 +14,7 @@ function create(args) {
     if (name) {
 
         /* get the options that are used for generating a project */
-        const toolchain = (args.toolchain || args.t) ? args.toolchain || args.t : "@jolt/toolchain-javascript@4.x.x";
+        const toolchain = (args.toolchain || args.t) ? args.toolchain || args.t : "@jolt/toolchain-javascript@5.x.x";
         const dest = (args.dest || args.d) ? args.dest || args.d : ".";
 
         new ProjectGenerator(name, toolchain, dest).create();

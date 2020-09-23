@@ -33,12 +33,12 @@ export class ProjectGenerator {
 
         this.devDependencies = [
             this.toolchain + toolchainVersion,
-            "@jolt/cli@4.x.x"
+            "@jolt/cli@5.x.x"
         ];
 
         this.dependencies = [
-            "jolt@4.x.x",
-            "@jolt/router@4.x.x"
+            "jolt@5.x.x",
+            "@jolt/router@5.x.x"
         ];
     }
 
