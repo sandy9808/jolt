@@ -7,8 +7,9 @@ import includepaths from "rollup-plugin-includepaths";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
-import babel from "@rollup/plugin-babel";
+import typescript from "rollup-plugin-typescript2";
 import { terser } from "rollup-plugin-terser";
+import typescriptConfig from "./typescriptConfig.json";
 
 function getRollupConfig(options) {
 
@@ -61,20 +62,9 @@ function getRollupConfig(options) {
         /* import json as es modules */
         json(),
 
-        /* transpile code */
-        babel({
-            babelHelpers: "bundled",
-            exclude: "node_modules/**",
-            presets: [
-                [
-                    "@babel/preset-env",
-                    {
-                        "targets": options.targets
-                    }
-                ]
-            ],
-            plugins: ["@babel/plugin-proposal-class-properties"],
-            sourceMaps: options.sourcemap
+        /* transpile typescript code */
+        typescript({
+            tsconfigDefaults: typescriptConfig
         }),
 
         /* minify code */

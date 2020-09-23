@@ -1,6 +1,6 @@
 {
-    "name": "@jleeson/cli",
-    "version": "4.8.2",
+    "name": "@jolt/cli",
+    "version": "5.0.0",
     "publishConfig": {
         "access": "public"
     },
