@@ -1,13 +1,12 @@
 /* imports */
-import minifyTemplate from "rollup-plugin-html-literals";
-import css from "rollup-plugin-import-css";
-import folder from "rollup-plugin-import-folder";
-import url from "@rollup/plugin-url";
-import includepaths from "rollup-plugin-includepaths";
+import typescript from "rollup-plugin-typescript2";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import json from "@rollup/plugin-json";
-import typescript from "rollup-plugin-typescript2";
+import folder from "rollup-plugin-import-folder";
+import url from "@rollup/plugin-url";
+import css from "rollup-plugin-import-css";
+import minifyTemplate from "rollup-plugin-html-literals";
+import includepaths from "rollup-plugin-includepaths";
 import { terser } from "rollup-plugin-terser";
 import typescriptConfig from "./typescriptConfig.json";
 
@@ -16,23 +15,24 @@ function getRollupConfig(options) {
     /* setup rollup plugins */
     const plugins = [
 
-        /* minify html tagged template literals */
-        minifyTemplate({
-            options: {
-                minifyOptions: {
-                    keepClosingSlash: true
-                }
-            }
+        /* transpile code */
+        typescript({
+            tsconfigDefaults: typescriptConfig
         }),
 
-        /* import css */
-        css({
-            output: `${options.dest}/bundle.css`,
-            minify: options.minify
-        }),
+        /* resolve node modules */
+        resolve(),
+
+        /* import commonjs as es modules */
+        commonjs(),
 
         /* import components by the folder name */
         folder(),
+
+        /* map aliases to file paths */
+        includepaths({
+            include: options.mappings
+        }),
 
         /* import assets */
         url({
@@ -48,32 +48,25 @@ function getRollupConfig(options) {
             ]
         }),
 
-        /* map aliases to file paths */
-        includepaths({
-            include: options.mappings
+        /* import css */
+        css({
+            output: `${options.dest}/bundle.css`,
+            minify: options.minify
         }),
 
-        /* resolve node modules */
-        resolve(),
-
-        /* import commonjs as es modules */
-        commonjs(),
-
-        /* import json as es modules */
-        json(),
-
-        /* transpile typescript code */
-        typescript({
-            tsconfigDefaults: typescriptConfig
+        /* minify html tagged template literals */
+        minifyTemplate({
+            options: {
+                minifyOptions: {
+                    keepClosingSlash: true
+                }
+            }
         }),
 
         /* minify code */
         terser({
             output: {
                 preamble: options.preamble
-            },
-            minify: {
-                sourceMap: options.sourcemap
             }
         })
     ];
