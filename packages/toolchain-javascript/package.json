@@ -6,6 +6,7 @@
     },
     "description": "A Jolt toolchain for building JavaScript projects",
     "main": "dist/toolchain.js",
+    "types": "types/toolchain.d.ts",
     "scripts": {
         "build": "rollup -c",
         "lint": "eslint src",
@@ -19,7 +20,8 @@
         "config"
     ],
     "files": [
-        "dist"
+        "dist",
+        "types"
     ],
     "repository": {
         "type": "git",
