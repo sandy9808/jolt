@@ -71,6 +71,9 @@ function getRollupConfig(options) {
         terser({
             output: {
                 preamble: options.preamble
+            },
+            minify: {
+                sourceMap: options.sourcemap
             }
         })
     ];
