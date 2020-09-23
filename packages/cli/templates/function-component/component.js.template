@@ -9,3 +9,5 @@ Component.create({
     name: "{{component-name}}",
     styles: [style]
 }, {{component}});
+
+export default {{component}};
