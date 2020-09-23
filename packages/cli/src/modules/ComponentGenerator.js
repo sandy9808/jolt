@@ -61,6 +61,6 @@ export class ComponentGenerator {
             return;
         }
 
-        console.log(`Generated a ${this.name} component.\n`);
+        console.log(`Generated a ${this.name} component.`);
     }
 }
