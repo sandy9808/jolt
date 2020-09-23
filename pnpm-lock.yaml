@@ -126,7 +126,6 @@ importers:
     dependencies:
       '@jolt/server': 5.0.1
       '@rollup/plugin-commonjs': 15.1.0_rollup@2.28.1
-      '@rollup/plugin-json': 4.1.0_rollup@2.28.1
       '@rollup/plugin-node-resolve': 9.0.0_rollup@2.28.1
       '@rollup/plugin-url': 5.0.1_rollup@2.28.1
       '@typescript-eslint/eslint-plugin': 4.2.0_0d6e027e5aced4d334a249431fe3b66e
@@ -145,6 +144,7 @@ importers:
       '@babel/plugin-proposal-class-properties': 7.10.4_@babel+core@7.11.6
       '@babel/preset-env': 7.11.5_@babel+core@7.11.6
       '@rollup/plugin-babel': 5.2.1_@babel+core@7.11.6+rollup@2.28.1
+      '@rollup/plugin-json': 4.1.0_rollup@2.28.1
       babel-eslint: 10.1.0_eslint@7.9.0
     specifiers:
       '@babel/core': ^7.11.6
@@ -1086,6 +1086,7 @@ packages:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.28.1
       rollup: 2.28.1
+    dev: true
     peerDependencies:
       rollup: ^1.20.0 || ^2.0.0
     resolution:
