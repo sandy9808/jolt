@@ -38,7 +38,7 @@ export class LiveReload {
      */
     static register(res) {
         res.writeHead(200, {
-            "Content-type": "text-event-stream",
+            "Content-type": "text/event-stream",
             "Cache-Control": "no-cache",
             "Connection": "keep-alive"
         });
