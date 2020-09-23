@@ -30,8 +30,12 @@ export class Template  {
             const stats = fs.statSync(originalPath);
 
             if(stats.isFile()) {
-                const content = Template.render(fs.readFileSync(originalPath, "utf8"), templateValues);
-                fs.writeFileSync(newPath, content);
+                if(path.extname(originalPath) == ".template") {
+                    const content = Template.render(fs.readFileSync(originalPath, "utf8"), templateValues);
+                    fs.writeFileSync(newPath, content);
+                } else {
+                    fs.writeFileSync(newPath, fs.readFileSync(originalPath));
+                }
             } else if (stats.isDirectory()) {
                 File.createDirectory(newPath);
                 Template.create(originalPath, newPath, filter, templateValues);
