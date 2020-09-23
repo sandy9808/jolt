@@ -1,11 +1,11 @@
 /* imports */
+import minifyTemplate from "rollup-plugin-html-literals";
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import folder from "rollup-plugin-import-folder";
 import url from "@rollup/plugin-url";
 import css from "rollup-plugin-import-css";
-import minifyTemplate from "rollup-plugin-html-literals";
 import includepaths from "rollup-plugin-includepaths";
 import { terser } from "rollup-plugin-terser";
 
@@ -13,6 +13,15 @@ function getRollupConfig(options) {
 
     /* setup rollup plugins */
     const plugins = [
+
+        /* minify html tagged template literals */
+        minifyTemplate({
+            options: {
+                minifyOptions: {
+                    keepClosingSlash: true
+                }
+            }
+        }),
 
         /* transpile code */
         babel({
@@ -62,15 +71,6 @@ function getRollupConfig(options) {
         css({
             output: `${options.dest}/bundle.css`,
             minify: options.minify
-        }),
-
-        /* minify html tagged template literals */
-        minifyTemplate({
-            options: {
-                minifyOptions: {
-                    keepClosingSlash: true
-                }
-            }
         }),
 
         /* minify code */
