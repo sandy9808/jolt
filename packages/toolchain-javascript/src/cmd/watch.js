@@ -21,7 +21,6 @@ async function watch(options) {
 
     watchConfig.onwarn = function (warning) {
         console.warn(`Jolt Warning: ${warning.message}`);
-        console.log(warning);
         if (warning.loc) {
             console.warn(`File: ${warning.id}`);
             console.warn(`Line: ${warning.loc.line}, Column: ${warning.loc.column}`);
