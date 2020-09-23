@@ -73,7 +73,7 @@ export class Runtime {
     static getComponentOptions(component) {
         return {
             styles: component.options.styles,
-            useShadow: (component.options.useShadow != undefined) ? component.options.useShadow : false
+            useShadow: (component.options.useShadow != undefined) ? component.options.useShadow : true
         };
     }
 
