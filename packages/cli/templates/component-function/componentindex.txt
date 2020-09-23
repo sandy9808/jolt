@@ -1,2 +1,0 @@
-/* imports the component to make imports simpler */
-import "./{{component-name}}";

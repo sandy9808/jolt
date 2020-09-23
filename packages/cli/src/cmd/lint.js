@@ -26,13 +26,10 @@ async function lint(args) {
                 return;
             }
 
-            /* check if a lint function is exposed on the toolchain */
-            if (!toolchain.lint) {
-                console.error(`The toolchain does not expose a "lint" function.`);
-                return;
-            }
+            /* validate the toolchain */
+            if(!Config.validateToolchain(toolchain)) return;
 
-            toolchain.lint(Object.assign(config, args));
+            toolchain.lint(Object.assign(toolchain.defaultConfig, config, args));
 
         } else {
             console.error(`Validation failed on "jolt.json", please run "jolt repair" to fix your config.`);

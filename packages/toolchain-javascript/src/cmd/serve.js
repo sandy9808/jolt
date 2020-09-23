@@ -19,7 +19,7 @@ function serve(options) {
             watch(options);
         },
         function () {
-            server(Object.assign(defaultConfig, options.server || options));
+            server(Object.assign(defaultConfig, options.devServer || options));
         }
     ], function (error) {
         console.error(error.message);

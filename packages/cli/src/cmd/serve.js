@@ -26,13 +26,10 @@ async function serve(args) {
                 return;
             }
 
-            /* check if a serve function is exposed on the toolchain */
-            if (!toolchain.serve) {
-                console.error(`The toolchain does not expose a "serve" function.`);
-                return;
-            }
+            /* validate the toolchain */
+            if(!Config.validateToolchain(toolchain)) return;
 
-            toolchain.serve(Object.assign(config, args));
+            toolchain.serve(Object.assign(toolchain.defaultConfig, config, args));
 
         } else {
             console.error(`Validation failed on "jolt.json", please run "jolt repair" to fix your config.`);

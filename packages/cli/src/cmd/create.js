@@ -14,24 +14,14 @@ function create(args) {
     if (name) {
 
         /* get the options that are used for generating a project */
-        const type = (args.type || args.t) ? validateType(args.type || args.t) : "application";
+        const toolchain = (args.toolchain || args.t) ? args.toolchain || args.t : "@jolt/toolchain-javascript@4.x.x"
         const dest = (args.dest || args.d) ? args.dest || args.d : ".";
 
-        new ProjectGenerator(name, type, dest).create();
+        new ProjectGenerator(name, toolchain, dest).create();
 
     } else {
         console.error("Missing project name! (Example: jolt create my-app)");
     }
-}
-
-/**
- * Validate the project type
- * @param {string} type 
- * @private
- */
-function validateType(type) {
-    if (["application", "library"].includes(type)) return type;
-    else return "application";
 }
 
 export default create;

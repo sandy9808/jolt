@@ -28,16 +28,14 @@ export class Config {
      */
     static validate(config) {
         try {
-            const templateConfig = File.readJSON(path.join(__dirname, `../templates/project-${config.type}/jolt.json`));
-            const templateKeys = Object.keys(templateConfig);
+            const requiredKeys = ["main", "dest", "toolchain"];
 
-            for (let field of templateKeys) {
-                if (!config[field]) {
-                    return false;
-                }
+            for (let field of requiredKeys) {
+                if (config[field] != undefined) return false;
             }
 
             return true;
+            
         } catch {
             return false;
         }
@@ -54,5 +52,39 @@ export class Config {
 
         if (config.toolchain && fs.existsSync(toolchainPath)) return import(require.resolve(toolchain, { paths: [process.cwd()] }));
         else return null;
+    }
+
+    /**
+     * Validates the toolchain to ensure all required exports are included.
+     * @param {Object} toolchain
+     * @return {boolean} 
+     */
+    static validateToolchain(toolchain) {
+        if(!toolchain.build) {
+            console.error(`The toolchain does not expose a "build" function.`);
+            return false;
+        }
+
+        if(!toolchain.watch) {
+            console.error(`The toolchain does not expose a "watch" function.`);
+            return false;
+        }
+
+        if(!toolchain.lint) {
+            console.error(`The toolchain does not expose a "lint" function.`);
+            return false;
+        }
+
+        if(!toolchain.serve) {
+            console.error(`The toolchain does not expose a "serve" function.`);
+            return false;
+        }
+
+        if(!toolchain.defaultConfig) {
+            console.error(`The toolchain does not expose a "defaultConfig" property.`);
+            return false;
+        }
+
+        return true;
     }
 }

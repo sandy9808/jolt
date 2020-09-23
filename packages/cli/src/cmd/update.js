@@ -25,15 +25,17 @@ async function update() {
         }
 
         try {
-            /* get the list of required config properties */
-            const templateConfig = File.readJSON(path.join(__dirname, "../templates/project/jolt.json"));
-            const templateKeys = Object.keys(templateConfig);
+            const defaultConfig = {
+                main: "src/app.js",
+                dest: "public",
+                toolchain: "@jolt/toolchain-javascript"
+            };
+
+            const requiredKeys = Object.keys(defaultConfig);
 
             /* compare the config with the default config and add any missing required properties */
-            for (let field of templateKeys) {
-                if (typeof config[field] !== typeof templateConfig[field]) {
-                    config[field] = templateConfig[field];
-                }
+            for (let field of requiredKeys) {
+                if (!config[field]) config[field] = defaultConfig[field];
             }
 
             File.writeJSON(path.join(process.cwd(), "jolt.json"), config);

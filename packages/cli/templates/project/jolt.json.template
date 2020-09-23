@@ -1,0 +1,5 @@
+{
+    "main": "src/app.js",
+    "dest": "public",
+    "toolchain": "{{toolchain}}"
+}

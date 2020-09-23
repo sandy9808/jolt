@@ -26,13 +26,10 @@ async function build(args) {
                 return;
             }
 
-            /* check if a build function is exposed on the toolchain */
-            if (!toolchain.build) {
-                console.error(`The toolchain does not expose a "build" function.`);
-                return;
-            }
+            /* validate the toolchain */
+            if(!Config.validateToolchain(toolchain)) return;
 
-            toolchain.build(Object.assign(config, args));
+            toolchain.build(Object.assign(toolchain.defaultConfig, config, args));
 
         } else {
             console.error(`Validation failed on "jolt.json", please run "jolt repair" to fix your config.`);

@@ -26,13 +26,10 @@ async function watch(args) {
                 return;
             }
 
-            /* check if a watch function is exposed on the toolchain */
-            if (!toolchain.watch) {
-                console.error(`The toolchain does not expose a "watch" function.`);
-                return;
-            }
+            /* validate the toolchain */
+            if(!Config.validateToolchain(toolchain)) return;
 
-            toolchain.watch(Object.assign(config, args));
+            toolchain.watch(Object.assign(toolchain.defaultConfig, config, args));
 
         } else {
             console.error(`Validation failed on "jolt.json", please run "jolt repair" to fix your config.`);

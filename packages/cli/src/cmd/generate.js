@@ -35,7 +35,11 @@ function generate(args) {
             } else {
                 console.error("Missing component name! (Example: jolt gen hello-world)");
             }
+            
+        } else {
+            console.error(`Validation failed on "jolt.json", please run "jolt repair" to fix your config.`);
         }
+
     } catch (error) {
         console.error(error.message);
     }

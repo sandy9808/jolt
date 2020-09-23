@@ -11,8 +11,7 @@ const helpMap = {
         -h, --help ........ Logs the help menu.
     Commands:
         create [app-name] <options> ........ Creates a new project.
-        generate [component-name] <options> ........ Generates a new component.
-        gen [component-name] <options> ........ Generates a new component.
+        generate, gen [component-name] <options> ........ Generates a new component.
         build <options> ........ Builds the project.
         watch <options> ........ Builds the project whenever a file is saved.
         lint <options> ........ Lints the project codebase.
@@ -26,7 +25,7 @@ const helpMap = {
     - Creates a new project.
 
     Options:
-        -t, --type ........ Set the project type.
+        -t, --toolchain ........ Set the project toolchain.
         -d, --dest ........ Set the output destination for the project.
     `,
 

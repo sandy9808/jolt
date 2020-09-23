@@ -45,31 +45,6 @@ export class File {
     }
 
     /**
-     * Copies the contents from one directory to another.
-     * @param {string} src 
-     * @param {string} dest 
-     * @param {Object.<string,string>} [filterMap] 
-     */
-    static copyDirectoryContents(src, dest, filterMap = {}) {
-        const filesToCreate = File.readDirectory(src);
-
-        for (let file of filesToCreate) {
-            const originalPath = path.join(src, file);
-
-            if (filterMap[file]) file = filterMap[file];
-
-            const newPath = path.join(dest, file);
-            const stats = fs.statSync(originalPath);
-
-            if (stats.isFile()) fs.writeFileSync(newPath, fs.readFileSync(originalPath));
-            else if (stats.isDirectory()) {
-                File.createDirectory(newPath);
-                File.copyDirectoryContents(originalPath, newPath, filterMap);
-            }
-        }
-    }
-
-    /**
      * Deletes a directory and all files and subdirectories.
      * @param {string} directory 
      */

@@ -1,6 +1,7 @@
 /* imports */
 import { File } from "../utils/File";
 import { Tasks } from "../utils/Tasks";
+import { Template } from "../utils/Template";
 import path from "path";
 import fs from "fs";
 
@@ -14,17 +15,24 @@ export class ProjectGenerator {
 
     /**
      * @param {string} name
-     * @param {string} dest
+     * @param {string} [toolchain]
+     * @param {string} [dest]
      */
-    constructor(name, type, dest) {
+    constructor(name, toolchain, dest) {
         this.name = name;
-        this.type = type;
         this.unresolvedDest = dest;
         this.dest = path.join(process.cwd(), dest, name);
-        this.template = path.join(__dirname, `../templates/project-${type}`);
+        this.template = path.join(__dirname, `../templates/project`);
+
+        const toolchainMatch = toolchain.match(/^(@[^/]+\/)?([^@]+)?(@.+)?$/);
+        const toolchainScope = toolchainMatch[1] || "";
+        const toolchainName = toolchainMatch[2] || "";
+        const toolchainVersion = toolchainMatch[3] || "";
+
+        this.toolchain = toolchainScope + toolchainName;
 
         this.devDependencies = [
-            "@jolt/toolchain-javascript@4.x.x",
+            this.toolchain + toolchainVersion,
             "@jolt/cli@4.x.x"
         ];
 
@@ -45,13 +53,16 @@ export class ProjectGenerator {
         /* copy template files to destination */
         console.log(`Creating ${this.name}...\n`);
 
-        const filter = { "gitignore": ".gitignore" };
+        const templateValues = {
+            "project-name": this.name,
+            "toolchain": this.toolchain
+        }
 
         try {
             File.createDirectory(this.dest);
-            File.copyDirectoryContents(this.template, this.dest, filter);
-            this._updateTemplate();
-        } catch {
+            Template.create(this.template, this.dest, {}, templateValues);
+
+        } catch (error) {
             console.error("Failed to create the project template.");
             return;
         }
@@ -68,24 +79,6 @@ export class ProjectGenerator {
         } catch (error) {
             console.error(`\nFailed to setup ${this.name}`);
             File.deleteDirectory(this.dest);
-        }
-    }
-
-    /** Updates the files of the generated project. */
-    _updateTemplate() {
-        /* update package.json */
-        const packagePath = path.join(this.dest, "package.json");
-        const packageSource = File.readJSON(packagePath);
-        packageSource.name = this.name;
-
-        File.writeJSON(packagePath, packageSource);
-
-        /* update index.html */
-        if(this.type == "application") {
-            const indexPath = path.join(this.dest, "public", "index.html");
-            let indexSource = fs.readFileSync(indexPath, "utf8");
-            indexSource = indexSource.replace("<title>Template</title>", `<title>${this.name}</title>`);
-            fs.writeFileSync(indexPath, indexSource);
         }
     }
 
@@ -142,9 +135,7 @@ export class ProjectGenerator {
         if (this.unresolvedDest == ".") console.log(` > cd ${this.name}`);
         else console.log(` > cd ${this.unresolvedDest}/${this.name}`);
 
-        if(this.type == "library") console.log(" > npm run build");
-        else console.log(" > npm run serve");
-
+        console.log(" > npm run serve");
         console.log("----------------------------------\n");
     }
 }
