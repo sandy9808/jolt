@@ -34,7 +34,6 @@ This toolchain powers the development commands for @jolt/cli.
 This toolchain also offers some extra config options:
 
 #### Options
-------------
 - targets (default: "> 1.5%, not dead") - a browserlist query for what browsers to target.
 - minify (default: true) - determines whether or not the template and css sourcecode should be minified.
 - sourcemap (default: false) - determines whether or not sourcemaps are generated.

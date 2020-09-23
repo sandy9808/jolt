@@ -76,7 +76,6 @@ Component.mount(App, document.body);
 When you are building a component that needs state management or lifecycle methods, you should use class components, A class component has a `state` property for updating the component state, as well as lifecycle methods. An Object containing all the components attributes are passed into the components `render` method when rendered, as well as available as an `attribs` property.
 
 #### Lifecycle Methods
------------------
 - didLoad() - runs when the component has finished loading.
 - shouldUpdate(key, value) - runs when determining if the component should update.
 - didUpdate(key, value) - runs when the component has finished updating.

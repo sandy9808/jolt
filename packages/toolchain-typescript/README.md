@@ -42,7 +42,6 @@ This toolchain powers the development commands for @jolt/cli.
 This toolchain also offers some extra config options:
 
 #### Options
-------------
 - minify (default: true) - determines whether or not the template and css sourcecode should be minified.
 - sourcemap (default: false) - determines whether or not sourcemaps are generated.
 - preamble (default: null) - text to append to the top of the bundle.
