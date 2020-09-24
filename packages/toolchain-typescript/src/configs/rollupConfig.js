@@ -87,17 +87,21 @@ function getRollupConfig(options) {
 }
 
 function getMappings(options) {
-    const keys = Object.keys(options.mappings);
-    const mappings = [];
+    if (options.mappings) {
+        const keys = Object.keys(options.mappings);
+        const mappings = [];
 
-    for (let key of keys) {
-        mappings.push({
-            find: key,
-            replacement: path.resolve(path.resolve(process.cwd()), options.mappings[key])
-        });
+        for (let key of keys) {
+            mappings.push({
+                find: key,
+                replacement: path.resolve(path.resolve(process.cwd()), options.mappings[key])
+            });
+        }
+
+        return mappings;
     }
 
-    return mappings;
+    return null;
 }
 
 export default getRollupConfig;
