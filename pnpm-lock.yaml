@@ -90,6 +90,7 @@ importers:
       '@babel/plugin-proposal-class-properties': 7.10.4_@babel+core@7.11.6
       '@babel/preset-env': 7.11.5_@babel+core@7.11.6
       '@jolt/server': 5.0.1
+      '@rollup/plugin-alias': 3.1.1_rollup@2.28.1
       '@rollup/plugin-babel': 5.2.1_@babel+core@7.11.6+rollup@2.28.1
       '@rollup/plugin-commonjs': 15.1.0_rollup@2.28.1
       '@rollup/plugin-node-resolve': 9.0.0_rollup@2.28.1
@@ -100,7 +101,6 @@ importers:
       rollup-plugin-html-literals: 1.1.1_rollup@2.28.1
       rollup-plugin-import-css: 1.1.2_rollup@2.28.1
       rollup-plugin-import-folder: 1.0.0_rollup@2.28.1
-      rollup-plugin-includepaths: 0.2.4
       rollup-plugin-terser: 7.0.2_rollup@2.28.1
     devDependencies:
       '@rollup/plugin-json': 4.1.0_rollup@2.28.1
@@ -109,6 +109,7 @@ importers:
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.5
       '@jolt/server': ^5.0.1
+      '@rollup/plugin-alias': ^3.1.1
       '@rollup/plugin-babel': ^5.2.1
       '@rollup/plugin-commonjs': ^15.1.0
       '@rollup/plugin-json': ^4.1.0
@@ -120,11 +121,11 @@ importers:
       rollup-plugin-html-literals: ^1.1.1
       rollup-plugin-import-css: ^1.1.2
       rollup-plugin-import-folder: ^1.0.0
-      rollup-plugin-includepaths: ^0.2.4
       rollup-plugin-terser: ^7.0.2
   packages/toolchain-typescript:
     dependencies:
       '@jolt/server': 5.0.1
+      '@rollup/plugin-alias': 3.1.1_rollup@2.28.1
       '@rollup/plugin-commonjs': 15.1.0_rollup@2.28.1
       '@rollup/plugin-node-resolve': 9.0.0_rollup@2.28.1
       '@rollup/plugin-url': 5.0.1_rollup@2.28.1
@@ -135,7 +136,6 @@ importers:
       rollup-plugin-html-literals: 1.1.1_rollup@2.28.1
       rollup-plugin-import-css: 1.1.2_rollup@2.28.1
       rollup-plugin-import-folder: 1.0.0_rollup@2.28.1
-      rollup-plugin-includepaths: 0.2.4
       rollup-plugin-terser: 7.0.2_rollup@2.28.1
       rollup-plugin-typescript2: 0.27.2_rollup@2.28.1+typescript@4.0.3
       typescript: 4.0.3
@@ -151,6 +151,7 @@ importers:
       '@babel/plugin-proposal-class-properties': ^7.10.4
       '@babel/preset-env': ^7.11.5
       '@jolt/server': ^5.0.1
+      '@rollup/plugin-alias': ^3.1.1
       '@rollup/plugin-babel': ^5.2.1
       '@rollup/plugin-commonjs': ^15.1.0
       '@rollup/plugin-json': ^4.1.0
@@ -164,7 +165,6 @@ importers:
       rollup-plugin-html-literals: ^1.1.1
       rollup-plugin-import-css: ^1.1.2
       rollup-plugin-import-folder: ^1.0.0
-      rollup-plugin-includepaths: ^0.2.4
       rollup-plugin-terser: ^7.0.2
       rollup-plugin-typescript2: ^0.27.2
       typescript: ^4.0.3
@@ -1048,6 +1048,17 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-1V9XOY4rDW0rehzbrcqAmHnz8e7SKvX27gh8Gt2WgB0+pdzdiLV83p72kZPU+jvMbS1qU5mauP2iOvO8rhmurQ==
+  /@rollup/plugin-alias/3.1.1_rollup@2.28.1:
+    dependencies:
+      rollup: 2.28.1
+      slash: 3.0.0
+    dev: false
+    engines:
+      node: '>=8.0.0'
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    resolution:
+      integrity: sha512-hNcQY4bpBUIvxekd26DBPgF7BT4mKVNDF5tBG4Zi+3IgwLxGYRY0itHs9D0oLVwXM5pvJDWJlBQro+au8WaUWw==
   /@rollup/plugin-babel/5.2.1_@babel+core@7.11.6+rollup@2.28.1:
     dependencies:
       '@babel/core': 7.11.6
@@ -2434,10 +2445,6 @@ packages:
       rollup: ^1.x.x||^2.x.x
     resolution:
       integrity: sha512-Q8sVDwEOf4Ae158XiOqL+AV8Ha2m1V3XMK3t4ndm2fdVuew4ZNo3+w1u2bkrLTDCIJ/RGP93qY/zYE4gYOFdng==
-  /rollup-plugin-includepaths/0.2.4:
-    dev: false
-    resolution:
-      integrity: sha512-iZen+XKVExeCzk7jeSZPJKL7B67slZNr8GXSC5ROBXtDGXDBH8wdjMfdNW5hf9kPt+tHyIvWh3wlE9bPrZL24g==
   /rollup-plugin-terser/7.0.2_rollup@2.28.1:
     dependencies:
       '@babel/code-frame': 7.10.4

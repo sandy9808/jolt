@@ -4,10 +4,11 @@ import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import folder from "rollup-plugin-import-folder";
+import alias from "@rollup/plugin-alias";
 import url from "@rollup/plugin-url";
 import css from "rollup-plugin-import-css";
-import includepaths from "rollup-plugin-includepaths";
 import { terser } from "rollup-plugin-terser";
+import path from "path";
 
 function getRollupConfig(options) {
 
@@ -49,8 +50,8 @@ function getRollupConfig(options) {
         folder(),
 
         /* map aliases to file paths */
-        includepaths({
-            include: options.mappings
+        alias({
+            entries: getMappings(options)
         }),
 
         /* import assets */
@@ -93,6 +94,20 @@ function getRollupConfig(options) {
     };
 
     return { in: input, out: output };
+}
+
+function getMappings(options) {
+    const keys = Object.keys(options.mappings);
+    const mappings = [];
+
+    for (let key of keys) {
+        mappings.push({
+            find: key,
+            replacement: path.resolve(path.resolve(process.cwd()), options.mappings[key])
+        });
+    }
+
+    return mappings;
 }
 
 export default getRollupConfig;
