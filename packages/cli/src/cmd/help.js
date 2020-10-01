@@ -35,7 +35,8 @@ const helpMap = {
     - Generates a new component.
 
     Options:
-        -t, --type ........ Set the component type.
+        -c, --class ........ Set the component type to a class component.
+        -f, --function ........ Set the component type to a function component.
         -d, --dest ........ Set the output destination for the component.
     `,
 
@@ -44,7 +45,8 @@ const helpMap = {
     - Generates a new component.
 
     Options:
-        -t, --type ........ Set the component type.
+        -c, --class ........ Set the component type to a class component.
+        -f, --function ........ Set the component type to a function component.
         -d, --dest ........ Set the output destination for the component.
     `,
 

@@ -27,7 +27,7 @@ function generate(args) {
             if (name) {
 
                 /* get the options that are used for generating a project */
-                const type = (args.type || args.t) ? validateType(args.type || args.t) : "function";
+                const type = (args.class || args.c) ? "class" : (args.function || args.f) ? "function" : "class";
                 const dest = (args.dest || args.d) ? args.dest || args.d : "src/components";
 
                 new ComponentGenerator(name, type, dest).create();
@@ -43,16 +43,6 @@ function generate(args) {
     } catch (error) {
         console.error(error.message);
     }
-}
-
-/**
- * Validate the component type
- * @param {string} type 
- * @private
- */
-function validateType(type) {
-    if (type == "class" || type == "function") return type;
-    else return "function";
 }
 
 export default generate;
