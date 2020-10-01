@@ -17,7 +17,7 @@ export class ComponentGenerator {
      * @param {string} [dest]
      */
     constructor(name, type, dest) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.dest = path.join(process.cwd(), dest, name);
         this.template = path.join(__dirname, `../templates/${type}-component`);
     }
@@ -39,9 +39,11 @@ export class ComponentGenerator {
 
         /* get the component definition name */
         const parts = this.name.split("-");
-        const part1 = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-        const part2 = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-        const name = part1 + part2;
+        let name = "";
+
+        for(let part of parts) {
+            name += part.charAt(0).toUpperCase() + part.slice(1);
+        }
 
         const filter = {
             "component.js.template": `${this.name}.js`,
