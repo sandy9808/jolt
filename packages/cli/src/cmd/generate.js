@@ -27,7 +27,7 @@ function generate(args) {
             if (name) {
 
                 /* get the options that are used for generating a project */
-                const type = (args.type || args.t) ? validateType(args.type || args.t) : "function";
+                const type = (args.class || args.c) ? "class" : (args.function || args.f) ? "function" : "class";
                 const dest = (args.dest || args.d) ? args.dest || args.d : "src/components";
 
                 new ComponentGenerator(name, type, dest).create();
