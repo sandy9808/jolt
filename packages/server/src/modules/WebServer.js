@@ -33,6 +33,7 @@ export class WebServer {
         this._key = Parser.getArg("key", null, null, args);
         this._cert = Parser.getArg("cert", null, null, args);
         this._headers = Parser.getArg("headers", null, {}, args);
+        this._bodyParser = Parser.getArg("bodyParser", null, (data) => data, args);
     }
 
     /** Starts the WebServer. */
@@ -133,7 +134,7 @@ export class WebServer {
             });
 
             req.on("end", () => {
-                resolve(JSON.parse(body));
+                resolve(this._bodyParser(body));
             });
         });
     }
