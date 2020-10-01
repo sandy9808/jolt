@@ -1,5 +1,6 @@
 declare interface RouterOptions {
     useHash?: boolean;
+    resetScrollPosition?: boolean;
 }
 
 declare interface Routes {
