@@ -45,14 +45,4 @@ function generate(args) {
     }
 }
 
-/**
- * Validate the component type
- * @param {string} type 
- * @private
- */
-function validateType(type) {
-    if (type == "class" || type == "function") return type;
-    else return "function";
-}
-
 export default generate;
