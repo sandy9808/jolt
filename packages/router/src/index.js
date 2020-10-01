@@ -4,6 +4,7 @@ import { Component } from "jolt";
 /**
  * @typedef {Object} RouterOptions
  * @property {boolean} [useHash=false]
+ * @property {boolean} [resetScrollPosition=true]
  */
 
 /**
@@ -16,6 +17,7 @@ export class Router {
     static _routes = {};
     static _container;
     static _parameters;
+    static _options = { resetScrollPosition: true };
 
     /**
      * Set the application routes.
@@ -33,13 +35,15 @@ export class Router {
     static mount(container, options = {}) {
         Router._container = container;
 
-        const mode = (options.useHash) ? "hashchange" : "popstate";
+        Router._options = Object.assign(Router._options, options);
+
+        const mode = (Router._options.useHash) ? "hashchange" : "popstate";
 
         window.addEventListener(mode, () => {
-            Router._resolve((options.useHash) ? (window.location.hash.slice(1) || "/") : (window.location.pathname || "/"));
+            Router._resolve((Router._options.useHash) ? (window.location.hash.slice(1) || "/") : (window.location.pathname || "/"));
         });
 
-        Router._resolve((options.useHash) ? (window.location.hash.slice(1) || "/") : (window.location.pathname || "/"));
+        Router._resolve((Router._options.useHash) ? (window.location.hash.slice(1) || "/") : (window.location.pathname || "/"));
     }
 
     /**
@@ -119,8 +123,11 @@ export class Router {
     static _resolve(url) {
         const route = Object.keys(Router._routes).filter((route) => Router._match(route, url))[0];
 
-        if (route != null) Component.mount(Router._routes[route], Router._container);
-        else {
+        if (route != null) {
+            Component.mount(Router._routes[route], Router._container);
+            if(Router._options.resetScrollPosition) window.scrollTo(0, 0);
+            
+        } else {
             const routeNotFound = Router._routes["notFound"];
 
             if (!routeNotFound) {
@@ -129,6 +136,7 @@ export class Router {
             }
 
             Component.mount(routeNotFound, Router._container);
+            if(Router._options.resetScrollPosition) window.scrollTo(0, 0);
         }
     }
 }
