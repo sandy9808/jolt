@@ -1,7 +1,7 @@
 import { Component, html } from "jolt";
 import style from "./{{component-name}}.css";
 
-class {{component}} extends Component {
+export class {{component}} extends Component {
 
     render() {
         return html``;
@@ -12,5 +12,3 @@ Component.create({
     name: "{{component-name}}",
     styles: [style]
 }, {{component}});
-
-export default {{component}};
