@@ -41,7 +41,9 @@ CLI Options:
 
 ## JavaScript Usage
 
-You can use @jolt/server in your JavaScript file and pass it the same options as the cli as well as a custom `headers` property.
+You can use @jolt/server in your JavaScript file and pass it the same options as the cli as well as a custom `headers` or `bodyParser` property.
+
+The `bodyParser` property allows you to set a custom function for parsing the request body. The value returned by the bodyParser is assigned to `req.body`.
 
 **Example:**
 ```js
@@ -55,7 +57,8 @@ server({
     spa: true,
     headers: {
         "Cache-Control": "no-cache"
-    }
+    },
+    bodyParser: (data) => JSON.parse(data)
 });
 ```
 

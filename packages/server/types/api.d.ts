@@ -2,6 +2,8 @@ declare interface Headers {
     [key: string]: string;
 }
 
+declare type ParserCallback = (data: string) => any;
+
 declare interface Options {
     port?: number,
     root?: string,
@@ -10,7 +12,8 @@ declare interface Options {
     spa?: boolean,
     key?: string,
     cert?: string,
-    headers?: Headers
+    headers?: Headers,
+    bodyParser: ParserCallback
 }
 
 declare type ResponseCallback = (req: any, res: any) => void;
