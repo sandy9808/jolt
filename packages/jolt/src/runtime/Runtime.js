@@ -86,6 +86,9 @@ export class Runtime {
         const attributes = {};
 
         for (let attribute of component.attributes) {
+            if(attribute===""){
+                attribute=true;
+            }
             attributes[attribute.localName] = attribute.value;
         }
 
